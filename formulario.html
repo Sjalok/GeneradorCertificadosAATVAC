@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario de cursado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.min.js"></script>
+</head>
+<body>
+    <h1>Ingresar Datos del cursante</h1>
+    <form id="cursanteForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" required><br><br>
+        <label for="pdfFile">Seleccionar PDF:</label>
+        <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required><br><br>
+        <input type="submit" value="Subir datos">
+    </form>
+    <script src="script.js"></script>
+</body>
+</html>
