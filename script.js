@@ -1,20 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('cursanteForm');
     form.addEventListener('submit', handleFormSubmit);
-
+    
     async function handleFormSubmit(event) {
         event.preventDefault();
 
         const nombre = document.getElementById('nombre').value;
-        const fileInput = document.getElementById('pdfFile');
-        const file = fileInput.files[0];
 
-        if (!file) {
-            alert('Por favor, selecciona un archivo PDF.');
-            return;
-        }
-
-        const arrayBuffer = await file.arrayBuffer();
+        // Usar fetch para obtener el archivo PDF
+        const response = await fetch('pdfestandar.pdf'); // Reemplaza 'tuArchivo.pdf' con el nombre de tu archivo
+        const arrayBuffer = await response.arrayBuffer();
 
         // Usar PDF.js para extraer el contenido del PDF
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
