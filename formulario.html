@@ -4,14 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Certificados</title>
+    <link rel="stylesheet" type="text/css" href="./CSS/formulario.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 </head>
 <body>
-    <form id="cursanteForm">
-        <input type="text" id="nombre" placeholder="Nombre">
-        <button type="submit">Generar Certificado</button>
-    </form>
+    <div class="slider">
+        <div class="top-logo">
+            <img src="/img/logo.png" alt="Logo">
+        </div>
+        <h1>Generador de Certificados</h1>
+        <form id="cursanteForm">
+            <div class="mt-5">
+                <select id="cursos" class="select-styled">
+                    <option disabled selected value="">-- Certificacion --</option>
+                    <option value="TSA">Trabajo Seguro en Altura</option>
+                    <option value="APC">Certificacion APC</option>
+                    <option value="RTC">certificacion RTC</option>
+                </select>
+            </div>
+
+            <input type="text" id="nombre" placeholder="Nombre y Apellido">
+            <input type="text" id="curso" placeholder="Curso">
+            <input type="text" id="ingreso" placeholder="Fecha Ingreso">
+            <input type="text" id="salida" placeholder="Fecha Salida">
+            <input type="text" id="nombre" placeholder="Nombre">
+            <button type="submit">Generar Certificado</button>
+
+            <button type="submit">Descargar todos los certificados</button>
+        </form>
+    </div>
+    
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="credentials.js"></script>
