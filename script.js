@@ -1,75 +1,49 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('cursanteForm');
-    form.addEventListener('submit', handleFormSubmit);
-    
-    async function handleFormSubmit(event) {
+    const generateButton = document.getElementById('generar');
+    generateButton.addEventListener('click', handleGenerateCertificate);
+
+    async function handleGenerateCertificate(event) {
         event.preventDefault();
 
         const nombre = document.getElementById('nombre').value;
 
-        // Usar fetch para obtener el archivo PDF
-        const response = await fetch('pdfestandar.pdf'); // Reemplaza 'tuArchivo.pdf' con el nombre de tu archivo
+        // Lógica para generar el certificado PDF utilizando los datos del formulario
+        const pdfBytes = await generateCustomCertificate(nombre);
+
+        // Descargar el certificado generado
+        if (pdfBytes) {
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Certificado-${nombre}.pdf`;
+            link.click();
+        }
+    }
+
+    async function generateCustomCertificate(nombre) {
+        // Usar fetch para obtener el archivo PDF base
+        const response = await fetch('pdfestandar.pdf'); // Reemplaza 'pdfestandar.pdf' con tu archivo base
         const arrayBuffer = await response.arrayBuffer();
 
-        // Usar PDF.js para extraer el contenido del PDF
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        const page = await pdf.getPage(1);
-        const textContent = await page.getTextContent();
-
-        let text = '';
-        textContent.items.forEach(item => {
-            text += item.str + ' ';
-        });
-
-        const textToReplace = 'Marketing Digital'; // Nombre actual en el PDF de prueba
-        const newText = text.replace(textToReplace, "Tecnico operador de cuerdas");
-
-        let textItems = [];
-        textContent.items.forEach(item => {
-            if (item.str.includes('Juliana Silva')) {
-                textItems.push(item);
-            }
-        });
-
-        // Modificar el PDF usando PDF-LIB
+        // Usar PDF-LIB para modificar el PDF base
         const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
 
+        // Modificar el PDF según los datos del formulario
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
         const { width, height } = firstPage.getSize();
 
-        textItems.forEach(item => {
-            // Eliminar el texto original cubriéndolo con un rectángulo blanco
-            firstPage.drawRectangle({
-                x: item.transform[4],
-                y: item.transform[5] - 12, // Ajusta según la posición del texto
-                width: 300, // Ajusta según el ancho del texto
-                height: 20, // Ajusta según la altura del texto
-                color: PDFLib.rgb(1, 1, 1),
-            });
-
-            // Calcular la posición X centrada para el nuevo texto
-            const textWidth = helveticaFont.widthOfTextAtSize(nombre, 50); // Tamaño 50 ajustable
-            const xCentered = (width - textWidth) / 2;
-
-            // Dibujar el nuevo texto centrado en el PDF
-            firstPage.drawText(nombre, {
-                x: xCentered,
-                y: item.transform[5], // Ajusta según la posición del texto original
-                size: 50, // Ajusta según el tamaño del texto original
-                font: helveticaFont,
-                color: PDFLib.rgb(0.1, 0.1, 0.95), // Ajusta según el color del texto original
-            });
+        // Ejemplo de modificación (ajustar según tu necesidad)
+        firstPage.drawText(nombre, {
+            x: 50,
+            y: 550,
+            size: 20,
+            font: helveticaFont,
+            color: PDFLib.rgb(0, 0, 0),
         });
 
-        const modifiedPdfBytes = await pdfDoc.save();
-
-        // Descargar el PDF modificado
-        const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `Certificado-${nombre}.pdf`; // Nombre del archivo con el nombre del formulario
-        link.click();
+        // Devolver los bytes del PDF modificado
+        return await pdfDoc.save();
     }
 });

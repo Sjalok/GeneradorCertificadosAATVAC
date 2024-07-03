@@ -1,50 +1,101 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const downloadButton = document.getElementById('descargar');
+    downloadButton.addEventListener('click', handleDownloadCertificates);
 
-// const API_KEY = window.API_KEY;
-// const CLIENT_ID = window.CLIENT_ID;
-// const DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
-// const SCOPES = "https://www.googleapis.com/auth/spreadsheets.readonly";
+    const API_KEY = window.API_KEY;
+    const CLIENT_ID = window.CLIENT_ID;
+    const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+    const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
-// gapi.load('client', () => {
-//     gapi.client.init({
-//         apiKey: API_KEY,
-//         discoveryDocs: DISCOVERY_DOCS
-//     });
-// });
+    let tokenClient;
+    let gapiInited = false;
+    let gisInited = false;
 
-// // Configurar el token de autenticación con GIS
-// const tokenClient = google.accounts.oauth2.initTokenClient({
-//     client_id: CLIENT_ID,
-//     scope: SCOPES,
-//     callback: (response) => {
-//         if (response.error) {
-//             console.error('Error al obtener el token de acceso:', response);
-//             return;
-//         }
-//         getDataFromSheet(response.access_token);
-//     }
-// });
+    function gapiLoaded() {
+        gapi.load('client', initializeGapiClient);
+    }
 
-// // Solicitar el token de acceso
-// tokenClient.requestAccessToken();
-// }
+    async function initializeGapiClient() {
+        await gapi.client.init({
+            apiKey: API_KEY,
+            discoveryDocs: [DISCOVERY_DOC],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
+    }
 
-// async function getDataFromSheet(accessToken) {
-// const spreadsheetId = '1cseAr91fX0WjpxGUwPlvcRtpX0yYuWc9NcMJdBLZEZ4'; // Reemplaza con tu ID de hoja de cálculo
-// const range = 'Hoja1!A:B'; // Rango de datos a obtener
+    function gisLoaded() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID,
+            scope: SCOPES,
+            callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+    }
 
-// try {
-//     gapi.client.setToken({ access_token: accessToken });
+    function maybeEnableButtons() {
+        if (gapiInited && gisInited) {
+            document.getElementById('descargar').disabled = false;
+        }
+    }
 
-//     const response = await gapi.client.sheets.spreadsheets.values.get({
-//         spreadsheetId: spreadsheetId,
-//         range: range,
-//     });
+    function handleDownloadCertificates(event) {
+        event.preventDefault();
+        if (!tokenClient) {
+            console.error('Token client is not initialized');
+            return;
+        }
+        tokenClient.callback = async (resp) => {
+            if (resp.error !== undefined) {
+                console.error(resp);
+                return;
+            }
+            await getDataFromSheet();
+        };
 
-//     const data = response.result.values;
-//     console.log(data);
+        if (gapi.client.getToken() === null) {
+            tokenClient.requestAccessToken({ prompt: 'consent' });
+        } else {
+            tokenClient.requestAccessToken({ prompt: '' });
+        }
+    }
 
-//     // Aquí puedes continuar con tu lógica para modificar el PDF usando PDF-LIB y PDF.js
+    async function getDataFromSheet() {
+        const spreadsheetId = '1cseAr91fX0WjpxGUwPlvcRtpX0yYuWc9NcMJdBLZEZ4'; // Reemplaza con tu ID de hoja de cálculo
+        const range = 'Hoja1!A:B'; // Rango de datos a obtener
 
-// } catch (error) {
-//     console.error('Error al obtener los datos:', error);
-// }
+        try {
+            const response = await gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: spreadsheetId,
+                range: range,
+            });
+
+            const data = response.result.values;
+            console.log(data);
+
+            // for (let i = 0; i < data.length; i++) {
+            //     const nombre = data[i][0];
+
+            //     // Generar el certificado PDF para cada fila de datos
+            //     const pdfBytes = await generateCustomCertificate(nombre);
+
+            //     // Descargar el certificado generado
+            //     if (pdfBytes) {
+            //         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            //         const link = document.createElement('a');
+            //         link.href = window.URL.createObjectURL(blob);
+            //         link.download = `Certificado-${nombre}.pdf`;
+            //         link.click();
+            //     }
+            // }
+
+        } catch (error) {
+            console.error('Error al obtener los datos:', error);
+            console.log('Detalles del error:', error.result.error);
+        }
+    }
+
+    window.gapiLoaded = gapiLoaded;
+    window.gisLoaded = gisLoaded;
+});
