@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('cursanteForm');
     form.addEventListener('submit', handleFormSubmit);
-
+    
     async function handleFormSubmit(event) {
         event.preventDefault();
 
