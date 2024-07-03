@@ -1,0 +1,84 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Ubuntu', sans-serif;
+  }
+  
+  .slider {
+    background: url('../img/header.jpg') no-repeat center center fixed;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Cambiado de center a flex-start para alinear hacia arriba */
+    color: white;
+    text-align: center;
+    padding-top: 120px; /* Ajusta este valor para más o menos espacio superior */
+  }
+  
+  .slider h1 {
+    margin: 0;
+    font-size: 3rem;
+    color: white;
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo-container img {
+    width: 100px; /* Ajusta el tamaño del logo */
+    height: auto; /* Mantiene la proporción */
+    margin-left: 10px; /* Ajusta el margen a la izquierda */
+    margin-top: 0; /* Ajusta el margen superior */
+  }
+
+  .top-logo {
+    position: absolute;
+    top: 20px; /* Ajusta este valor para más o menos espacio superior */
+    left: 20px; /* Ajusta este valor para más o menos espacio desde la izquierda */
+  }
+  
+  .top-logo img {
+    width: 100px; /* Ajusta el tamaño del logo */
+    height: auto; /* Mantiene la proporción */
+  }
+  
+  .login-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px; /* Ajusta este valor para más o menos espacio superior */
+  }
+  
+  .login-container input[type="password"] {
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .login-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .login-container button:hover {
+    background: #45a049;
+  }
+
+  
+  

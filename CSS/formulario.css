@@ -1,0 +1,148 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #f0f0f0; /* Color de fondo */
+}
+
+.slider {
+    background: url('../img/header.jpg') no-repeat center center fixed;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alineación hacia arriba */
+    color: white;
+    text-align: center;
+    padding-top: 120px; /* Espacio superior ajustable */
+    position: relative; /* Añadido para posicionar elementos absolutos */
+}
+
+.slider h1 {
+    margin: 0;
+    font-size: 3rem;
+    color: white;
+    z-index: 1; /* Añadido z-index para estar encima del formulario */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative; /* Añadido posicionamiento relativo */
+    z-index: 1; /* Añadido z-index para estar encima del formulario */
+}
+
+.logo-container img {
+    width: 100px; /* Tamaño del logo */
+    height: auto; /* Mantiene la proporción */
+    margin-left: 10px; /* Margen a la izquierda */
+    margin-top: 0; /* Margen superior */
+}
+
+/* Estilos para el formulario */
+.form-container {
+    width: 80%; /* Ancho del contenedor del formulario */
+    max-width: 600px; /* Ancho máximo del contenedor */
+    margin: 120px auto 0; /* Centrar horizontalmente con espacio superior */
+    background-color: rgba(0, 0, 0, 0.7); /* Color de fondo con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    text-align: center;
+    z-index: 1; /* Coloca el formulario encima de la imagen de fondo */
+}
+
+.form-container h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: white; /* Color de texto blanco */
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 10px;
+    color: white; /* Color de texto blanco */
+}
+
+.form-container input[type="text"],
+.form-container input[type="file"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente para los inputs */
+    color: #333; /* Color de texto oscuro */
+}
+
+.form-container input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.form-container input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+h1 {
+    font-family: 'Covered By Your Grace', cursive; /* Fuente para títulos */
+    text-align: center;
+    margin-top: 50px; /* Espacio arriba del título */
+    color: #333; /* Color del texto */
+}
+
+#cursanteForm {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff; /* Fondo del formulario */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555; /* Color del texto de las etiquetas */
+}
+
+input[type="text"], input[type="file"] {
+    width: calc(100% - 20px); /* Ancho del input menos el padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd; /* Borde del input */
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos adicionales para el formulario */
+@media (min-width: 768px) {
+    #cursanteForm {
+        padding: 30px;
+    }
+}
+
