@@ -11,8 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Contraseña incorrecta');
             intentos++;
             limpiarFormulario(formulario, campoPassword);
-        } else {
+        } else if (contraseña === '1234' && intentos === 1) {
             window.location.href = 'formulario.html';
+        } else {
+            alert('Contraseña incorrecta');
+            intentos = 0;
+            limpiarFormulario(formulario, campoPassword);
         }
     });
 });
