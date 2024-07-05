@@ -46,4 +46,22 @@ document.addEventListener('DOMContentLoaded', function () {
         // Devolver los bytes del PDF modificado
         return await pdfDoc.save();
     }
+
+    // Función para generar certificados en base a una lista de nombres
+    async function generateCertificates(names) {
+        for (const name of names) {
+            const pdfBytes = await generateCustomCertificate(name);
+
+            if (pdfBytes) {
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `Certificado-${name}.pdf`;
+                link.click();
+            }
+        }
+    }
+
+    // Hacer la función disponible globalmente para que lectorDrive.js pueda llamarla
+    window.generateCertificates = generateCertificates;
 });
