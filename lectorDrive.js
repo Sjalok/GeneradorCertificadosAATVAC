@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function getDataFromSheet() {
         const spreadsheetId = '1cseAr91fX0WjpxGUwPlvcRtpX0yYuWc9NcMJdBLZEZ4'; // Reemplaza con tu ID de hoja de cálculo
-        const range = 'Hoja1!A:B'; // Rango de datos a obtener
+        const range = 'Hoja1!A:A'; // Rango de datos a obtener (solo nombres)
 
         try {
             const response = await gapi.client.sheets.spreadsheets.values.get({
@@ -72,23 +72,14 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = response.result.values;
-            console.log(data);
+            const names = data.map(row => row[0]);
+            console.log(names);
+            
+            // Almacenar los nombres en window para que script.js pueda acceder a ellos
+            window.namesFromSheet = names;
 
-            // for (let i = 0; i < data.length; i++) {
-            //     const nombre = data[i][0];
-
-            //     // Generar el certificado PDF para cada fila de datos
-            //     const pdfBytes = await generateCustomCertificate(nombre);
-
-            //     // Descargar el certificado generado
-            //     if (pdfBytes) {
-            //         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            //         const link = document.createElement('a');
-            //         link.href = window.URL.createObjectURL(blob);
-            //         link.download = `Certificado-${nombre}.pdf`;
-            //         link.click();
-            //     }
-            // }
+            // Llamar a la función para generar certificados con los nombres obtenidos
+            generateCertificates(names);
 
         } catch (error) {
             console.error('Error al obtener los datos:', error);
