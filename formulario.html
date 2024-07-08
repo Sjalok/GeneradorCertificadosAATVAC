@@ -17,7 +17,9 @@
         <h1>Generador de Certificados</h1>
         <form id="cursanteForm">
             <div class="mt-5">
+                <button id="actualizarFechas">Actualizar Fechas Predeterminadas</button>
                 <select id="cursos" class="select-styled">
+
                     <option disabled selected value="">-- Certificacion --</option>
                     <option value="TSA">Trabajo Seguro en Altura</option>
                     <option value="APC">Certificacion APC</option>
@@ -27,13 +29,25 @@
 
             <input type="text" id="nombre" placeholder="Nombre y Apellido">
             <input type="text" id="curso" placeholder="Curso">
-            <input type="text" id="ingreso" placeholder="Fecha Ingreso">
-            <input type="text" id="salida" placeholder="Fecha Salida">
-            <input type="text" id="nombre" placeholder="Nombre">
+            <input type="date" id="ingreso" placeholder="Fecha Ingreso">
+            <input type="date" id="salida" placeholder="Fecha Salida">
             <button type="submit" id="generar">Generar Certificado</button>
 
             <button type="submit" id="descargar">Descargar todos los certificados</button>
         </form>
+    </div>
+
+    <!-- Modal -->
+    <div id="fechaModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Predetermine las fechas para <span id="cursoSeleccionado"></span></h2>
+            <label for="modalIngreso">Fecha de Ingreso:</label>
+            <input type="date" id="modalIngreso">
+            <label for="modalSalida">Fecha de Salida:</label>
+            <input type="date" id="modalSalida">
+            <button id="guardarFechas">Guardar Fechas</button>
+        </div>
     </div>
     
     <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
@@ -41,5 +55,6 @@
     <script src="credentials.js"></script>
     <script src="script.js"></script>
     <script src="lectorDrive.js"></script>
+    <script src="formulario.js"></script>
 </body>
 </html>

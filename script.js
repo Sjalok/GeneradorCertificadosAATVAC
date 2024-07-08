@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const generateButton = document.getElementById('generar');
-    generateButton.addEventListener('click', handleGenerateCertificate);
 
+    generateButton.addEventListener('click', handleGenerateCertificate);
     async function handleGenerateCertificate(event) {
         event.preventDefault();
 
         const nombre = document.getElementById('nombre').value;
+
+        alidacion
+        if (nombre === '') {
+            alert('Todos los campos son Obligatorios');
+        }
 
         // Lógica para generar el certificado PDF utilizando los datos del formulario
         const pdfBytes = await generateCustomCertificate(nombre);
