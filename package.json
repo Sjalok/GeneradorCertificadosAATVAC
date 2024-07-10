@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fontkit": "^2.0.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^4.3.136"
   }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <!-- <script src="path/to/fontkit.js"></script> -->
 </head>
 <body>
     <div class="slider">
@@ -19,20 +20,34 @@
             <div class="mt-5">
                 <button id="actualizarFechas">Actualizar Fechas Predeterminadas</button>
                 <select id="cursos" class="select-styled">
-
-                    <option disabled selected value="">-- Certificacion --</option>
+                    <option disabled selected value="">-- Certificación --</option>
                     <option value="TSA">Trabajo Seguro en Altura</option>
-                    <option value="APC">Certificacion APC</option>
-                    <option value="RTC">certificacion RTC</option>
+                    <option value="APC">Certificación APC</option>
+                    <option value="RTC">Certificación RTC</option>
                 </select>
             </div>
 
             <input type="text" id="nombre" placeholder="Nombre y Apellido">
+            <input type="text" id="dni" placeholder="DNI">
             <input type="text" id="curso" placeholder="Curso">
             <input type="date" id="ingreso" placeholder="Fecha Ingreso">
             <input type="date" id="salida" placeholder="Fecha Salida">
+            <select name="instructor" id="instructor" required>
+                <option disabled selected>Seleccione instructor:</option>
+                <option value="Lehner Ian">Lehner Ian</option>
+                <option value="Rodriguez Juan Manuel">Rodriguez Juan Manuel</option>
+            </select>
+            <select name="direccion" id="direccion" required>
+                <option disabled selected>Seleccione persona de Dirección:</option>
+                <option value="Lehner Ian">Lehner Ian</option>
+                <option value="Commegna Pablo">Commegna Pablo</option>
+            </select>
+            <select name="centroformacion" id="centroformacion" required>
+                <option disabled selected>Seleccione Centro de formación:</option>
+                <option value="Bahia Blanca">Bahía Blanca</option>
+                <option value="Mendoza">Mendoza</option>
+            </select>
             <button type="submit" id="generar">Generar Certificado</button>
-
             <button type="submit" id="descargar">Descargar todos los certificados</button>
         </form>
     </div>
