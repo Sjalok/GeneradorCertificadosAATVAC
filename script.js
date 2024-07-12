@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         event.preventDefault();
 
         const nombre = document.getElementById('nombre').value;
+        const dni = document.getElementById('dni').value;
         const curso = document.getElementById('curso').value;
         const ingreso = document.getElementById('ingreso').value;
         const salida = document.getElementById('salida').value;
@@ -13,13 +14,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value;
 
-        if (!nombre || !curso || !ingreso || !salida || !instructor || !direccion || !centroformacion) {
+        if (!nombre || !dni || !curso || !ingreso || !salida || !instructor || !direccion || !centroformacion) {
             alert('Todos los campos son Obligatorios');
             return;
         }
 
         // Lógica para generar el certificado PDF utilizando los datos del formulario
-        const pdfBytes = await generateCustomCertificate(nombre, curso, ingreso, salida, instructor, direccion, centroformacion);
+        const pdfBytes = await generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion);
 
         // Descargar el certificado generado
         if (pdfBytes) {
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    async function generateCustomCertificate(nombre, curso, ingreso, salida, instructor, direccion, centroformacion) {
+    async function generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion) {
         // Usar fetch para obtener el archivo PDF base
         const response = await fetch('certificadoprueba.pdf'); // Reemplaza 'certificadoprueba.pdf' con tu archivo base
         const arrayBuffer = await response.arrayBuffer();
@@ -57,6 +58,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             y: 550,
             size: 20,
             font: helveticaBoldFont,
+            color: PDFLib.rgb(0, 0, 0),
+        });
+
+        firstPage.drawText("DNI: " + dni, {
+            x: 50,
+            y: 500,
+            size: 20,
+            font: helveticaFont,
             color: PDFLib.rgb(0, 0, 0),
         });
 
