@@ -73,5 +73,3 @@ actualizarFechasButton.addEventListener('click', function(e) {
     }
     fechaModal.style.display = 'block';
 });
-
-
