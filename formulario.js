@@ -13,7 +13,7 @@ let fechas = JSON.parse(localStorage.getItem('fechas')) || {};
 
 cursosSelect.addEventListener('change', function() {
     const selectedCourse = cursosSelect.value;
-    cursoInput.value = selectedCourse; // Actualiza el input "curso" con el valor seleccionado
+    cursoInput.value = 'CERTIFICADO ' + selectedCourse; // Actualiza el input "curso" con el valor seleccionado
 
     if (fechas[selectedCourse]) {
         ingresoInput.value = fechas[selectedCourse].ingreso;

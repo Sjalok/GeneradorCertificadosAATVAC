@@ -11,12 +11,19 @@ document.addEventListener('DOMContentLoaded', async function () {
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value;
+        const dni = document.getElementById('dni').value;
+        const nivelOperario = document.getElementById('nivelOperario').value;
 
         if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion) {
             alert('Todos los campos son Obligatorios');
             return;
         }
 
+<<<<<<< HEAD
+
+        //Lógica para generar el certificado PDF utilizando los datos del formulario
+        const pdfBytes = await generateCustomCertificate(nombre, curso, ingreso, salida, instructor, direccion, centroformacion,dni, nivelOperario);
+=======
         // Lógica para generar el certificado PDF utilizando los datos del formulario
         const pdfBytes = await generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion);
 
