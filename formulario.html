@@ -14,23 +14,25 @@
         <div class="top-logo">
             <img src="/img/logo.png" alt="Logo">
         </div>
-        <h1>Generador de Certificados</h1>
+        <h1 id="titulo">Generador de Certificados</h1>
         <form id="cursanteForm">
             <div class="mt-5">
-                <button id="actualizarFechas">Actualizar Fechas Predeterminadas</button>
                 <select id="cursos" class="select-styled">
                     <option disabled selected value="">-- Certificación --</option>
-                    <option value="TSA">Trabajo Seguro en Altura</option>
-                    <option value="APC">Certificación APC</option>
-                    <option value="RTC">Certificación RTC</option>
+                    <option value="TSA">TSA</option>
+                    <option value="APC1">APC 1</option>
+                    <option value="APC2">APC 2</option>
+                    <option value="APC3">APC 3</option>
+                    <option value="RTC">RTC</option>
+                    <option value="CF">Centro de formacion</option>
+                    <option value="evaluador">Evaluador</option>
+                    <option value="instructor">Instructor</option>
                 </select>
             </div>
 
             <input type="text" id="nombre" placeholder="Nombre y Apellido">
             <input type="text" id="dni" placeholder="DNI">
-            <input type="text" id="curso" placeholder="Curso">
             <input type="date" id="ingreso" placeholder="Fecha Ingreso">
-            <input type="date" id="salida" placeholder="Fecha Salida">
             <select name="instructor" id="instructor" required>
                 <option disabled selected>Seleccione instructor:</option>
                 <option value="Lehner Ian">Lehner Ian</option>
@@ -55,12 +57,10 @@
     <div id="fechaModal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Predetermine las fechas para <span id="cursoSeleccionado"></span></h2>
+            <h2>Predetermine la fecha para <span id="cursoSeleccionado"></span></h2>
             <label for="modalIngreso">Fecha de Ingreso:</label>
             <input type="date" id="modalIngreso">
-            <label for="modalSalida">Fecha de Salida:</label>
-            <input type="date" id="modalSalida">
-            <button id="guardarFechas">Guardar Fechas</button>
+            <button id="guardarFechas">Guardar Fecha</button>
         </div>
     </div>
     

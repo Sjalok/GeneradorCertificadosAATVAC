@@ -1,17 +1,13 @@
 const generateButton = document.getElementById('generar');
 const cursosSelect = document.getElementById('cursos');
 const ingresoInput = document.getElementById('ingreso');
-const salidaInput = document.getElementById('salida');
 const cursoInput = document.getElementById('curso'); // Asegúrate de que este ID esté en tu HTML
 const fechaModal = document.getElementById('fechaModal');
 const closeModal = document.getElementsByClassName('close')[0];
 const guardarFechasButton = document.getElementById('guardarFechas');
 const modalIngresoInput = document.getElementById('modalIngreso');
-const modalSalidaInput = document.getElementById('modalSalida');
 const cursoSeleccionadoText = document.getElementById('cursoSeleccionado');
 const actualizarFechasButton = document.getElementById('actualizarFechas');
-
-
 
 let fechas = JSON.parse(localStorage.getItem('fechas')) || {};
 
@@ -21,11 +17,9 @@ cursosSelect.addEventListener('change', function() {
 
     if (fechas[selectedCourse]) {
         ingresoInput.value = fechas[selectedCourse].ingreso;
-        salidaInput.value = fechas[selectedCourse].salida;
     } else {
         cursoSeleccionadoText.textContent = selectedCourse;
         modalIngresoInput.value = '';
-        modalSalidaInput.value = '';
         fechaModal.style.display = 'block';
     }
 });
@@ -43,15 +37,13 @@ window.onclick = function(event) {
 guardarFechasButton.addEventListener('click', function() {
     const selectedCourse = cursosSelect.value;
     const ingreso = modalIngresoInput.value;
-    const salida = modalSalidaInput.value;
-    if (ingreso && salida) {
-        fechas[selectedCourse] = { ingreso, salida };
+    if (ingreso) {
+        fechas[selectedCourse] = { ingreso };
         localStorage.setItem('fechas', JSON.stringify(fechas));
         ingresoInput.value = ingreso;
-        salidaInput.value = salida;
         fechaModal.style.display = 'none';
     } else {
-        alert('Por favor, ingrese ambas fechas.');
+        alert('Por favor, ingrese una fecha.');
     }
 });
 
@@ -66,10 +58,8 @@ actualizarFechasButton.addEventListener('click', function(e) {
     cursoSeleccionadoText.textContent = selectedCourse;
     if (fechas[selectedCourse]) {
         modalIngresoInput.value = fechas[selectedCourse].ingreso;
-        modalSalidaInput.value = fechas[selectedCourse].salida;
     } else {
         modalIngresoInput.value = '';
-        modalSalidaInput.value = '';
     }
     fechaModal.style.display = 'block';
 });

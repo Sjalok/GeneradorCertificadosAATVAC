@@ -7,20 +7,18 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const nombre = document.getElementById('nombre').value;
         const dni = document.getElementById('dni').value;
-        const curso = document.getElementById('curso').value;
         const ingreso = document.getElementById('ingreso').value;
-        const salida = document.getElementById('salida').value;
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value;
 
-        if (!nombre || !dni || !curso || !ingreso || !salida || !instructor || !direccion || !centroformacion) {
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion) {
             alert('Todos los campos son Obligatorios');
             return;
         }
 
         // Lógica para generar el certificado PDF utilizando los datos del formulario
-        const pdfBytes = await generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion);
+        const pdfBytes = await generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion);
 
         // Descargar el certificado generado
         if (pdfBytes) {
@@ -32,93 +30,73 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    async function generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion) {
-        // Usar fetch para obtener el archivo PDF base
-        const response = await fetch('certificadoprueba.pdf'); // Reemplaza 'certificadoprueba.pdf' con tu archivo base
-        const arrayBuffer = await response.arrayBuffer();
+    async function generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion) {
+        const { PDFDocument, rgb } = PDFLib;
 
-        // Usar PDF-LIB para modificar el PDF base
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        // Cargar plantilla de certificado
+        const url = 'certificados/certificadoprueba.pdf'; // Reemplaza 'certificadoprueba.pdf' con tu archivo base
+        const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
 
-        // Cargar las fuentes estándar de PDF-LIB
-        const [helveticaBoldFont, helveticaFont, timesRomanFont] = await Promise.all([
-            pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold),
-            pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica),
-            pdfDoc.embedFont(PDFLib.StandardFonts.TimesRoman),
-        ]);
-
-        // Modificar el PDF según los datos del formulario
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
-        const { width, height } = firstPage.getSize();
 
-        // Ejemplo de modificación (ajustar según tu necesidad)
+        // Configuración de fuentes
+        const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+        const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+
+        // Añadir texto al PDF
         firstPage.drawText(nombre, {
-            x: 50,
-            y: 550,
-            size: 20,
-            font: helveticaBoldFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        firstPage.drawText("DNI: " + dni, {
-            x: 50,
+            x: 100,
             y: 500,
+            size: 24,
+            font: helveticaBoldFont,
+            color: rgb(0, 0, 0),
+        });
+
+        firstPage.drawText(`DNI: ${dni}`, {
+            x: 100,
+            y: 470,
             size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(curso, {
-            x: 50,
-            y: 520,
-            size: 18,
-            font: helveticaBoldFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        firstPage.drawText(ingreso, {
-            x: 50,
-            y: 490,
-            size: 18,
-            font: timesRomanFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        firstPage.drawText(salida, {
-            x: 50,
-            y: 460,
-            size: 18,
-            font: timesRomanFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        firstPage.drawText(instructor, {
-            x: 50,
-            y: 430,
-            size: 18,
+        firstPage.drawText(`Fecha de Ingreso: ${ingreso}`, {
+            x: 100,
+            y: 440,
+            size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(direccion, {
-            x: 50,
-            y: 400,
-            size: 18,
+        firstPage.drawText(`Instructor: ${instructor}`, {
+            x: 100,
+            y: 410,
+            size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(centroformacion, {
-            x: 50,
-            y: 370,
-            size: 18,
+        firstPage.drawText(`Dirección: ${direccion}`, {
+            x: 100,
+            y: 380,
+            size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        // Devolver los bytes del PDF modificado
-        return await pdfDoc.save();
+        firstPage.drawText(`Centro de Formación: ${centroformacion}`, {
+            x: 100,
+            y: 350,
+            size: 20,
+            font: helveticaFont,
+            color: rgb(0, 0, 0),
+        });
+
+        // Serializar el PDF y devolver los bytes
+        const pdfBytes = await pdfDoc.save();
+        return pdfBytes;
     }
 
     // Función para generar certificados en base a una lista de nombres
