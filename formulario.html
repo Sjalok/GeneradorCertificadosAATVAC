@@ -20,9 +20,9 @@
                 <button id="actualizarFechas">Actualizar Fechas Predeterminadas</button>
                 <select id="cursos" class="select-styled">
                     <option disabled selected value="">-- Certificación --</option>
-                    <option value="TSA">Trabajo Seguro en Altura</option>
-                    <option value="APC">Certificación APC</option>
-                    <option value="RTC">Certificación RTC</option>
+                    <option value="T.S.A">Trabajo Seguro en Altura</option>
+                    <option value="A.P.C">Certificación APC</option>
+                    <option value="R.T.C">Certificación RTC</option>
                 </select>
             </div>
 
@@ -31,6 +31,12 @@
             <input type="text" id="curso" placeholder="Curso">
             <input type="date" id="ingreso" placeholder="Fecha Ingreso">
             <input type="date" id="salida" placeholder="Fecha Salida">
+            <select name="nivelOperario" id="nivelOperario" required>
+                <option disabled selected>Seleccione Operario:</option>
+                <option value="Operario Tecnico Nivel 1">Operario Tecnico Nivel 1</option>
+                <option value="Operario Tecnico Nivel 2">Operario Tecnico Nivel 2</option>
+                <option value="Operario Tecnico Nivel 3">Operario Tecnico Nivel 3</option>
+            </select>
             <select name="instructor" id="instructor" required>
                 <option disabled selected>Seleccione instructor:</option>
                 <option value="Lehner Ian">Lehner Ian</option>
@@ -43,7 +49,7 @@
             </select>
             <select name="centroformacion" id="centroformacion" required>
                 <option disabled selected>Seleccione Centro de formación:</option>
-                <option value="Bahia Blanca">Bahía Blanca</option>
+                <option value="Bahia Blanca">Buenos Aires</option>
                 <option value="Mendoza">Mendoza</option>
             </select>
             <button type="submit" id="generar">Generar Certificado</button>
@@ -70,5 +76,7 @@
     <script src="script.js"></script>
     <script src="lectorDrive.js"></script>
     <script src="formulario.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.16.0/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fontkit/2.0.1/fontkit.min.js"></script>
 </body>
 </html>
