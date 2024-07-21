@@ -11,19 +11,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value;
-        const nivelOperario = document.getElementById('nivelOperario').value;
 
-        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion) {
-            alert('Todos los campos son Obligatorios');
-            return;
-        }
+        //  if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion) {
+        //     alert('Todos los campos son Obligatorios');
+        //     return;
+        // }
 
         // Lógica para generar el certificado PDF utilizando los datos del formulario
-<<<<<<< HEAD
-        const pdfBytes = await generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion, nivelOperario);
-=======
         const pdfBytes = await generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion);
->>>>>>> 6eb7c4fb312575ef46380b4ad74e448f1d586816
 
         // Descargar el certificado generado
         if (pdfBytes) {
@@ -35,18 +30,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-<<<<<<< HEAD
-    async function generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion, nivelOperario) {
-        // Usar fetch para obtener el archivo PDF base
-        const response = await fetch('certificadoprueba.pdf'); // Reemplaza 'certificadoprueba.pdf' con tu archivo base
-        const arrayBuffer = await response.arrayBuffer();
-=======
     async function generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion) {
         const { PDFDocument, rgb } = PDFLib;
->>>>>>> 6eb7c4fb312575ef46380b4ad74e448f1d586816
 
         // Cargar plantilla de certificado
-        const url = 'certificados/certificadoprueba.pdf'; // Reemplaza 'certificadoprueba.pdf' con tu archivo base
+        const url = 'certificados/CertificadoAPC1.pdf'; // Reemplaza 'certificadoprueba.pdf' con tu archivo base
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
 
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -56,6 +44,32 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Configuración de fuentes
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+
+        async function embedImage(pdfDoc, name, format) {
+            try {
+                const response = await fetch(`./firmas/${name.replace(' ', '')}.${format}`);
+                if (!response.ok) {
+                    throw new Error('Image not found');
+                }
+                const bytes = await response.arrayBuffer();
+                if (format === 'jpeg') {
+                    return await pdfDoc.embedJpg(bytes);
+                } else if (format === 'jpg') {
+                    return await pdfDoc.embedJpg(bytes);
+                } else if (format === 'png') {
+                    return await pdfDoc.embedPng(bytes);
+                }
+            } catch (error) {
+                console.error(`Failed to embed image: ${error.message}`);
+                return null;
+            }
+        }
+
+        // Incluir firma del instructor
+        const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
+
+        // Incluir firma de la dirección
+        const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
 
         // Añadir texto al PDF
         firstPage.drawText(nombre, {
@@ -105,6 +119,25 @@ document.addEventListener('DOMContentLoaded', async function () {
             font: helveticaFont,
             color: rgb(0, 0, 0),
         });
+
+        // Añadir las imágenes de las firmas
+        if (instructorFirmaImage) {
+            firstPage.drawImage(instructorFirmaImage, {
+                x: 100,
+                y: 100,
+                width: 100,
+                height: 50,
+            });
+        }
+
+        if (direccionFirmaImage) {
+            firstPage.drawImage(direccionFirmaImage, {
+                x: 650,
+                y: 100,
+                width: 100,
+                height: 50,
+            });
+        }
 
         // Serializar el PDF y devolver los bytes
         const pdfBytes = await pdfDoc.save();
