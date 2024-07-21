@@ -7,21 +7,23 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const nombre = document.getElementById('nombre').value;
         const dni = document.getElementById('dni').value;
-        const curso = document.getElementById('curso').value;
         const ingreso = document.getElementById('ingreso').value;
-        const salida = document.getElementById('salida').value;
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value;
         const nivelOperario = document.getElementById('nivelOperario').value;
 
-        if (!nombre || !dni || !curso || !ingreso || !salida || !instructor || !direccion || !centroformacion) {
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion) {
             alert('Todos los campos son Obligatorios');
             return;
         }
 
         // Lógica para generar el certificado PDF utilizando los datos del formulario
+<<<<<<< HEAD
         const pdfBytes = await generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion, nivelOperario);
+=======
+        const pdfBytes = await generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion);
+>>>>>>> 6eb7c4fb312575ef46380b4ad74e448f1d586816
 
         // Descargar el certificado generado
         if (pdfBytes) {
@@ -33,114 +35,80 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+<<<<<<< HEAD
     async function generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion, nivelOperario) {
         // Usar fetch para obtener el archivo PDF base
         const response = await fetch('certificadoprueba.pdf'); // Reemplaza 'certificadoprueba.pdf' con tu archivo base
         const arrayBuffer = await response.arrayBuffer();
+=======
+    async function generateCustomCertificate(nombre, dni, ingreso, instructor, direccion, centroformacion) {
+        const { PDFDocument, rgb } = PDFLib;
+>>>>>>> 6eb7c4fb312575ef46380b4ad74e448f1d586816
 
-        // Usar PDF-LIB para modificar el PDF base
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        // Cargar plantilla de certificado
+        const url = 'certificados/certificadoprueba.pdf'; // Reemplaza 'certificadoprueba.pdf' con tu archivo base
+        const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
 
-        // Cargar las fuentes estándar de PDF-LIB
-        const [helveticaBoldFont, helveticaFont, timesRomanFont, helveticaItalicFont] = await Promise.all([
-            pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold),
-            pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica),
-            pdfDoc.embedFont(PDFLib.StandardFonts.TimesRoman),
-            pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique),
-        ]);
-
-        // Modificar el PDF según los datos del formulario
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
-        const { width, height } = firstPage.getSize();
 
+        // Configuración de fuentes
+        const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+        const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
 
-
-        // Ejemplo de modificación (ajustar según tu necesidad)
+        // Añadir texto al PDF
         firstPage.drawText(nombre, {
-            x: 150,
-            y: 350,
-            size: 40,
+            x: 100,
+            y: 500,
+            size: 24,
             font: helveticaBoldFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText("DNI: " + dni, {
-            x: 50,
-            y: 500,
+        firstPage.drawText(`DNI: ${dni}`, {
+            x: 100,
+            y: 470,
             size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(curso, {
-            x: 130,
-            y: 430,
-            size: 60,
-            font: helveticaBoldFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        const textoDni= `DNI: ${dni}` 
-        firstPage.drawText(textoDni, {
-            x: 370,
-            y: 310,
-            size: 17,
+        firstPage.drawText(`Fecha de Ingreso: ${ingreso}`, {
+            x: 100,
+            y: 440,
+            size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        const emision= `Acreditacion Profesional AATTVAC Reg. N°: 0450 - Fecha Emision: ${ingreso} - Expira: ${salida}`
-        firstPage.drawText(emision, {
-            x: 130,
-            y: 200,
-            size: 15,
-            font: timesRomanFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        const nivel= `Fue calificado como ${nivelOperario}: Profesional en Acceso por Cuerdas Industrial (40HS).`
-        firstPage.drawText(nivel, {
-            x: 140,
-            y: 290,
-            size: 13,
+        firstPage.drawText(`Instructor: ${instructor}`, {
+            x: 100,
+            y: 410,
+            size: 20,
             font: helveticaFont,
-            color: PDFLib.rgb(0, 0, 0),
+            color: rgb(0, 0, 0),
         });
 
-        const formacion= `Dictado en Centro de formacion AATTVAC, Pcia de ${centroformacion}, Argentina.`
-        firstPage.drawText(formacion, {
-            x: 200,
-            y: 270,
-            size: 13,
-            font: helveticaBoldFont,
-            color: PDFLib.rgb(0, 0, 0),
+        firstPage.drawText(`Dirección: ${direccion}`, {
+            x: 100,
+            y: 380,
+            size: 20,
+            font: helveticaFont,
+            color: rgb(0, 0, 0),
         });
 
-        // Posición X deseada para que el texto termine en (por ejemplo, 50 píxeles desde la derecha)
-        const desiredRightMargin = 100;
-        // Calcular el ancho del texto
-        const instructorTextWidth = helveticaBoldFont.widthOfTextAtSize(instructor, 10);
-        // Calcular la posición X
-        const instructorX = width - desiredRightMargin - instructorTextWidth;
-        firstPage.drawText(instructor, {
-            x: instructorX,
-            y: 103,
-            size: 10,
-            font: helveticaItalicFont,
-            color: PDFLib.rgb(0, 0, 0),
+        firstPage.drawText(`Centro de Formación: ${centroformacion}`, {
+            x: 100,
+            y: 350,
+            size: 20,
+            font: helveticaFont,
+            color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(direccion, {
-            x: 140,
-            y: 100,
-            size: 10,
-            font: helveticaItalicFont,
-            color: PDFLib.rgb(0, 0, 0),
-        });
-
-        // Devolver los bytes del PDF modificado
-        return await pdfDoc.save();
+        // Serializar el PDF y devolver los bytes
+        const pdfBytes = await pdfDoc.save();
+        return pdfBytes;
     }
 
     // Función para generar certificados en base a una lista de nombres
