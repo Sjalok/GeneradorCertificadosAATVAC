@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value;
-        const dni = document.getElementById('dni').value;
         const nivelOperario = document.getElementById('nivelOperario').value;
 
         if (!nombre || !dni || !curso || !ingreso || !salida || !instructor || !direccion || !centroformacion) {
@@ -21,14 +20,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-<<<<<<< HEAD
-
-        //Lógica para generar el certificado PDF utilizando los datos del formulario
-        const pdfBytes = await generateCustomCertificate(nombre, curso, ingreso, salida, instructor, direccion, centroformacion,dni, nivelOperario);
-=======
         // Lógica para generar el certificado PDF utilizando los datos del formulario
-        const pdfBytes = await generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion);
->>>>>>> 82f1b52c3bc27736e3cdef51a4a7ce5660cdd041
+        const pdfBytes = await generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion, nivelOperario);
 
         // Descargar el certificado generado
         if (pdfBytes) {
@@ -40,11 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-<<<<<<< HEAD
-    async function generateCustomCertificate(nombre, curso, ingreso, salida, instructor, direccion, centroformacion,dni, nivelOperario) {
-=======
-    async function generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion) {
->>>>>>> 82f1b52c3bc27736e3cdef51a4a7ce5660cdd041
+    async function generateCustomCertificate(nombre, dni, curso, ingreso, salida, instructor, direccion, centroformacion, nivelOperario) {
         // Usar fetch para obtener el archivo PDF base
         const response = await fetch('certificadoprueba.pdf'); // Reemplaza 'certificadoprueba.pdf' con tu archivo base
         const arrayBuffer = await response.arrayBuffer();
