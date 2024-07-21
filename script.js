@@ -64,6 +64,32 @@ document.addEventListener('DOMContentLoaded', async function () {
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
 
+        async function embedImage(pdfDoc, name, format) {
+            try {
+                const response = await fetch(`./firmas/${name.replace(' ', '')}.${format}`);
+                if (!response.ok) {
+                    throw new Error('Image not found');
+                }
+                const bytes = await response.arrayBuffer();
+                if (format === 'jpeg') {
+                    return await pdfDoc.embedJpg(bytes);
+                } else if (format === 'jpg') {
+                    return await pdfDoc.embedJpg(bytes);
+                } else if (format === 'png') {
+                    return await pdfDoc.embedPng(bytes);
+                }
+            } catch (error) {
+                console.error(`Failed to embed image: ${error.message}`);
+                return null;
+            }
+        }
+
+        // Incluir firma del instructor
+        const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
+
+        // Incluir firma de la dirección
+        const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
+
         // Tamaño de fuente para el nombre
         const fontSize = 40;
         const textWidth = helveticaBoldFont.widthOfTextAtSize(nombre, fontSize); // Tamaño 40 ajustable
@@ -117,6 +143,25 @@ document.addEventListener('DOMContentLoaded', async function () {
             font: helveticaFont,
             color: rgb(0, 0, 0),
         });
+
+        // Añadir las imágenes de las firmas
+        if (instructorFirmaImage) {
+            firstPage.drawImage(instructorFirmaImage, {
+                x: 100,
+                y: 100,
+                width: 100,
+                height: 50,
+            });
+        }
+
+        if (direccionFirmaImage) {
+            firstPage.drawImage(direccionFirmaImage, {
+                x: 650,
+                y: 100,
+                width: 100,
+                height: 50,
+            });
+        }
 
         // Serializar el PDF y devolver los bytes
         const pdfBytes = await pdfDoc.save();
