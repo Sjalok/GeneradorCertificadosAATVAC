@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const formattedIngreso = formatDate(new Date(ingreso));
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
-        const centroformacion = document.getElementById('centroformacion').value;
+        const centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
 
         if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
             alert('Todos los campos son Obligatorios');
@@ -36,10 +36,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const expirationDate = addYearsToDate(ingreso, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        // Lógica para generar el certificado PDF utilizando los datos del formulario
         const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate);
 
-        // Descargar el certificado generado
         if (pdfBytes) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const link = document.createElement('a');
@@ -52,15 +50,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate) {
         const { PDFDocument, rgb } = PDFLib;
 
-        // Cargar plantilla de certificado
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
 
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
-        const { width, height } = firstPage.getSize();
+        const { width } = firstPage.getSize();
 
-        // Configuración de fuentes
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
 
@@ -84,38 +80,43 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
-        // Incluir firma del instructor
         const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
-
-        // Incluir firma de la dirección
         const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
 
-        // Tamaño de fuente para el nombre
-        const fontSize = 40;
-        const textWidth = helveticaBoldFont.widthOfTextAtSize(nombre, fontSize); // Tamaño 40 ajustable
-        const xCentered = (width - textWidth) / 2;
+        const fontSizeNombre = 40;
+        const textWidthNombre = helveticaBoldFont.widthOfTextAtSize(nombre, fontSizeNombre);
+        const xCenteredNombre = (width - textWidthNombre) / 2;
 
-        // Añadir texto al PDF
+        const fontSizeCF = 13.5;
+        const textWidthCF = helveticaFont.widthOfTextAtSize(centroformacion, fontSizeCF);
+        const xCenteredCF = (width - textWidthCF) / 2;
+
+        fecha = `Acreditacion profesional AATVAC Reg. Nº: 0257 - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+
+        const fontSizeFecha = 14;
+        const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
+        const xCenteredFecha = (width - textWidthFecha) / 2;
+
         firstPage.drawText(nombre, {
-            x: xCentered,
+            x: xCenteredNombre,
             y: 350,
-            size: fontSize,
+            size: fontSizeNombre,
             font: helveticaBoldFont,
             color: rgb(0, 0, 0),
         });
 
         firstPage.drawText(`DNI: ${dni}`, {
-            x: 370,
+            x: 360,
             y: 310,
             size: 17,
             font: helveticaFont,
             color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(`Acreditacion profesional AATVAC Reg. Nº: 0257 - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`, {
-            x: 100,
-            y: 440,
-            size: 20,
+        firstPage.drawText(fecha, {
+            x: xCenteredFecha,
+            y: 210,
+            size: fontSizeFecha,
             font: helveticaBoldFont,
             color: rgb(0, 0, 0),
         });
@@ -136,15 +137,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             color: rgb(0, 0, 0),
         });
 
-        firstPage.drawText(`Dictado en Centro de formacion ${centroformacion}.`, {
-            x: 100,
-            y: 350,
-            size: 20,
+        firstPage.drawText(centroformacion, {
+            x: xCenteredCF,
+            y: 263.8,
+            size: fontSizeCF,
             font: helveticaFont,
             color: rgb(0, 0, 0),
         });
 
-        // Añadir las imágenes de las firmas
         if (instructorFirmaImage) {
             firstPage.drawImage(instructorFirmaImage, {
                 x: 100,
@@ -163,12 +163,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
 
-        // Serializar el PDF y devolver los bytes
         const pdfBytes = await pdfDoc.save();
         return pdfBytes;
     }
 
-    // Función para generar certificados en base a una lista de nombres
     async function generateCertificates(names) {
         for (const name of names) {
             const pdfBytes = await generateCustomCertificate(name);
@@ -183,7 +181,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    // Hacer la función disponible globalmente para que lectorDrive.js pueda llamarla
     window.generateCertificates = generateCertificates;
 });
 
