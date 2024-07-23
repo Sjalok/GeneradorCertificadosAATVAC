@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         const centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
+        const registroTitulo= document.getElementById('registro-titulo').value;
+        const registroInstructor= document.getElementById('registro-instructor').value;
+        const registroDireccion= document.getElementById('registro-direccion').value;
+
 
         // if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
         //     alert('Todos los campos son Obligatorios');
@@ -36,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const expirationDate = addYearsToDate(ingreso, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate);
+        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, registroTitulo, registroInstructor, registroDireccion);
 
         if (pdfBytes) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -47,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate) {
+    async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, registroTitulo, registroInstructor, registroDireccion) {
         const { PDFDocument, rgb } = PDFLib;
 
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
@@ -60,20 +64,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
         const helveticaBoldObliqueFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique); // Fuente en negrita y cursiva
-
-
-        // Mapa de números de registro
-        const registroMap = {
-            'Rodriguez Juan Manuel': '0257',
-            'Suarez Guido': '0321',
-            'Lehner Ian': '0018',
-            'Commegna Pablo': '0016',
-            'Martin Santiago': '2161',
-            'Isis Marcos': '5161'
-            // Agrega aquí todos los nombres y sus números de registro correspondientes
-        };
-
-
 
         async function embedImage(pdfDoc, name, format) {
             try {
@@ -104,7 +94,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthCF = helveticaFont.widthOfTextAtSize(centroformacion, fontSizeCF);
         const xCenteredCF = (width - textWidthCF) / 2;
 
-        fecha = `Acreditacion profesional AATVAC Reg. Nº: 0257 - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        fecha = `Acreditacion profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
 
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
@@ -168,18 +158,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // Añadir texto alineado para el instructor
         if (instructor) {
-            if (instructor.value === 'Rodriguez Juan Manuel') {
+            if (instructor === 'Rodriguez Juan Manuel') {
                 firstPage.drawText(instructor, {
-                    x: fixedPositionXLeft - 10, // Coordenadas específicas para este nombre
+                    x: fixedPositionXLeft, // Coordenadas específicas para este nombre
                     y: baseYPosition,
                     size: 9,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
-
-                const registroInstructor = registroMap[instructor] || 'XXXX';
+            
                 firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
-                    x: fixedPositionXLeft - 14, // Coordenadas específicas para este nombre
+                    x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
                     y: baseYPosition - 12,
                     size: 10,
                     font: helveticaBoldFont,
@@ -193,10 +182,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
-
-                const registroInstructor = registroMap[instructor] || 'XXXX';
+            
                 firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
-                    x: fixedPositionXLeft - 4,
+                    x: fixedPositionXLeft - 15,
                     y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                     size: 10,
                     font: helveticaBoldFont,
@@ -207,18 +195,17 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // Añadir texto alineado para la dirección
         if (direccion) {
-            if (nombre.value === 'Rodriguez Juan Manuel') {
+            if (direccion === 'Rodriguez Juan Manuel') {
                 firstPage.drawText(direccion, {
-                    x: fixedPositionXRight + 20, // Coordenadas específicas para este nombre
+                    x: fixedPositionXRight, // Coordenadas específicas para este nombre
                     y: baseYPosition,
                     size: 9,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
-
-                const registroDireccion = registroMap[direccion] || 'XXXX';
+            
                 firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
-                    x: fixedPositionXRight - 3,
+                    x: fixedPositionXRight - 30,
                     y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                     size: 10,
                     font: helveticaBoldFont,
@@ -226,16 +213,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                 });
             } else {
                 firstPage.drawText(direccion, {
-                    x: fixedPositionXRight + 25,
+                    x: fixedPositionXRight + 15,
                     y: baseYPosition,
                     size: 9,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
-
-                const registroDireccion = registroMap[direccion] || 'XXXX';
+            
                 firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
-                    x: fixedPositionXRight - 20,
+                    x: fixedPositionXRight - 28,
                     y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                     size: 10,
                     font: helveticaBoldFont,
@@ -275,5 +261,5 @@ function formatDate(date) {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    return `${year}/${month}/${day}`;
+    return `${day}/${month}/${year}`;
 }
