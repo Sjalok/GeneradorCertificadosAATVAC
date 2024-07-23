@@ -25,18 +25,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         const formattedIngreso = formatDate(new Date(ingreso));
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
-        const centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
+        const centroformacion = document.getElementById('centroformacion').value.trim();
 
-        // if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
-        //     alert('Todos los campos son Obligatorios');
-        //     return;
-        // }
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
+            alert('Todos los campos son Obligatorios');
+            return;
+        }
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
         const expirationDate = addYearsToDate(ingreso, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate);
+        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion);
 
         if (pdfBytes) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
-    async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate) {
+    async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion) {
         const { PDFDocument, rgb } = PDFLib;
 
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
         const helveticaBoldObliqueFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique); // Fuente en negrita y cursiva
 
-
         // Mapa de números de registro
         const registroMap = {
             'Rodriguez Juan Manuel': '0257',
@@ -72,8 +71,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             'Isis Marcos': '5161'
             // Agrega aquí todos los nombres y sus números de registro correspondientes
         };
-
-
 
         async function embedImage(pdfDoc, name, format) {
             try {
@@ -109,23 +106,43 @@ document.addEventListener('DOMContentLoaded', async function () {
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
-
-        firstPage.drawText(nombre, {
-            x: xCenteredNombre,
-            y: 350,
-            size: fontSizeNombre,
-            font: helveticaBoldFont,
-            color: rgb(0, 0, 0),
-        });
-
-        firstPage.drawText(`DNI: ${dni}`, {
-            x: 360,
-            y: 310,
-            size: 17,
-            font: helveticaFont,
-            color: rgb(0, 0, 0),
-        });
-
+        
+        if (certificacion === 'RTC') {
+            firstPage.drawText(nombre, {
+                x: xCenteredNombre,
+                y: 365,
+                size: fontSizeNombre,
+                font: helveticaBoldFont,
+                color: rgb(0, 0, 0),
+            });
+        } else {
+            firstPage.drawText(nombre, {
+                x: xCenteredNombre,
+                y: 350,
+                size: fontSizeNombre,
+                font: helveticaBoldFont,
+                color: rgb(0, 0, 0),
+            });
+        }
+        
+        if (certificacion === 'RTC') {
+            firstPage.drawText(`DNI: ${dni}`, {
+                x: 360,
+                y: 325,
+                size: 17,
+                font: helveticaFont,
+                color: rgb(0, 0, 0),
+            });
+        } else {
+            firstPage.drawText(`DNI: ${dni}`, {
+                x: 360,
+                y: 310,
+                size: 17,
+                font: helveticaFont,
+                color: rgb(0, 0, 0),
+            });
+        }
+        
         firstPage.drawText(fecha, {
             x: xCenteredFecha,
             y: 210,
@@ -134,15 +151,32 @@ document.addEventListener('DOMContentLoaded', async function () {
             color: rgb(0, 0, 0),
         });
 
-
-        firstPage.drawText(centroformacion, {
-            x: xCenteredCF,
-            y: 263.8,
-            size: fontSizeCF,
-            font: helveticaFont,
-            color: rgb(0, 0, 0),
-        });
-
+        if (certificacion === 'RTC') {
+            firstPage.drawText(centroformacion, {
+                x: xCenteredCF,
+                y: 280,
+                size: fontSizeCF,
+                font: helveticaFont,
+                color: rgb(0, 0, 0),
+            });
+        } else if (certificacion === 'APC1') {
+            firstPage.drawText(centroformacion, {
+                x: xCenteredCF,
+                y: 272,
+                size: fontSizeCF,
+                font: helveticaFont,
+                color: rgb(0, 0, 0),
+            });
+        } else {
+            firstPage.drawText(centroformacion, {
+                x: xCenteredCF,
+                y: 263.8,
+                size: fontSizeCF,
+                font: helveticaFont,
+                color: rgb(0, 0, 0),
+            });
+        }
+        
         // Añadir las imágenes de las firmas
         if (instructorFirmaImage) {
             firstPage.drawImage(instructorFirmaImage, {
