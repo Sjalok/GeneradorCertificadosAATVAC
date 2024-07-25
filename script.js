@@ -67,13 +67,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         const cuit = document.getElementById('cuitCF').value;
         const ingreso = document.getElementById('ingresoCF').value;
         const formattedIngreso = formatDate(new Date(ingreso));
-        const instructor = document.getElementById('instructorCF').value;
-        const direccion = document.getElementById('direccionCF').value;
+        const instructor = document.getElementById('instructor').value;
+        const direccion = document.getElementById('direccion').value;
         const calle = document.getElementById('calleCF').value;
         const ciudad = document.getElementById('ciudadCF').value;
         const provincia = document.getElementById('provinciaCF').value;
+        const registroInstructor= document.getElementById('registro-instructor').value;
+        const registroDireccion= document.getElementById('registro-direccion').value;
 
-        if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia) {
+        if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
             return;
         }
@@ -81,13 +83,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const expirationDate = addYearsToDate(ingreso, 2); // Asumiendo que CF siempre expira en 2 años
         const formattedExpirationDate = formatDate(expirationDate);
 
-        const pdfBytes = await generarCFCertificado(url, nombre, cuit, formattedIngreso, instructor, direccion, calle, ciudad, provincia, formattedExpirationDate, 'CF');
+        const pdfBytes = await generarCFCertificado(url, nombre, cuit, formattedIngreso, instructor, direccion, calle, ciudad, provincia, formattedExpirationDate, 'CF', registroInstructor, registroDireccion);
 
         if (pdfBytes) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = `Certificado-${nombre}.pdf`;
+            link.download = `Certificado- Centro de formacion ${nombre}.pdf`;
             link.click();
         }
     }
@@ -313,7 +315,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         return pdfBytes;
     }
 
-    async function generarCFCertificado(url, nombre, cuit, formattedIngreso, instructor, direccion, calle, ciudad, provincia, formattedExpirationDate, certificacion) {
+    async function generarCFCertificado(url, nombre, cuit, formattedIngreso, instructor, direccion, calle, ciudad, provincia, formattedExpirationDate, certificacion, registroInstructor, registroDireccion) {
         const { PDFDocument, rgb } = PDFLib;
 
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
@@ -322,6 +324,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
         const { width } = firstPage.getSize();
+
+        const ubicacion = `ubicado en la calle ${calle}, ${ciudad}, ${provincia}`;
 
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
@@ -352,17 +356,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthNombre = helveticaBoldFont.widthOfTextAtSize(nombre, fontSizeNombre);
         const xCenteredNombre = (width - textWidthNombre) / 2;
 
-        cuit2 = `CUIT: ${cuit}`
+        cuit2 = `CUIT: ${cuit}`;
 
         const fontSizeCuit = 13.5;
-        const textWidthCuit = helveticaFont.widthOfTextAtSize(cuit, fontSizeCuit);
+        const textWidthCuit = helveticaFont.widthOfTextAtSize(cuit2, fontSizeCuit);
         const xCenteredCuit = (width - textWidthCuit) / 2;
 
-        fecha = `Acreditacion profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        fecha = `Fecha de emision: ${formattedIngreso} - Fecha de expiracion: ${formattedExpirationDate}`;
 
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
+
+        const fontSizeUbicacion = 20;
+        const textWidthUbicacion = helveticaFont.widthOfTextAtSize(ubicacion, fontSizeUbicacion);
+        const xCenteredUbicacion = (width - textWidthUbicacion) / 2;
 
         firstPage.drawText(nombre, {
             x: xCenteredNombre,
@@ -376,6 +384,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             x: xCenteredCuit,
             y: 310,
             size: fontSizeCuit,
+            font: helveticaFont,
+            color: rgb(0, 0, 0),
+        });
+
+        firstPage.drawText(ubicacion, {
+            x: xCenteredUbicacion,
+            y: 250,
+            size: fontSizeUbicacion,
             font: helveticaFont,
             color: rgb(0, 0, 0),
         });
