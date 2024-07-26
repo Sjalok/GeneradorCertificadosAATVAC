@@ -8,8 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <link rel="shortcut icon" href="/img/logo.ico">
-    
 </head>
 <body>
     <div class="slider">
@@ -64,8 +64,9 @@
                 <option value="Dictado en centro de formacion Bahia Blanca">Buenos Aires</option>
                 <option value="Mendoza">Mendoza</option>
             </select>
+            <input type="file" id="archivoExcel" accept=".xlsx, .xls">
             <button type="submit" id="generar">Generar Certificado</button>
-            <button type="submit" id="descargar">Descargar todos los certificados</button>
+            <button type="button" id="upload-button">Subir excel y generar certificados</button>
         </form>
     </div>
 
@@ -75,6 +76,5 @@
     <script src="script.js"></script>
     <script src="lectorDrive.js"></script>
     <script src="formulario.js"></script>
-
 </body>
 </html>
