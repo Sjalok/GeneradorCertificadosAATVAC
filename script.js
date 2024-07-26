@@ -352,13 +352,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
         const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
 
-        const fontSizeNombre = 40;
+        const fontSizeNombre = 95;
         const textWidthNombre = helveticaBoldFont.widthOfTextAtSize(nombre, fontSizeNombre);
         const xCenteredNombre = (width - textWidthNombre) / 2;
 
         cuit2 = `CUIT: ${cuit}`;
 
-        const fontSizeCuit = 13.5;
+        const fontSizeCuit = 40;
         const textWidthCuit = helveticaFont.widthOfTextAtSize(cuit2, fontSizeCuit);
         const xCenteredCuit = (width - textWidthCuit) / 2;
 
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         firstPage.drawText(nombre, {
             x: xCenteredNombre,
-            y: 350,
+            y: 700,
             size: fontSizeNombre,
             font: helveticaBoldFont,
             color: rgb(0, 0, 0),
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         firstPage.drawText(cuit2, {
             x: xCenteredCuit,
-            y: 310,
+            y: 610,
             size: fontSizeCuit,
             font: helveticaFont,
             color: rgb(0, 0, 0),
@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             size: fontSizeUbicacion,
             font: helveticaFont,
             color: rgb(0, 0, 0),
-        });
+        });z
 
         firstPage.drawText(fecha, {
             x: xCenteredFecha,
