@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (contraseña === '1234' && intentos === 0) {
             alert('Contraseña incorrecta');
             intentos++;
-            console.log("hola");
             limpiarFormulario(formulario, campoPassword);
         } else if (contraseña === '1234' && intentos === 1) {
             window.location.href = 'formulario.html';
