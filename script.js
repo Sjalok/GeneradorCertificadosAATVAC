@@ -75,10 +75,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor= document.getElementById('registro-instructor').value;
         const registroDireccion= document.getElementById('registro-direccion').value;
 
-        if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
-            alert('Todos los campos son Obligatorios');
-            return;
-        }
+        // if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
+        //     alert('Todos los campos son Obligatorios');
+        //     return;
+        // }
 
         const expirationDate = addYearsToDate(ingreso, 2); // Asumiendo que CF siempre expira en 2 años
         const formattedExpirationDate = formatDate(expirationDate);
@@ -352,29 +352,29 @@ document.addEventListener('DOMContentLoaded', async function () {
         const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
         const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
 
-        const fontSizeNombre = 40;
+        const fontSizeNombre = 95;
         const textWidthNombre = helveticaBoldFont.widthOfTextAtSize(nombre, fontSizeNombre);
         const xCenteredNombre = (width - textWidthNombre) / 2;
 
         cuit2 = `CUIT: ${cuit}`;
 
-        const fontSizeCuit = 13.5;
+        const fontSizeCuit = 40;
         const textWidthCuit = helveticaFont.widthOfTextAtSize(cuit2, fontSizeCuit);
         const xCenteredCuit = (width - textWidthCuit) / 2;
 
-        fecha = `Fecha de emision: ${formattedIngreso} - Fecha de expiracion: ${formattedExpirationDate}`;
+        fecha = `Fecha de emision: ${formattedIngreso} - expira: ${formattedExpirationDate}`;
 
-        const fontSizeFecha = 14;
+        const fontSizeFecha = 25;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
 
-        const fontSizeUbicacion = 20;
+        const fontSizeUbicacion = 35;
         const textWidthUbicacion = helveticaFont.widthOfTextAtSize(ubicacion, fontSizeUbicacion);
         const xCenteredUbicacion = (width - textWidthUbicacion) / 2;
 
         firstPage.drawText(nombre, {
             x: xCenteredNombre,
-            y: 350,
+            y: 700,
             size: fontSizeNombre,
             font: helveticaBoldFont,
             color: rgb(0, 0, 0),
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         firstPage.drawText(cuit2, {
             x: xCenteredCuit,
-            y: 310,
+            y: 610,
             size: fontSizeCuit,
             font: helveticaFont,
             color: rgb(0, 0, 0),
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         firstPage.drawText(ubicacion, {
             x: xCenteredUbicacion,
-            y: 250,
+            y: 485,
             size: fontSizeUbicacion,
             font: helveticaFont,
             color: rgb(0, 0, 0),
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         firstPage.drawText(fecha, {
             x: xCenteredFecha,
-            y: 210,
+            y: 390,
             size: fontSizeFecha,
             font: helveticaBoldFont,
             color: rgb(0, 0, 0),
@@ -407,41 +407,41 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Añadir las imágenes de las firmas
         if (instructorFirmaImage) {
             firstPage.drawImage(instructorFirmaImage, {
-                x: 100,
-                y: 120,
-                width: 100,
-                height: 80,
+                x: 220,
+                y: 200,
+                width: 180,
+                height: 140,
             });
         }
 
         if (direccionFirmaImage) {
             firstPage.drawImage(direccionFirmaImage, {
-                x: 650,
-                y: 120,
-                width: 100,
-                height: 80,
+                x: 1180,
+                y: 200,
+                width: 180,
+                height: 140,
             });
         }
 
-        const fixedPositionXLeft = 100; // Posición fija para la columna izquierda
-        const fixedPositionXRight = 650; // Posición fija para la columna derecha
-        const baseYPosition = 100; // Posición base Y
+        const fixedPositionXLeft = 220; // Posición fija para la columna izquierda
+        const fixedPositionXRight = 1180; // Posición fija para la columna derecha
+        const baseYPosition = 180; // Posición base Y
 
         // Añadir texto alineado para el instructor
         if (instructor) {
             if (instructor === 'Rodriguez Juan Manuel') {
                 firstPage.drawText(instructor, {
-                    x: fixedPositionXLeft, // Coordenadas específicas para este nombre
+                    x: fixedPositionXLeft - 20, // Coordenadas específicas para este nombre
                     y: baseYPosition,
-                    size: 9,
+                    size: 19,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
             
                 firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
-                    x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
-                    y: baseYPosition - 12,
-                    size: 10,
+                    x: fixedPositionXLeft - 25, // Coordenadas específicas para este nombre
+                    y: baseYPosition - 22,
+                    size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
@@ -449,15 +449,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                 firstPage.drawText(instructor, {
                     x: fixedPositionXLeft + 15,
                     y: baseYPosition,
-                    size: 9,
+                    size: 19,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
             
                 firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
-                    x: fixedPositionXLeft - 15,
-                    y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                    size: 10,
+                    x: fixedPositionXLeft - 35,
+                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
@@ -468,17 +468,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (direccion) {
             if (direccion === 'Rodriguez Juan Manuel') {
                 firstPage.drawText(direccion, {
-                    x: fixedPositionXRight, // Coordenadas específicas para este nombre
+                    x: fixedPositionXRight - 20, // Coordenadas específicas para este nombre
                     y: baseYPosition,
-                    size: 9,
+                    size: 19,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
             
                 firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
-                    x: fixedPositionXRight - 30,
-                    y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                    size: 10,
+                    x: fixedPositionXRight - 65,
+                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
@@ -486,15 +486,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                 firstPage.drawText(direccion, {
                     x: fixedPositionXRight + 15,
                     y: baseYPosition,
-                    size: 9,
+                    size: 19,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                     color: rgb(0, 0, 0),
                 });
             
                 firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
-                    x: fixedPositionXRight - 28,
-                    y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                    size: 10,
+                    x: fixedPositionXRight - 75,
+                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
