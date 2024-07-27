@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
+        const secondPage = pages[1];
         const { width } = firstPage.getSize();
 
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
@@ -310,6 +311,111 @@ document.addEventListener('DOMContentLoaded', async function () {
                 });
             }
         }
+
+
+                 // Añadir firmas y nombres en la segunda página (analítico)
+        const secondPageWidth = secondPage.getSize().width;
+        const secondPageHeight = secondPage.getSize().height;
+
+        // Ajusta las posiciones y tamaños según el diseño del analítico
+        const signatureYPosition = secondPageHeight - 150; // Ajusta según sea necesario
+        const signatureSize = { width: 100, height: 80 };
+
+        if (instructorFirmaImage) {
+            secondPage.drawImage(instructorFirmaImage, {
+                x: 100,
+                y: 100,
+                width: 100,
+                height: 80,
+            });
+        }
+
+        if (direccionFirmaImage) {
+            secondPage.drawImage(direccionFirmaImage, {
+                x: 650,
+                y: 100,
+                width: 100,
+                height: 80,
+            });
+        }
+
+
+
+
+        // Segunda Pagina
+        if (instructor) {
+            if (instructor === 'Rodriguez Juan Manuel') {
+                secondPage.drawText(instructor, {
+                    x: fixedPositionXLeft, // Coordenadas específicas para este nombre
+                    y: baseYPosition - 10,
+                    size: 9,
+                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    color: rgb(0, 0, 0),
+                });
+            
+                secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
+                    y: baseYPosition - 22,
+                    size: 10,
+                    font: helveticaBoldFont,
+                    color: rgb(0, 0, 0),
+                });
+            } else {
+                secondPage.drawText(instructor, {
+                    x: fixedPositionXLeft + 15,
+                    y: baseYPosition - 10,
+                    size: 9,
+                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    color: rgb(0, 0, 0),
+                });
+            
+                secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    x: fixedPositionXLeft - 15,
+                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    size: 10,
+                    font: helveticaBoldFont,
+                    color: rgb(0, 0, 0),
+                });
+            }
+        }
+
+        // Añadir texto alineado para la dirección
+        if (direccion) {
+            if (direccion === 'Rodriguez Juan Manuel') {
+                secondPage.drawText(direccion, {
+                    x: fixedPositionXRight, // Coordenadas específicas para este nombre
+                    y: baseYPosition - 10,
+                    size: 9,
+                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    color: rgb(0, 0, 0),
+                });
+            
+                secondPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                    x: fixedPositionXRight - 30,
+                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    size: 10,
+                    font: helveticaBoldFont,
+                    color: rgb(0, 0, 0),
+                });
+            } else {
+                secondPage.drawText(direccion, {
+                    x: fixedPositionXRight + 15,
+                    y: baseYPosition - 10,
+                    size: 9,
+                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    color: rgb(0, 0, 0),
+                });
+            
+                secondPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                    x: fixedPositionXRight - 28,
+                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    size: 10,
+                    font: helveticaBoldFont,
+                    color: rgb(0, 0, 0),
+                });
+            }
+        }
+
 
         const pdfBytes = await pdfDoc.save();
         return pdfBytes;

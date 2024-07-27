@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
     <link rel="shortcut icon" href="/img/logo.ico">
-    
+
 </head>
 <body>
     <div class="slider">
@@ -20,7 +20,8 @@
             <img src="/img/logo.png" alt="Logo">
         </div>
         <h1 id="titulo">Generador de Certificados</h1>
-            <form id="cursanteForm">
+
+        <form id="cursanteForm">
             <div class="mt-5">
                 <select id="cursos" class="select-styled">
                     <option disabled selected value="">-- Certificación --</option>
@@ -29,12 +30,10 @@
                     <option value="APC2">APC 2</option>
                     <option value="APC3">APC 3</option>
                     <option value="RTC">RTC</option>
-                    <option value="CF">Centro de formacion</option>
                     <option value="evaluador">Evaluador</option>
                     <option value="instructor">Instructor</option>
                 </select>
             </div>
-
             <input type="text" id="nombre" placeholder="Nombre y Apellido">
             <input type="text" id="dni" placeholder="DNI">
             <input type="text" id="registro-titulo" placeholder="Registro Acreditacion Profesional">
@@ -68,6 +67,15 @@
             <button type="submit" id="descargar">Descargar todos los certificados</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar si el usuario está autenticado
+            if (localStorage.getItem('autenticado') !== 'true') {
+                window.location.href = 'index.html'; // Redirigir a la página de autenticación
+            }
+        });
+    </script>
 
     <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
     <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
