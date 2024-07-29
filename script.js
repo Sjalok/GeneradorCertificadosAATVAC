@@ -1,6 +1,8 @@
+
 document.addEventListener('DOMContentLoaded', async function () {
     const generateButtonGeneral = document.getElementById('generar');
     const generateButtonCF = document.getElementById('generarCF');
+    const uploadButton = document.getElementById('upload-button');
 
     if (generateButtonGeneral) {
         generateButtonGeneral.addEventListener('click', handleGenerateCertificateGeneral);
@@ -8,6 +10,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (generateButtonCF) {
         generateButtonCF.addEventListener('click', handleGenerateCertificateCF);
+    }
+
+    if (uploadButton) {
+        uploadButton.addEventListener('click', handleExcelUpload);
     }
 
     async function handleGenerateCertificateGeneral(event) {
@@ -94,6 +100,34 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     }
 
+    async function handleExcelUpload(event) {
+        event.preventDefault();
+
+        const fileInput = document.getElementById('archivoExcel');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert('Por favor, carga un archivo Excel primero.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+            console.log(jsonData);
+
+            for (const row of jsonData) {
+                await generateCertificateFromRow(row);
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
     async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion) {
         const { PDFDocument, rgb } = PDFLib;
 
@@ -104,6 +138,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const firstPage = pages[0];
         const secondPage = pages[1];
         const { width } = firstPage.getSize();
+
+        console.log("hola");
 
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
@@ -188,32 +224,33 @@ document.addEventListener('DOMContentLoaded', async function () {
             color: rgb(0, 0, 0),
         });
 
-        if (certificacion === 'APC1') {
-            firstPage.drawText(centroformacion, {
-                x: xCenteredCF,
-                y: 272,
-                size: fontSizeCF,
-                font: helveticaFont,
-                color: rgb(0, 0, 0),
-            });
-        } else if (certificacion === 'RTC') {
-            firstPage.drawText(centroformacion, {
-                x: xCenteredCF,
-                y: 280,
-                size: fontSizeCF,
-                font: helveticaFont,
-                color: rgb(0, 0, 0),
-            });
-        } else {
-            firstPage.drawText(centroformacion, {
-                x: xCenteredCF,
-                y: 263.8,
-                size: fontSizeCF,
-                font: helveticaFont,
-                color: rgb(0, 0, 0),
-            });
+        if (certificacion != 'evaluador' && certificacion != 'instructor') {
+            if (certificacion === 'APC1') {
+                firstPage.drawText(centroformacion, {
+                    x: xCenteredCF,
+                    y: 272,
+                    size: fontSizeCF,
+                    font: helveticaFont,
+                    color: rgb(0, 0, 0),
+                });
+            } else if (certificacion === 'RTC') {
+                firstPage.drawText(centroformacion, {
+                    x: xCenteredCF,
+                    y: 280,
+                    size: fontSizeCF,
+                    font: helveticaFont,
+                    color: rgb(0, 0, 0),
+                });
+            } else {
+                firstPage.drawText(centroformacion, {
+                    x: xCenteredCF,
+                    y: 263.8,
+                    size: fontSizeCF,
+                    font: helveticaFont,
+                    color: rgb(0, 0, 0),
+                });
+            }
         }
-
 
         // Añadir las imágenes de las firmas
         if (instructorFirmaImage) {
@@ -611,6 +648,48 @@ document.addEventListener('DOMContentLoaded', async function () {
         return pdfBytes;
     }
 
+    async function generateCertificateFromRow(row) {
+        const pdfMap = {
+            'TSA': 'certificados/CertificadoTSA.pdf',
+            'APC1': 'certificados/CertificadoAPC1.pdf',
+            'APC2': 'certificados/CertificadoAPC2.pdf',
+            'APC3': 'certificados/CertificadoAPC3.pdf',
+            'RTC': 'certificados/CertificadoRTC.pdf',
+            'evaluador': 'certificados/CertificadoEvaluador.pdf',
+            'instructor': 'certificados/CertificadoInstructor.pdf'
+        };
+
+        const certificacion = row['certificacion'];
+        const url = pdfMap[certificacion];
+
+        const nombre = row['nombre'];
+        const dni = row['dni'];
+        const ingreso = row['Fecha Emision'];
+        const formattedIngreso = convertirFecha(ingreso);
+        const instructor = row['Evaluador'];
+        const direccion = row['Direccion'];
+        const centroformacion = `dictado en centro de formacion ${row['Centro de formacion']}`;
+        const registroTitulo = row['Numero Registro'];
+        const registroInstructor = row['Nro Evaluador'];
+        const registroDireccion = row['Nro Direccion'];
+
+        const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
+        const expirationDate = addYearsToDateExcel(formattedIngreso, yearsToAdd);
+        const formattedExpirationDate = formatDate(expirationDate);
+
+        // console.log(`Nombre: ${nombre}, DNI: ${dni}, Fecha Ingreso: ${formattedIngreso}, Instructor: ${instructor}, Direccion: ${direccion}, Centro Formacion: ${centroformacion}, Registro Titulo: ${registroTitulo}, Registro Instructor: ${registroInstructor}, Registro Direccion: ${registroDireccion}`);
+
+        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
+
+        if (pdfBytes) {
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Certificado-${nombre}.pdf`;
+            link.click();
+        }
+    }
+
     async function generateCertificates(names) {
         for (const name of names) {
             const pdfBytes = await generateCustomCertificate(name);
@@ -629,8 +708,23 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 function addYearsToDate(date, years) {
+    console.log(date);
     const newDate = new Date(date);
+    console.log(newDate);
     newDate.setFullYear(newDate.getFullYear() + years);
+    return newDate;
+}
+
+function addYearsToDateExcel(dateStr, years) {
+    const partes = dateStr.split('/');
+    const dia = parseInt(partes[0], 10);
+    const mes = parseInt(partes[1], 10) - 1;
+    const anio = parseInt(partes[2], 10);
+    
+    const newDate = new Date(anio, mes, dia);
+
+    newDate.setFullYear(newDate.getFullYear() + years);
+    
     return newDate;
 }
 
@@ -639,4 +733,17 @@ function formatDate(date) {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
+}
+
+function convertirFecha(fechaStr) {
+    // Se asume que el formato original es "aaaa/dd/mm"
+    const partes = fechaStr.split('/');
+    const anio = partes[0];
+    const dia = partes[1];
+    const mes = partes[2];
+
+    // Construir la nueva fecha en formato "dd/mm/aaaa"
+    const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${anio}`;
+
+    return fechaFormateada;
 }
