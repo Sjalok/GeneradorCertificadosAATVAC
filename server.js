@@ -1,10 +1,16 @@
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
-const port = 8080;
+const port = process.env.PORT;
 
 // Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'produccion')));
+
+app.get('/get-password', (req, res) => {
+    res.json({ password: process.env.PASSWORD });
+});
 
 // Ruta para el formulario protegido
 app.get('/formulario', (req, res) => {
@@ -32,5 +38,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+    console.log(`Programa listo para usar en http://localhost:${port}`);
 });

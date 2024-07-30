@@ -37,16 +37,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         const formattedIngreso = formatDate(new Date(ingreso));
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
-        const centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
+        centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
         const registroTitulo= document.getElementById('registro-titulo').value;
         const registroInstructor= document.getElementById('registro-instructor').value;
         const registroDireccion= document.getElementById('registro-direccion').value;
 
+        centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
 
-        // if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
-        //     alert('Todos los campos son Obligatorios');
-        //     return;
-        // }
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
+            alert('Todos los campos son Obligatorios');
+            return;
+        }
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
         const expirationDate = addYearsToDate(ingreso, yearsToAdd);
@@ -80,10 +81,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor= document.getElementById('registro-instructor').value;
         const registroDireccion= document.getElementById('registro-direccion').value;
 
-        // if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
-        //     alert('Todos los campos son Obligatorios');
-        //     return;
-        // }
+        if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
+            alert('Todos los campos son Obligatorios');
+            return;
+        }
 
         const expirationDate = addYearsToDate(ingreso, 2); // Asumiendo que CF siempre expira en 2 años
         const formattedExpirationDate = formatDate(expirationDate);
@@ -118,9 +119,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             const worksheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-            console.log(jsonData);
-
             for (const row of jsonData) {
+                if (row.certificacion) {
+                    const certificacionLower = row.certificacion.toLowerCase();
+                    
+                    if (certificacionLower === "evaluador" || certificacionLower === "instructor") {
+                        row.certificacion = certificacionLower;
+                    }
+            
+                    else if (["apc1", "tsa", "apc2", "apc3", "rtc"].includes(certificacionLower)) {
+                        row.certificacion = row.certificacion.toUpperCase();
+                    }
+                }
                 await generateCertificateFromRow(row);
             }
         };
@@ -137,8 +147,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const firstPage = pages[0];
         const secondPage = pages[1];
         const { width } = firstPage.getSize();
-
-        console.log("hola");
 
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
@@ -843,22 +851,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             link.click();
         }
     }
-
-    async function generateCertificates(names) {
-        for (const name of names) {
-            const pdfBytes = await generateCustomCertificate(name);
-
-            if (pdfBytes) {
-                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blob);
-                link.download = `Certificado-${name}.pdf`;
-                link.click();
-            }
-        }
-    }
-
-    window.generateCertificates = generateCertificates;
 });
 
 function addYearsToDate(date, years) {

@@ -1,27 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     const formulario = document.querySelector('#formulario');
     const campoPassword = document.querySelector('#password');
-    let intentos = 0;
+    let serverPassword = '';
 
-    localStorage.setItem('autenticado', 'false');
+    // Obtener la contraseña desde el servidor
+    fetch('/get-password')
+        .then(response => response.json())
+        .then(data => {
+            serverPassword = data.password;
+        })
+        .catch(error => console.error('Error fetching password:', error));
 
     formulario.addEventListener('submit', (e) => {
         e.preventDefault();
-        const password = campoPassword.value;
+        const contraseña = campoPassword.value;
 
-        // Convierte la contraseña a número para la comparación
-        const passwordCorrecto = '1234';
-
-        if (password === passwordCorrecto && intentos === 0) {
-            alert('Contraseña incorrecta');
-            intentos++;
-            limpiarFormulario(formulario, campoPassword);
-        } else if (password === passwordCorrecto && intentos === 1) {
-            localStorage.setItem('autenticado', 'true');
+        if (contraseña === serverPassword) {
             window.location.href = 'formulario.html';
         } else {
-            alert('password incorrecto');
-            intentos = 0;
+            alert('Contraseña incorrecta');
             limpiarFormulario(formulario, campoPassword);
         }
     });

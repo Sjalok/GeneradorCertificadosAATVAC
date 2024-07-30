@@ -29,7 +29,6 @@
                     <option value="APC2">APC 2</option>
                     <option value="APC3">APC 3</option>
                     <option value="RTC">RTC</option>
-                    <option value="CF">Centro de formacion</option>
                     <option value="evaluador">Evaluador</option>
                     <option value="instructor">Instructor</option>
                 </select>
@@ -59,25 +58,21 @@
                 <option value="Martin Santiago">Martin Santiago</option>
             </select>
             <input type="text" id="registro-direccion" placeholder="Registro Direccion">
-            <select name="centroformacion" id="centroformacion" required>
-                <option disabled selected>Seleccione Centro de formación:</option>
-                <option value="Dictado en centro de formacion Bahia Blanca">Buenos Aires</option>
-                <option value="Mendoza">Mendoza</option>
-            </select>
+            <input type="text" id="centroformacion" placeholder="Centro de formacion">
             <input type="file" id="archivoExcel" accept=".xlsx, .xls">
             <button type="submit" id="generar">Generar Certificado</button>
             <button type="button" id="upload-button">Subir excel y generar certificados</button>
         </form>
     </div>
 
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Verificar si el usuario está autenticado
             if (localStorage.getItem('autenticado') !== 'true') {
                 window.location.href = 'index.html'; // Redirigir a la página de autenticación
             }
         });
-    </script>
+    </script> -->
 
     <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
     <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
