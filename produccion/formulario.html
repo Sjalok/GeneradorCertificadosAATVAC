@@ -17,7 +17,7 @@
             <button class="styled-button" onclick="location.href='centroFormacion.html'">Centro de Formacion</button>
         </div>
         <div class="top-logo">
-            <img src="/img/logo.png" alt="Logo">
+            <img src="./img/logo.png" alt="Logo">
         </div>
         <h1 id="titulo">Generador de Certificados</h1>
             <form id="cursanteForm">
@@ -69,6 +69,15 @@
             <button type="button" id="upload-button">Subir excel y generar certificados</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar si el usuario está autenticado
+            if (localStorage.getItem('autenticado') !== 'true') {
+                window.location.href = 'index.html'; // Redirigir a la página de autenticación
+            }
+        });
+    </script>
 
     <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
     <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>

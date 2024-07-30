@@ -3,18 +3,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const campoPassword = document.querySelector('#password');
     let intentos = 0;
 
+    localStorage.setItem('autenticado', 'false');
+
     formulario.addEventListener('submit', (e) => {
         e.preventDefault();
-        const contraseña = campoPassword.value;
+        const password = campoPassword.value;
 
-        if (contraseña === '1234' && intentos === 0) {
+        // Convierte la contraseña a número para la comparación
+        const passwordCorrecto = '1234';
+
+        if (password === passwordCorrecto && intentos === 0) {
             alert('Contraseña incorrecta');
             intentos++;
             limpiarFormulario(formulario, campoPassword);
-        } else if (contraseña === '1234' && intentos === 1) {
+        } else if (password === passwordCorrecto && intentos === 1) {
+            localStorage.setItem('autenticado', 'true');
             window.location.href = 'formulario.html';
         } else {
-            alert('Contraseña incorrecta');
+            alert('password incorrecto');
             intentos = 0;
             limpiarFormulario(formulario, campoPassword);
         }
