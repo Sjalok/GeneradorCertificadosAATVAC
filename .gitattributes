@@ -1,0 +1,3 @@
+generador-certificados-macos filter=lfs diff=lfs merge=lfs -text
+generador-certificados-linux filter=lfs diff=lfs merge=lfs -text
+generador-certificados-win.exe filter=lfs diff=lfs merge=lfs -text
