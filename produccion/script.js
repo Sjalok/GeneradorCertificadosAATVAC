@@ -15,6 +15,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         uploadButton.addEventListener('click', handleExcelUpload);
     }
 
+    const registros = {
+        'Isis Marcos': '12345',
+        'Rodriguez Juan Manuel': '67890',
+        'Commegna Pablo': '54321',
+        'Suarez Guido': '0001',
+        'Lehner Ian': '0002',
+        'Martin Santiago': '0003'
+    };
+
+
     async function handleGenerateCertificateGeneral(event) {
         event.preventDefault();
 
@@ -23,7 +33,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             'APC1': 'certificados/CertificadoAPC1.pdf',
             'APC2': 'certificados/CertificadoAPC2.pdf',
             'APC3': 'certificados/CertificadoAPC3.pdf',
-            'RTC': 'certificados/CertificadoRTC.pdf',
+            'RTC1': 'certificados/CertificadoRTC1.pdf',
+            'RTC2': 'certificados/CertificadoRTC2.pdf',
             'evaluador': 'certificados/CertificadoEvaluador.pdf',
             'instructor': 'certificados/CertificadoInstructor.pdf'
         };
@@ -39,8 +50,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const direccion = document.getElementById('direccion').value;
         centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
         const registroTitulo= document.getElementById('registro-titulo').value;
-        const registroInstructor= document.getElementById('registro-instructor').value;
-        const registroDireccion= document.getElementById('registro-direccion').value;
+        const registroInstructor = registros[instructor] || 'No disponible';
+        const registroDireccion = registros[direccion] || 'No disponible';
 
         centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
 
@@ -78,8 +89,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const calle = document.getElementById('calleCF').value;
         const ciudad = document.getElementById('ciudadCF').value;
         const provincia = document.getElementById('provinciaCF').value;
-        const registroInstructor= document.getElementById('registro-instructor').value;
-        const registroDireccion= document.getElementById('registro-direccion').value;
+        const registroInstructor = registros[instructor] || 'No disponible';
+        const registroDireccion = registros[direccion] || 'No disponible';
 
         if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
@@ -127,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         row.certificacion = certificacionLower;
                     }
             
-                    else if (["apc1", "tsa", "apc2", "apc3", "rtc"].includes(certificacionLower)) {
+                    else if (["apc1", "tsa", "apc2", "apc3", "rtc1", "rtc2"].includes(certificacionLower)) {
                         row.certificacion = row.certificacion.toUpperCase();
                     }
                 }
@@ -187,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
 
-        if (certificacion === 'RTC') {
+        if (certificacion === 'RTC1' || certificacion === 'RTC2') {
             firstPage.drawText(nombre, {
                 x: xCenteredNombre,
                 y: 362,
@@ -205,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
 
-        if (certificacion === 'RTC') {
+        if (certificacion === 'RTC1' || certificacion === 'RTC2') {
             firstPage.drawText(`DNI: ${dni}`, {
                 x: 360,
                 y: 319,
@@ -240,7 +251,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
                 });
-            } else if (certificacion === 'RTC') {
+            } else if (certificacion === 'RTC1' || certificacion === 'RTC2') {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
                     y: 280,
@@ -832,8 +843,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const direccion = row['Direccion'];
         const centroformacion = `dictado en centro de formacion ${row['Centro de formacion']}`;
         const registroTitulo = row['Numero Registro'];
-        const registroInstructor = row['Nro Evaluador'];
-        const registroDireccion = row['Nro Direccion'];
+        const registroInstructor = registros[instructor] || 'No disponible';
+        const registroDireccion = registros[direccion] || 'No disponible';
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
         const expirationDate = addYearsToDateExcel(formattedIngreso, yearsToAdd);
