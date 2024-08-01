@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
 
-        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion) {
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
             return;
         }
