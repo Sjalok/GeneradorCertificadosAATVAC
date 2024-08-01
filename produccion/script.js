@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const generateButtonCF = document.getElementById('generarCF');
     const uploadButton = document.getElementById('upload-button');
 
+    const formulario = document.querySelector('#cursanteForm');
+
     if (generateButtonGeneral) {
         generateButtonGeneral.addEventListener('click', handleGenerateCertificateGeneral);
     }
@@ -72,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             link.href = window.URL.createObjectURL(blob);
             link.download = `Certificado-${nombre}.pdf`;
             link.click();
+            formulario.reset();
         }
     }
 
