@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const formulario = document.querySelector('#cursanteForm');
 
+    
+
     if (generateButtonGeneral) {
         generateButtonGeneral.addEventListener('click', handleGenerateCertificateGeneral);
     }
@@ -55,10 +57,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
+        console.log(nombre);
+
         centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
 
-        if (!certificacion || !nombre || !dni || !ingreso || !formattedIngreso || !instructor || !direccion || !centroformacion || !registroTitulo || !registroInstructor || !registroDireccion) {
-            alert('Todos los campos son obligatorios');
         if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
             return;
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             link.click();
             formulario.reset();
         }
-    }}
+    }
 
     async function handleGenerateCertificateCF(event) {
         event.preventDefault();
