@@ -36,7 +36,7 @@
 
             <input type="text" id="nombre" placeholder="Nombre y Apellido">
             <input type="text" id="dni" placeholder="DNI">
-            <input type="text" id="registro-titulo" placeholder="Registro Acreditacion Profesional">
+            <input type="number" id="registro-titulo" placeholder="Registro Acreditacion Profesional">
             <input type="date" id="ingreso" placeholder="Fecha Ingreso">
             <select name="instructor" id="instructor" required>
                 <option disabled selected>Seleccione evaluador:</option>
@@ -47,7 +47,7 @@
                 <option value="Isis Marcos">Isis Marcos</option>
                 <option value="Martin Santiago">Martin Santiago</option>
             </select>
-            <input type="text" id="registro-instructor" placeholder="Registro Instructor">
+            <input type="number" id="registro-instructor" placeholder="Registro Instructor" min="0">
             <select name="direccion" id="direccion" required>
                 <option disabled selected>Seleccione persona de Dirección:</option>
                 <option value="Commegna Pablo">Commegna Pablo</option>
@@ -57,7 +57,7 @@
                 <option value="Isis Marcos">Isis Marcos</option>
                 <option value="Martin Santiago">Martin Santiago</option>
             </select>
-            <input type="text" id="registro-direccion" placeholder="Registro Direccion">
+            <input type="number" id="registro-direccion" placeholder="Registro Direccion" min="0">
             <input type="text" id="centroformacion" placeholder="Centro de formacion">
             <input type="file" id="archivoExcel" accept=".xlsx, .xls">
             <button type="submit" id="generar">Generar Certificado</button>
@@ -65,7 +65,7 @@
         </form>
     </div>
 
-    <!-- <script>
+     <!-- <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Verificar si el usuario está autenticado
             if (localStorage.getItem('autenticado') !== 'true') {
