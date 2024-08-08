@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
 
+        if (!certificacion || !nombre || !dni || !ingreso || !formattedIngreso || !instructor || !direccion || !centroformacion || !registroTitulo || !registroInstructor || !registroDireccion) {
+            alert('Todos los campos son obligatorios');
         if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
             return;
@@ -76,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             link.click();
             formulario.reset();
         }
-    }
+    }}
 
     async function handleGenerateCertificateCF(event) {
         event.preventDefault();
@@ -97,6 +99,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
+        const registroInstructor= document.getElementById('registro-instructor').value;
+        const registroDireccion= document.getElementById('registro-direccion').value;
+        
+        if (!nombre || !cuit || !ingreso || !formattedIngreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroInstructor || !registroDireccion) {
+            alert('Todos los campos son obligatorios');
             return;
         }
 
