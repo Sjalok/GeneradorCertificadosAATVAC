@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        console.log(nombre);
 
         centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
 
@@ -101,14 +100,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
-        const registroInstructor= document.getElementById('registro-instructor').value;
-        const registroDireccion= document.getElementById('registro-direccion').value;
-        
-        if (!nombre || !cuit || !ingreso || !formattedIngreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroInstructor || !registroDireccion) {
-            alert('Todos los campos son obligatorios');
-            return;
         }
-
         const expirationDate = addYearsToDate(ingreso, 2); // Asumiendo que CF siempre expira en 2 años
         const formattedExpirationDate = formatDate(expirationDate);
 
@@ -121,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             link.download = `Certificado- Centro de formacion ${nombre}.pdf`;
             link.click();
         }
-    }};
+    };
 
     async function handleExcelUpload(event) {
         event.preventDefault();
@@ -228,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
 
-        if (certificacion === 'RTC1' || certificacion === 'RTC2') {
+        if (certificacion === 'RTC1') {
             firstPage.drawText(`DNI: ${dni}`, {
                 x: 360,
                 y: 319,
@@ -263,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
                 });
-            } else if (certificacion === 'RTC1' || certificacion === 'RTC2') {
+            } else if (certificacion === 'RTC1') {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
                     y: 280,
