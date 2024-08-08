@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             link.download = `Certificado- Centro de formacion ${nombre}.pdf`;
             link.click();
         }
-    }
+    }};
 
     async function handleExcelUpload(event) {
         event.preventDefault();
