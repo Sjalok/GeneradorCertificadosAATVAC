@@ -18,12 +18,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const registros = {
-        'Isis Marcos': '12345',
-        'Rodriguez Juan Manuel': '67890',
-        'Commegna Pablo': '54321',
-        'Suarez Guido': '0001',
-        'Lehner Ian': '0002',
-        'Martin Santiago': '0003'
+        'Isis Marcos': '0264',
+        'Rodriguez Juan Manuel': '0031',
+        'Commegna Pablo': '0113',
+        'Suarez Guido': '0015',
+        'Lehner Ian': '0028',
+        'Martin Santiago': '0022'
     };
 
 
@@ -830,7 +830,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             'APC1': 'certificados/CertificadoAPC1.pdf',
             'APC2': 'certificados/CertificadoAPC2.pdf',
             'APC3': 'certificados/CertificadoAPC3.pdf',
-            'RTC': 'certificados/CertificadoRTC.pdf',
+            'RTC1': 'certificados/CertificadoRTC1.pdf',
+            'RTC2': 'certificados/CertificadoRTC2.pdf',
             'evaluador': 'certificados/CertificadoEvaluador.pdf',
             'instructor': 'certificados/CertificadoInstructor.pdf'
         };
