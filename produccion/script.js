@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
 
-        if (certificacion === 'RTC1' || certificacion === 'RTC2') {
+        if (certificacion === 'RTC1') {
             firstPage.drawText(nombre, {
                 x: xCenteredNombre,
                 y: 362,
