@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        if (!centroformacion) {
+        if (!centroformacion && ( certificacion !== 'Evaluador' || certificacion !== 'Instructor')) {
             alert('Todos los campos son Obligatorios');
             return;
         } else {
@@ -216,6 +216,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
+
+        textoDireccion = `Reg. N° ${registroDireccion} - Dirección`;
+
+        if (certificacion === 'TSA') {
+            textoInstructor = `Reg. N° ${registroInstructor} - Coordinacion`;
+        } else if (certificacion === 'evaluador') {
+            textoInstructor = `Reg. N° ${registroInstructor} - Comite de imparcialidad`;
+        } else {
+            textoInstructor = `Reg. N° ${registroInstructor} - Evaluador`;
+        }
 
         if (certificacion === 'RTC1') {
             firstPage.drawText(nombre, {
