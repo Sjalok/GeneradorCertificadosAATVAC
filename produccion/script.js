@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         'Suarez Guido': '0015',
         'Lehner Ian': '0028',
         'Martin Santiago': '0022',
-        'Pablo Castillo': '0192',
-        'Nicolas Sanchez': '0141'
+        'Castillo Pablo': '0192',
+        'Sanchez Nicolas': '0141'
     };
 
 

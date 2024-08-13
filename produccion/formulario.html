@@ -40,7 +40,7 @@
             <input type="number" id="registro-titulo" placeholder="Registro Acreditacion Profesional" required>
             <input type="date" id="ingreso" placeholder="Fecha Ingreso" required>
             <select name="instructor" id="instructor" required>
-                <option disabled selected>Seleccione evaluador:</option>
+                <option disabled selected>Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:</option>
                 <option value="Commegna Pablo">Commegna Pablo</option>
                 <option value="Suarez Guido">Suarez Guido</option>
                 <option value="Lehner Ian">Lehner Ian</option>
@@ -64,6 +64,63 @@
             <button type="button" id="descargarexcel">Descargar el Excel</button>
         </form>
     </div>
+
+    <script>
+               document.addEventListener('DOMContentLoaded', function() {
+            const cursosSelect = document.getElementById('cursos');
+            const instructorSelect = document.getElementById('instructor');
+
+            // Guardar las opciones originales en una variable
+            const opcionesOriginalesInstructor = instructorSelect.innerHTML;
+
+            cursosSelect.addEventListener('change', function() {
+
+                if (this.value === 'instructor') {
+                    // Limpiar todas las opciones del select de instructor
+                    instructorSelect.innerHTML = '';
+
+                    // Añadir la opción "Pablo Castillo" con value "castillo_pablo"
+                    const nuevaOpcion = document.createElement('option');
+                    nuevaOpcion.value = 'Castillo Pablo';
+                    nuevaOpcion.text = 'Pablo Castillo';
+                    instructorSelect.add(nuevaOpcion);
+
+                    // Seleccionar automáticamente la opción "Pablo Castillo"
+                    instructorSelect.value = 'Castillo Pablo';
+                    instructorSelect.disabled = true; // Deshabilitar el select
+                } else {
+                    // Restaurar las opciones originales
+                    instructorSelect.innerHTML = opcionesOriginalesInstructor;
+                    instructorSelect.disabled = false; // Habilitar el select
+                }
+            });
+
+            cursosSelect.addEventListener('change', function() {
+                const direccionSelect = document.getElementById('direccion');
+                const evaluadorOptionDireccion = document.querySelector('#direccion option[value="Sanchez Nicolas"]');
+                const evaluadorOptionInstructor = document.querySelector('#instructor option[value="Sanchez Nicolas"]');
+
+                const opcionesOriginales = direccionSelect.innerHTML;
+
+                if (this.value === 'evaluador') {
+                    if (!evaluadorOptionInstructor) {
+                        const newOptionInstructor = document.createElement('option');
+                        newOptionInstructor.value = 'Sanchez Nicolas';
+                        newOptionInstructor.text = 'Nicolas Sanchez';
+                        instructorSelect.add(newOptionInstructor);
+                    }
+                } else {
+                    // Eliminar la opción si existe en ambos selects
+                    if (evaluadorOptionDireccion) {
+                        evaluadorOptionDireccion.remove();
+                    }
+                    if (evaluadorOptionInstructor) {
+                        evaluadorOptionInstructor.remove();
+                    }
+                }
+            });
+        });
+    </script>
 
     <script src="script.js"></script>
     <script src="formulario.js"></script>
