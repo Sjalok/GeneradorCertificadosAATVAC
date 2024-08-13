@@ -25,7 +25,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         'Commegna Pablo': '0113',
         'Suarez Guido': '0015',
         'Lehner Ian': '0028',
-        'Martin Santiago': '0022'
+        'Martin Santiago': '0022',
+        'Pablo Castillo': '0192',
+        'Nicolas Sanchez': '0141'
     };
 
 
