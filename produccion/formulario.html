@@ -35,10 +35,10 @@
                 </select>
             </div>
 
-            <input type="text" id="nombre" placeholder="Nombre y Apellido">
-            <input type="text" id="dni" placeholder="DNI">
-            <input type="number" id="registro-titulo" placeholder="Registro Acreditacion Profesional">
-            <input type="date" id="ingreso" placeholder="Fecha Ingreso">
+            <input type="text" id="nombre" placeholder="Nombre y Apellido" required>
+            <input type="text" id="dni" placeholder="DNI" required>
+            <input type="number" id="registro-titulo" placeholder="Registro Acreditacion Profesional" required>
+            <input type="date" id="ingreso" placeholder="Fecha Ingreso" required>
             <select name="instructor" id="instructor" required>
                 <option disabled selected>Seleccione evaluador:</option>
                 <option value="Commegna Pablo">Commegna Pablo</option>
@@ -57,7 +57,7 @@
                 <option value="Isis Marcos">Isis Marcos</option>
                 <option value="Martin Santiago">Martin Santiago</option>
             </select>
-            <input type="text" id="centroformacion" placeholder="Centro de formacion">
+            <input type="text" id="centroformacion" placeholder="Centro de formacion" required>
             <input type="file" id="archivoExcel" accept=".xlsx, .xls">
             <button type="submit" id="generar">Generar Certificado</button>
             <button type="button" id="upload-button">Subir excel y generar certificados</button>

@@ -57,10 +57,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
+        if (!centroformacion) {
+            alert('Todos los campos son Obligatorios');
+            return;
+        } else {
+            centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
+        }
 
-        centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
-
-        if (!nombre || !dni || !ingreso || !instructor || !direccion || !centroformacion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
             return;
         }
@@ -135,15 +139,24 @@ document.addEventListener('DOMContentLoaded', async function () {
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
             for (const row of jsonData) {
-                if (row.certificacion) {
+                const requiredFields = ["Certificacion", "Nombre", "DNI", "Numero Registro", "Fecha Emision", "Evaluador", "Direccion", "Centro de formacion"]; // Añade las columnas que deseas verificar
+
+                for (const field of requiredFields) {
+                    if (!row[field]) {
+                        alert(`Faltan campos en la fila: ${JSON.stringify(row)}`);
+                        return;
+                    }
+                }
+
+                if (row.Certificacion) {
                     const certificacionLower = row.certificacion.toLowerCase();
                     
                     if (certificacionLower === "evaluador" || certificacionLower === "instructor") {
-                        row.certificacion = certificacionLower;
+                        row.Certificacion = certificacionLower;
                     }
             
                     else if (["apc1", "tsa", "apc2", "apc3", "rtc1", "rtc2"].includes(certificacionLower)) {
-                        row.certificacion = row.certificacion.toUpperCase();
+                        row.Certificacion = row.Certificacion.toUpperCase();
                     }
                 }
                 await generateCertificateFromRow(row);
@@ -196,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthCF = helveticaFont.widthOfTextAtSize(centroformacion, fontSizeCF);
         const xCenteredCF = (width - textWidthCF) / 2;
 
-        fecha = `Acreditacion profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        fecha = `Registro de formacion profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
 
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
