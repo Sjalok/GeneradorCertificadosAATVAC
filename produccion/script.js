@@ -228,6 +228,28 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
+        //LADO DERECHO
+        const coordenadasFirmasDireccion = {
+            'RodriguezJuanManuel': { x: 650, y: 100, width: 100, height: 80 },
+            'LehnerIan': { x: 650, y: 100, width: 100, height: 80 },
+            'IsisMarcos': { x: 630, y: 100, width: 100, height: 80 },
+            'SuarezGuido': { x: 650, y: 110, width: 100, height: 80 },
+    
+            // Añade más firmas aquí
+        };
+    
+        //LADO IZQUIERDO
+        const coordenadasFirmasInstructor = {
+            'RodriguezJuanManuel': { x: 100, y: 100, width: 100, height: 80 },
+            'SanchezNicolas': { x: 100, y: 110, width: 100, height: 80 },
+            'LehnerIan': { x: 100, y: 100, width: 100, height: 80 },
+            'IsisMarcos': { x: 80, y: 100, width: 100, height: 80 },
+            'SuarezGuido': { x: 100, y: 110, width: 100, height: 80 },
+            'CastilloPablo': { x: 95, y: 110, width: 100, height: 80 },
+            // Añade más firmas aquí
+        };
+        
+
         const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
         const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
 
@@ -344,21 +366,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (instructorFirmaImage) {
-            firstPage.drawImage(instructorFirmaImage, {
-                x: 100,
-                y: 120,
-                width: 100,
-                height: 80,
-            });
+            const nombreInstructor = instructor.replace(/ /g, '');
+            const coordenadasInstructor = coordenadasFirmasInstructor[nombreInstructor] || { x: 100, y: 120, width: 100, height: 80 };
+            firstPage.drawImage(instructorFirmaImage, coordenadasInstructor);
         }
 
         if (direccionFirmaImage) {
-            firstPage.drawImage(direccionFirmaImage, {
-                x: 650,
-                y: 120,
-                width: 100,
-                height: 80,
-            });
+            const nombreDireccion = direccion.replace(/ /g, '');
+            const coordenadasDireccion = coordenadasFirmasDireccion[nombreDireccion] || { x: 650, y: 120, width: 100, height: 80 };
+            firstPage.drawImage(direccionFirmaImage, coordenadasDireccion);
+        }
+
+        // Verificar si la firma del instructor y la dirección son la misma persona y dibujarla nuevamente si es necesario
+        if (instructor === direccion && instructorFirmaImage) {
+            const coordenadasDireccion = coordenadasFirmasDireccion[instructor.replace(/ /g, '')] || { x: 650, y: 120, width: 100, height: 80 };
+            firstPage.drawImage(instructorFirmaImage, coordenadasDireccion);
         }
 
         const fixedPositionXLeft = 100; // Posición fija para la columna izquierda
@@ -462,43 +484,86 @@ document.addEventListener('DOMContentLoaded', async function () {
         const signatureYPosition = secondPageHeight - 150; // Ajusta según sea necesario
         const signatureSize = { width: 100, height: 80 };
         
+        // Coordenadas para APC3, evaluador, instructor, TSA
+        const coordenadasFirmasInstructorSegundaPaginaGrupo1 = {
+            'RodriguezJuanManuel': { x: 100, y: 90, width: 100, height: 80 },
+            'CommegnaPablo': { x: 100, y: 100, width: 100, height: 80 },
+            'SuarezGuido': { x: 100, y: 100, width: 100, height: 80 },
+            'CastilloPablo': { x: 100, y: 100, width: 100, height: 80 },
+            'IsisMarcos': { x: 100, y: 100, width: 100, height: 80 },
+            'LehnerIan': { x: 100, y: 100, width: 100, height: 80 },
+            'Martinsantiago': { x: 100, y: 100, width: 100, height: 80 },
+            'SanchezNicolas': { x: 100, y: 100, width: 100, height: 80 },
+            // Añade más firmas aquí
+        };
 
-        if (certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor'  || certificacion === 'TSA') {
+        const coordenadasFirmasDireccionSegundaPaginaGrupo1 = {
+            'RodriguezJuanManuel': { x: 650, y: 90, width: 100, height: 80 },
+            'CommegnaPablo': { x: 650, y: 100, width: 100, height: 80 },
+            'SuarezGuido': { x: 650, y: 100, width: 100, height: 80 },
+            'CastilloPablo': { x: 650, y: 100, width: 100, height: 80 },
+            'IsisMarcos': { x: 650, y: 100, width: 100, height: 80 },
+            'LehnerIan': { x: 650, y: 100, width: 100, height: 80 },
+            'SanchezNicolas': { x: 650, y: 100, width: 100, height: 80 },
+            'Martinsantiago': { x: 650, y: 100, width: 100, height: 80 },
+            // Añade más firmas aquí
+        };
+
+        // Coordenadas para APC1, APC2, RTC1, RTC2, evaluador, instructor
+        const coordenadasFirmasInstructorSegundaPaginaGrupo2 = {
+            'RodriguezJuanManuel': { x: 100, y: 90, width: 80, height: 28 },
+            'CommegnaPablo': { x: 100, y: 90, width: 80, height: 28 },
+            'SuarezGuido': { x: 100, y: 90, width: 80, height: 28 },
+            'CastilloPablo': { x: 100, y: 90, width: 80, height: 28 },
+            'IsisMarcos': { x: 100, y: 90, width: 80, height: 28 },
+            'LehnerIan': { x: 100, y: 90, width: 80, height: 28 },
+            'SanchezNicolas': { x: 100, y: 90, width: 80, height: 28 },
+            'Martinsantiago': { x: 100, y: 90, width: 80, height: 28 },
+            // Añade más firmas aquí
+        };
+
+        const coordenadasFirmasDireccionSegundaPaginaGrupo2 = {
+            'RodriguezJuanManuel': { x: 650, y: 90, width: 80, height: 28 },
+            'CommegnaPablo': { x: 650, y: 90, width: 80, height: 28 },
+            'SuarezGuido': { x: 650, y: 90, width: 80, height: 28 },
+            'CastilloPablo': { x: 650, y: 90, width: 80, height: 28 },
+            'IsisMarcos': { x: 650, y: 90, width: 80, height: 28 },
+            'LehnerIan': { x: 650, y: 90, width: 80, height: 28 },
+            'SanchezNicolas': { x: 650, y: 90, width: 80, height: 28 },
+            'Martinsantiago': { x: 650, y: 90, width: 80, height: 28 },
+            // Añade más firmas aquí
+        };
+
+        // Función para obtener las coordenadas según el grupo de certificación
+        function obtenerCoordenadas(nombre, grupo) {
+            const nombreSinEspacios = nombre.replace(/ /g, '');
+            return grupo[nombreSinEspacios] || { x: 100, y: 100, width: 100, height: 80 };
+        }
+
+        if (certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor' || certificacion === 'TSA') {
             if (instructorFirmaImage) {
-                secondPage.drawImage(instructorFirmaImage, {
-                    x: 100,
-                    y: 100,
-                    width: 100,
-                    height: 80,
-                });
+                const coordenadasInstructor = obtenerCoordenadas(instructor, coordenadasFirmasInstructorSegundaPaginaGrupo1);
+                secondPage.drawImage(instructorFirmaImage, coordenadasInstructor);
             }
-            
             if (direccionFirmaImage) {
-                secondPage.drawImage(direccionFirmaImage, {
-                    x: 650,
-                    y: 100,
-                    width: 100,
-                    height: 80,
-                });
+                const coordenadasDireccion = obtenerCoordenadas(direccion, coordenadasFirmasDireccionSegundaPaginaGrupo1);
+                secondPage.drawImage(direccionFirmaImage, coordenadasDireccion);
             }
         } else {
             if (instructorFirmaImage) {
-                secondPage.drawImage(instructorFirmaImage, {
-                    x: 100,
-                    y: 90,
-                    width: 80,
-                    height: 28,
-                });
+                const coordenadasInstructor = obtenerCoordenadas(instructor, coordenadasFirmasInstructorSegundaPaginaGrupo2);
+                secondPage.drawImage(instructorFirmaImage, coordenadasInstructor);
             }
-            
             if (direccionFirmaImage) {
-                secondPage.drawImage(direccionFirmaImage, {
-                    x: 650,
-                    y: 90,
-                    width: 80,
-                    height: 28,
-                });
+                const coordenadasDireccion = obtenerCoordenadas(direccion, coordenadasFirmasDireccionSegundaPaginaGrupo2);
+                secondPage.drawImage(direccionFirmaImage, coordenadasDireccion);
             }
+        }
+
+        // Verificar si la firma del instructor y la dirección son la misma persona y dibujarla nuevamente si es necesario
+        if (instructor === direccion && instructorFirmaImage) {
+            const coordenadasDireccion = obtenerCoordenadas(instructor, certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor' || certificacion === 'TSA' ? coordenadasFirmasDireccionSegundaPaginaGrupo1 : coordenadasFirmasDireccionSegundaPaginaGrupo2);
+            secondPage.drawImage(instructorFirmaImage, coordenadasDireccion);
         }
         
 
