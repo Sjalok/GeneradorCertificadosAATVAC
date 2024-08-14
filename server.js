@@ -3,9 +3,8 @@ const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 8080; // Usa 8080 si no se define en .env
+const port = process.env.PORT || 8080;
 
-// Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'produccion')));
 
 app.get('/get-password', (req, res) => {

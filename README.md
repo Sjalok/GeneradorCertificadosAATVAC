@@ -1,0 +1,2 @@
+Proyecto para AATVAC de uso en su dominio, siendo este un generador de certificados automatico.
+Basta con rellenar su formulario hecho en HTML y CSS, o si bien rellenando un excel a disposicion para descargar

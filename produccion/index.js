@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const campoPassword = document.querySelector('#password');
     let serverPassword = '';
 
-    // Obtener la contraseña desde el servidor
     fetch('/get-password')
         .then(response => response.json())
         .then(data => {

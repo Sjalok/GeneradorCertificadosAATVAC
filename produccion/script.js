@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const formattedIngreso = formatDate(new Date(ingreso));
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
-        centroformacion = document.getElementById('centroformacion').value.trim(); // Trim spaces
+        centroformacion = document.getElementById('centroformacion').value.trim();
         const registroTitulo= document.getElementById('registro-titulo').value;
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (!nombre || !cuit || !ingreso || !instructor || !direccion || !calle || !ciudad || !provincia || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
         }
-        const expirationDate = addYearsToDate(ingreso, 2); // Asumiendo que CF siempre expira en 2 años
+        const expirationDate = addYearsToDate(ingreso, 1);
         const formattedExpirationDate = formatDate(expirationDate);
 
         const pdfBytes = await generarCFCertificado(url, nombre, cuit, formattedIngreso, instructor, direccion, calle, ciudad, provincia, formattedExpirationDate, 'CF', registroInstructor, registroDireccion);
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-        const helveticaBoldObliqueFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique); // Fuente en negrita y cursiva
+        const helveticaBoldObliqueFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique);
 
         async function embedImage(pdfDoc, name, format) {
             try {
@@ -324,6 +324,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
                 });
+            } else if (certificacion === 'APC3') {
+                firstPage.drawText(centroformacion, {
+                    x: xCenteredCF,
+                    y: 273,
+                    size: fontSizeCF,
+                    font: helveticaFont,
+                    color: rgb(0, 0, 0),
+                });
             } else {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
@@ -335,7 +343,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
-        // Añadir las imágenes de las firmas
         if (instructorFirmaImage) {
             firstPage.drawImage(instructorFirmaImage, {
                 x: 100,
@@ -695,7 +702,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const helveticaFont = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         const helveticaBoldFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-        const helveticaBoldObliqueFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique); // Fuente en negrita y cursiva
+        const helveticaBoldObliqueFont = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBoldOblique);
 
         async function embedImage(pdfDoc, name, format) {
             try {
@@ -738,6 +745,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthUbicacion = helveticaFont.widthOfTextAtSize(ubicacion, fontSizeUbicacion);
         const xCenteredUbicacion = (width - textWidthUbicacion) / 2;
 
+        textoDireccion = `Reg. N° ${registroDireccion} - Direccion`;
+        textoInspeccion = `Reg. N° ${registroInstructor} - Inspeccion`;
+
         firstPage.drawText(nombre, {
             x: xCenteredNombre,
             y: 700,
@@ -770,9 +780,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             color: rgb(0, 0, 0),
         });
 
-        // Añadir las imágenes de las firmas
-        if (instructorFirmaImage) {
-            firstPage.drawImage(instructorFirmaImage, {
+        if (direccionFirmaImage) {
+            firstPage.drawImage(direccionFirmaImage, {
                 x: 220,
                 y: 200,
                 width: 180,
@@ -780,8 +789,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
 
-        if (direccionFirmaImage) {
-            firstPage.drawImage(direccionFirmaImage, {
+        if (instructorFirmaImage) {
+            firstPage.drawImage(instructorFirmaImage, {
                 x: 1180,
                 y: 200,
                 width: 180,
@@ -793,33 +802,32 @@ document.addEventListener('DOMContentLoaded', async function () {
         const fixedPositionXRight = 1180; // Posición fija para la columna derecha
         const baseYPosition = 180; // Posición base Y
 
-        // Añadir texto alineado para el instructor
-        if (instructor) {
-            if (instructor === 'Rodriguez Juan Manuel') {
-                firstPage.drawText(instructor, {
-                    x: fixedPositionXLeft - 20, // Coordenadas específicas para este nombre
+        if (direccion) {
+            if (direccion === 'Rodriguez Juan Manuel') {
+                firstPage.drawText(direccion, {
+                    x: fixedPositionXLeft - 20,
                     y: baseYPosition,
                     size: 19,
-                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    font: helveticaBoldObliqueFont,
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
-                    x: fixedPositionXLeft - 25, // Coordenadas específicas para este nombre
+                firstPage.drawText(textoDireccion, {
+                    x: fixedPositionXLeft - 25,
                     y: baseYPosition - 22,
                     size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
-            } else if (instructor === 'Commegna Pablo') {
-                firstPage.drawText(instructor, {
+            } else if (direccion === 'Commegna Pablo') {
+                firstPage.drawText(direccion, {
                     x: fixedPositionXLeft + 10,
                     y: baseYPosition,
                     size: 19,
                     font: helveticaBoldObliqueFont,
                     color: rgb(0, 0, 0),
                 });
-                firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                firstPage.drawText(textoDireccion, {
                     x: fixedPositionXLeft - 16,
                     y: baseYPosition - 22,
                     size: 20,
@@ -827,17 +835,17 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             } else {
-                firstPage.drawText(instructor, {
+                firstPage.drawText(direccion, {
                     x: fixedPositionXLeft + 15,
                     y: baseYPosition,
                     size: 19,
-                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    font: helveticaBoldObliqueFont,
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                firstPage.drawText(textoDireccion, {
                     x: fixedPositionXLeft - 35,
-                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                    y: baseYPosition - 22,
                     size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
@@ -845,36 +853,35 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
-        // Añadir texto alineado para la dirección
-        if (direccion) {
-            if (direccion === 'Rodriguez Juan Manuel') {
-                firstPage.drawText(direccion, {
-                    x: fixedPositionXRight - 20, // Coordenadas específicas para este nombre
+        if (instructor) {
+            if (instructor === 'Rodriguez Juan Manuel') {
+                firstPage.drawText(instructor, {
+                    x: fixedPositionXRight - 20,
                     y: baseYPosition,
                     size: 19,
-                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    font: helveticaBoldObliqueFont,
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
-                    x: fixedPositionXRight - 65,
-                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                firstPage.drawText(textoInspeccion, {
+                    x: fixedPositionXRight - 25,
+                    y: baseYPosition - 22,
                     size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
             } else {
-                firstPage.drawText(direccion, {
+                firstPage.drawText(instructor, {
                     x: fixedPositionXRight + 15,
                     y: baseYPosition,
                     size: 19,
-                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    font: helveticaBoldObliqueFont,
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
-                    x: fixedPositionXRight - 75,
-                    y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                firstPage.drawText(textoInspeccion, {
+                    x: fixedPositionXRight - 25,
+                    y: baseYPosition - 22,
                     size: 20,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
@@ -919,8 +926,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const expirationDate = addYearsToDateExcel(formattedIngreso, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        // console.log(`Nombre: ${nombre}, DNI: ${dni}, Fecha Ingreso: ${formattedIngreso}, Instructor: ${instructor}, Direccion: ${direccion}, Centro Formacion: ${centroformacion}, Registro Titulo: ${registroTitulo}, Registro Instructor: ${registroInstructor}, Registro Direccion: ${registroDireccion}`);
-
         const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
 
         if (pdfBytes) {
@@ -962,13 +967,11 @@ function formatDate(date) {
 }
 
 function convertirFecha(fechaStr) {
-    // Se asume que el formato original es "aaaa/dd/mm"
     const partes = fechaStr.split('/');
     const anio = partes[0];
     const dia = partes[1];
     const mes = partes[2];
 
-    // Construir la nueva fecha en formato "dd/mm/aaaa"
     const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${anio}`;
 
     return fechaFormateada;

@@ -84,7 +84,6 @@
             const cursosSelect = document.getElementById('cursos');
             const instructorSelect = document.getElementById('instructor');
 
-            // Guardar las opciones originales en una variable
             const opcionesOriginalesInstructor = instructorSelect.innerHTML;
 
             cursosSelect.addEventListener('change', function() {
@@ -95,22 +94,18 @@
                 }
 
                 if (this.value === 'instructor') {
-                    // Limpiar todas las opciones del select de instructor
                     instructorSelect.innerHTML = '';
 
-                    // Añadir la opción "Pablo Castillo" con value "castillo_pablo"
                     const nuevaOpcion = document.createElement('option');
                     nuevaOpcion.value = 'Castillo Pablo';
                     nuevaOpcion.text = 'Pablo Castillo';
                     instructorSelect.add(nuevaOpcion);
 
-                    // Seleccionar automáticamente la opción "Pablo Castillo"
                     instructorSelect.value = 'Castillo Pablo';
-                    instructorSelect.disabled = true; // Deshabilitar el select
+                    instructorSelect.disabled = true;
                 } else {
-                    // Restaurar las opciones originales
                     instructorSelect.innerHTML = opcionesOriginalesInstructor;
-                    instructorSelect.disabled = false; // Habilitar el select
+                    instructorSelect.disabled = false;
                 }
             });
 
@@ -129,7 +124,6 @@
                         instructorSelect.add(newOptionInstructor);
                     }
                 } else {
-                    // Eliminar la opción si existe en ambos selects
                     if (evaluadorOptionDireccion) {
                         evaluadorOptionDireccion.remove();
                     }
