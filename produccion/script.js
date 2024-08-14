@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        if (!centroformacion && ( certificacion !== 'Evaluador' || certificacion !== 'Instructor')) {
+        if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
             alert('Todos los campos son Obligatorios');
             return;
-        } else {
+        } else if (centroformacion) {
             centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
         }
-
+        
         if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
             alert('Todos los campos son Obligatorios');
             return;
