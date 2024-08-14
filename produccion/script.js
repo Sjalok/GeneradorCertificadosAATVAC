@@ -388,9 +388,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         const baseYPosition = 100; // Posición base Y
 
         // Añadir texto alineado para el instructor
-        if (instructor) {
-            if (instructor === 'Rodriguez Juan Manuel') {
-                firstPage.drawText(instructor, {
+        if (direccion) {
+            if (direccion === 'Rodriguez Juan Manuel') {
+                firstPage.drawText(textoDireccion, {
                     x: fixedPositionXLeft, // Coordenadas específicas para este nombre
                     y: baseYPosition,
                     size: 9,
@@ -398,22 +398,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                firstPage.drawText(textoDireccion, {
                     x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
                     y: baseYPosition - 12,
                     size: 10,
                     font: helveticaBoldFont,
                     color: rgb(0, 0, 0),
                 });
-            } else if (instructor === 'Commegna Pablo') {
-                firstPage.drawText(instructor, {
+            } else if (direccion === 'Commegna Pablo') {
+                firstPage.drawText(direccion, {
                     x: fixedPositionXLeft + 10,
                     y: baseYPosition,
                     size: 9,
                     font: helveticaBoldObliqueFont,
                     color: rgb(0, 0, 0),
                 });
-                firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                firstPage.drawText(textoDireccion, {
                     x: fixedPositionXLeft - 10,
                     y: baseYPosition - 12,
                     size: 10,
@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             } else {
-                firstPage.drawText(instructor, {
+                firstPage.drawText(direccion, {
                     x: fixedPositionXLeft + 15,
                     y: baseYPosition,
                     size: 9,
@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                firstPage.drawText(textoDireccion, {
                     x: fixedPositionXLeft - 15,
                     y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                     size: 10,
@@ -440,9 +440,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         // Añadir texto alineado para la dirección
-        if (direccion) {
-            if (direccion === 'Rodriguez Juan Manuel') {
-                firstPage.drawText(direccion, {
+        if (instructor) {
+            if (instructor === 'Rodriguez Juan Manuel') {
+                firstPage.drawText(instructor, {
                     x: fixedPositionXRight, // Coordenadas específicas para este nombre
                     y: baseYPosition,
                     size: 9,
@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                firstPage.drawText(textoInstructor, {
                     x: fixedPositionXRight - 30,
                     y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                     size: 10,
@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             } else {
-                firstPage.drawText(direccion, {
+                firstPage.drawText(instructor, {
                     x: fixedPositionXRight + 15,
                     y: baseYPosition,
                     size: 9,
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     color: rgb(0, 0, 0),
                 });
             
-                firstPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                firstPage.drawText(textoInstructor, {
                     x: fixedPositionXRight - 28,
                     y: baseYPosition - 12, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                     size: 10,
@@ -569,9 +569,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor'  || certificacion === 'TSA') {
             // Segunda Pagina
-            if (instructor) {
-                if (instructor === 'Rodriguez Juan Manuel') {
-                    secondPage.drawText(instructor, {
+            if (direccion) {
+                if (direccion === 'Rodriguez Juan Manuel') {
+                    secondPage.drawText(direccion, {
                         x: fixedPositionXLeft, // Coordenadas específicas para este nombre
                         y: baseYPosition - 10,
                         size: 9,
@@ -579,15 +579,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    secondPage.drawText(textoDireccion, {
                         x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
                         y: baseYPosition - 22,
                         size: 10,
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else if (instructor === 'Commegna Pablo') {
-                    secondPage.drawText(instructor, {
+                } else if (direccion === 'Commegna Pablo') {
+                    secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 10,
                         y: signatureYPosition -354,
                         size: 9,
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    secondPage.drawText(textoDireccion, {
                         x: fixedPositionXLeft - 10,
                         y: signatureYPosition -366,
                         size: 10,
@@ -603,7 +603,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 } else {
-                    secondPage.drawText(instructor, {
+                    secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 15,
                         y: baseYPosition - 10,
                         size: 9,
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    secondPage.drawText(textoDireccion, {
                         x: fixedPositionXLeft - 15,
                         y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 10,
@@ -622,9 +622,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
              
             // Añadir texto alineado para la dirección
-            if (direccion) {
-                if (direccion === 'Rodriguez Juan Manuel') {
-                    secondPage.drawText(direccion, {
+            if (instructor) {
+                if (instructor === 'Rodriguez Juan Manuel') {
+                    secondPage.drawText(instructor, {
                         x: fixedPositionXRight, // Coordenadas específicas para este nombre
                         y: baseYPosition - 10,
                         size: 9,
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                    secondPage.drawText(textoInstructor, {
                         x: fixedPositionXRight - 30,
                         y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 10,
@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 } else {
-                    secondPage.drawText(direccion, {
+                    secondPage.drawText(instructor, {
                         x: fixedPositionXRight + 15,
                         y: baseYPosition - 10,
                         size: 9,
@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                    secondPage.drawText(textoInstructor, {
                         x: fixedPositionXRight - 28,
                         y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 10,
@@ -659,9 +659,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }else {
             // Aquí puedes agregar la lógica para los demás certificados
-            if (instructor) {
-                if (instructor === 'Rodriguez Juan Manuel') {
-                    secondPage.drawText(instructor, {
+            if (direccion) {
+                if (direccion === 'Rodriguez Juan Manuel') {
+                    secondPage.drawText(direccion, {
                         x: fixedPositionXLeft , // Coordenadas específicas para este nombre
                         y: baseYPosition - 28,
                         size: 7,
@@ -669,15 +669,15 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    secondPage.drawText(textoDireccion, {
                         x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
                         y: baseYPosition - 38,
                         size: 8,
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else if (instructor === 'Commegna Pablo') {
-                    secondPage.drawText(instructor, {
+                } else if (direccion === 'Commegna Pablo') {
+                    secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 10,
                         y: signatureYPosition - 372,
                         size: 7,
@@ -685,7 +685,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    secondPage.drawText(textoDireccion, {
                         x: fixedPositionXLeft - 3,
                         y: signatureYPosition - 382,
                         size: 8,
@@ -693,7 +693,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 } else {
-                    secondPage.drawText(instructor, {
+                    secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 15,
                         y: baseYPosition - 28,
                         size: 7,
@@ -701,7 +701,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroInstructor} - Dirección`, {
+                    secondPage.drawText(textoDireccion, {
                         x: fixedPositionXLeft - 10,
                         y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 8,
@@ -711,9 +711,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
             }
         
-            if (direccion) {
-                if (direccion === 'Rodriguez Juan Manuel') {
-                    secondPage.drawText(direccion, {
+            if (instructor) {
+                if (instructor === 'Rodriguez Juan Manuel') {
+                    secondPage.drawText(instructor, {
                         x: fixedPositionXRight - 10, // Coordenadas específicas para este nombre
                         y: baseYPosition - 28,
                         size: 7,
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                    secondPage.drawText(textoInstructor, {
                         x: fixedPositionXRight - 30,
                         y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 8,
@@ -729,7 +729,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 } else {
-                    secondPage.drawText(direccion, {
+                    secondPage.drawText(instructor, {
                         x: fixedPositionXRight + 10,
                         y: baseYPosition - 28,
                         size: 7,
@@ -737,7 +737,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(`Reg. N° ${registroDireccion} - Equipo académico`, {
+                    secondPage.drawText(textoInstructor, {
                         x: fixedPositionXLeft + 525,
                         y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 8,
