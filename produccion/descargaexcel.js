@@ -1,6 +1,6 @@
 document.getElementById('descargarexcel').addEventListener('click', function () {
     const link = document.createElement('a');
-    link.href = './certificadoadescargar.xlsx';
-    link.download = 'certificadoadescargar.xlsx';
+    link.href = './plantillavacia.xlsx';
+    link.download = 'plantillavacia.xlsx';
     link.click();
 });

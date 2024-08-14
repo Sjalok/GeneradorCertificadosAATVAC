@@ -139,19 +139,22 @@ document.addEventListener('DOMContentLoaded', async function () {
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            let contador = 0;
 
             for (const row of jsonData) {
-                const requiredFields = ["Certificacion", "Nombre", "DNI", "Numero Registro", "Fecha Emision", "Evaluador", "Direccion", "Centro de formacion"]; // Añade las columnas que deseas verificar
+                const requiredFields = ["Certificacion", "Nombre", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"]; // Añade las columnas que deseas verificar
 
                 for (const field of requiredFields) {
                     if (!row[field]) {
-                        alert(`Faltan campos en la fila: ${JSON.stringify(row)}`);
+                        alert(`Faltan campos en la fila: ${JSON.stringify(row)}.`);
                         return;
                     }
                 }
 
+                console.log(contador + 2);
+
                 if (row.Certificacion) {
-                    const certificacionLower = row.certificacion.toLowerCase();
+                    const certificacionLower = row.Certificacion.toLowerCase();
                     
                     if (certificacionLower === "evaluador" || certificacionLower === "instructor") {
                         row.Certificacion = certificacionLower;
@@ -160,8 +163,33 @@ document.addEventListener('DOMContentLoaded', async function () {
                     else if (["apc1", "tsa", "apc2", "apc3", "rtc1", "rtc2"].includes(certificacionLower)) {
                         row.Certificacion = row.Certificacion.toUpperCase();
                     }
+
+                    if (row['Segundo Cargo'] === 'Sanchez Nicolas' && certificacionLower !== 'evaluador') {
+                        alert(`"Sanchez Nicolas" solo puede estar en "Segundo Cargo" si la certificación es "evaluador". Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                        return;
+                    }
+    
+                    if (row['Segundo Cargo'] === 'Castillo Pablo' && certificacionLower !== 'instructor') {
+                        alert(`"Castillo Pablo" solo puede estar en "Segundo Cargo" si la certificación es "instructor". Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                        return;
+                    }
+                    if (row['Direccion'] === 'Castillo Pablo') {
+                        alert(`"Castillo Pablo" no puede estar en la columna "Direccion". Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                        return;
+                    }
+    
+                    if (row['Segundo Cargo'] && !registros.hasOwnProperty(row['Segundo Cargo'])) {
+                        alert(`Error en la escritura del nombre en "Segundo Cargo": ${row['Segundo Cargo']} no está en los registros. Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                        return;
+                    }
+        
+                    if (row['Direccion'] && !registros.hasOwnProperty(row['Direccion'])) {
+                        alert(`Error en la escritura del nombre en "Direccion": ${row['Direccion']} no está en los registros. Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                        return;
+                    }
                 }
                 await generateCertificateFromRow(row);
+                contador ++;
             }
         };
         reader.readAsArrayBuffer(file);
@@ -862,14 +890,17 @@ document.addEventListener('DOMContentLoaded', async function () {
             'instructor': 'certificados/CertificadoInstructor.pdf'
         };
 
-        const certificacion = row['certificacion'];
+        const certificacion = row['Certificacion'];
         const url = pdfMap[certificacion];
 
-        const nombre = row['nombre'];
-        const dni = row['dni'];
+        const nombre = row['Nombre'];
+        const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
         const formattedIngreso = convertirFecha(ingreso);
-        const instructor = row['Evaluador'];
+        let instructor = row['Segundo Cargo'];
+        if (certificacion === 'instructor') {
+            instructor = 'Castillo Pablo';
+        }
         const direccion = row['Direccion'];
         const centroformacion = `dictado en centro de formacion ${row['Centro de formacion']}`;
         const registroTitulo = row['Numero Registro'];
