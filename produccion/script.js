@@ -59,17 +59,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
-            alert('Todos los campos son Obligatorios');
-            return;
-        } else if (centroformacion) {
-            centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
-        }
+        // if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
+        //     alert('Todos los campos son Obligatorios');
+        //     return;
+        // } else if (centroformacion) {
+        //     centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
+        // }
         
-        if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
-            alert('Todos los campos son Obligatorios');
-            return;
-        }
+        // if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
+        //     alert('Todos los campos son Obligatorios');
+        //     return;
+        // }
 
         if (direccion === instructor) {
             alert('La misma persona no puede ocupar los dos cargos.')
@@ -795,45 +795,55 @@ document.addEventListener('DOMContentLoaded', async function () {
                         color: rgb(0, 0, 0),
                     });
                 
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
-                        y: baseYPosition - 22,
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
+                    // secondPage.drawText(textoDireccion, {
+                    //     x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
+                    //     y: baseYPosition - 22,
+                    //     size: 10,
+                    //     font: helveticaBoldFont,
+                    //     color: rgb(0, 0, 0),
+                    // });
                     //COMEGNA LADO IZQUIERDO NOMBRE
                 } else if (direccion === 'Commegna Pablo') {
                     secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 10,
                         y: signatureYPosition -354,
                         size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                         color: rgb(0, 0, 0),
                     });
                     //COMEGNA LADO IZQUIERDO  DIRECCION
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 10,
-                        y: signatureYPosition -366,
-                        size: 10,
-                        font: helveticaBoldFont,
+                    // secondPage.drawText(textoDireccion, {
+                    //     x: fixedPositionXLeft - 10,
+                    //     y: signatureYPosition -366,
+                    //     size: 10,
+                    //     font: helveticaBoldFont,
+                    //     color: rgb(0, 0, 0),
+                    // });
+                    //Santiago LADO IZQUIERDO NOMBRE 
+                }else if (direccion === 'Suarez Guido') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXLeft + 14,
+                        y: signatureYPosition -354,
+                        size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                         color: rgb(0, 0, 0),
                     });
-                    //Santiago LADO IZQUIERDO NOMBRE 
-                } else if (direccion === 'Martin Santiago') {
+                }else if (direccion === 'Martin Santiago') {
                     secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 10,
                         y: signatureYPosition -354,
                         size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
                         color: rgb(0, 0, 0),
                     });
                 //Santiago LADO IZQUIERDO  DIRECCION
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 10,
-                        y: signatureYPosition -366,
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
+                    // secondPage.drawText(textoDireccion, {
+                    //     x: fixedPositionXLeft - 10,
+                    //     y: signatureYPosition -366,
+                    //     size: 10,
+                    //     font: helveticaBoldFont,
+                    //     color: rgb(0, 0, 0),
+                    // });
                 } else {
                     secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 25,
@@ -1185,13 +1195,61 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 
                     secondPage.drawText(textoInstructor, {
-                        x: fixedPositionXRight - 37,
+                        x: fixedPositionXRight - 57,
                         y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 10,
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else {
+                }else if (instructor === 'Isis Marcos') {
+                    secondPage.drawText(instructor, {
+                        x: fixedPositionXRight +15  , // Coordenadas específicas para este nombre
+                        y: baseYPosition - 10,
+                        size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoInstructor, {
+                        x: fixedPositionXRight - 47,
+                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 10,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else if (instructor === 'Lehner Ian') {
+                    secondPage.drawText(instructor, {
+                        x: fixedPositionXRight +15  , // Coordenadas específicas para este nombre
+                        y: baseYPosition - 10,
+                        size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoInstructor, {
+                        x: fixedPositionXRight - 47,
+                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 10,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    }); 
+                }else if (instructor === 'Martin Santiago') {
+                    secondPage.drawText(instructor, {
+                        x: fixedPositionXRight -5  , // Coordenadas específicas para este nombre
+                        y: baseYPosition - 10,
+                        size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoInstructor, {
+                        x: fixedPositionXRight - 56,
+                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 10,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    }); 
+                }else {
                     secondPage.drawText(instructor, {
                         x: fixedPositionXRight ,
                         y: baseYPosition - 10,
@@ -1231,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 } else if (direccion === 'Martin Santiago') {
                     secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft + 16,
+                        x: fixedPositionXLeft + 12,
                         y: baseYPosition - 28,
                         size: 7,
                         font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
@@ -1239,7 +1297,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 } else {
                     secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft + 25,
+                        x: fixedPositionXLeft + 15,
                         y: baseYPosition - 28,
                         size: 7,
                         font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
@@ -1247,19 +1305,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 }
             }
-
-            secondPage.drawText(textoDireccion, {
-                x: fixedPositionXLeft - 7, // Coordenadas específicas para este nombre
-                y: baseYPosition - 38,
-                size: 8,
-                font: helveticaBoldFont,
-                color: rgb(0, 0, 0),
-            });
+                secondPage.drawText(textoDireccion, {
+                    x: fixedPositionXLeft - 7, // Coordenadas específicas para este nombre
+                    y: baseYPosition - 38,
+                    size: 8,
+                    font: helveticaBoldFont,
+                    color: rgb(0, 0, 0),
+                });
         
             if (instructor) {
                 if (instructor === 'Rodriguez Juan Manuel') {
                     secondPage.drawText(instructor, {
-                        x: fixedPositionXRight - 10, // Coordenadas específicas para este nombre
+                        x: fixedPositionXRight - 5, // Coordenadas específicas para este nombre
                         y: baseYPosition - 28,
                         size: 7,
                         font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
@@ -1267,7 +1324,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 
                     secondPage.drawText(textoInstructor, {
-                        x: fixedPositionXRight - 30,
+                        x: fixedPositionXRight - 10,
                         y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 8,
                         font: helveticaBoldFont,
@@ -1332,6 +1389,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                 
                     secondPage.drawText(textoInstructor, {
                         x: fixedPositionXRight - 23,
+                        y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 8,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    }); 
+                }else if (instructor === 'Lehner Ian') {
+                    secondPage.drawText(instructor, {
+                        x: fixedPositionXRight + 10, // Coordenadas específicas para este nombre
+                        y: baseYPosition - 28,
+                        size: 7,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoInstructor, {
+                        x: fixedPositionXRight -12,
                         y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
                         size: 8,
                         font: helveticaBoldFont,
