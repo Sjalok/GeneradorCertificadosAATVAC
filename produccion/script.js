@@ -365,19 +365,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
+        // Intercambiar las imágenes de las firmas
         if (instructorFirmaImage) {
             const nombreInstructor = instructor.replace(/ /g, '');
-            const coordenadasInstructor = coordenadasFirmasInstructor[nombreInstructor] || { x: 100, y: 120, width: 100, height: 80 };
-            firstPage.drawImage(instructorFirmaImage, coordenadasInstructor);
+            const coordenadasDireccion = coordenadasFirmasDireccion[nombreInstructor] || { x: 650, y: 120, width: 100, height: 80 };
+            firstPage.drawImage(instructorFirmaImage, coordenadasDireccion);
         }
 
         if (direccionFirmaImage) {
             const nombreDireccion = direccion.replace(/ /g, '');
-            const coordenadasDireccion = coordenadasFirmasDireccion[nombreDireccion] || { x: 650, y: 120, width: 100, height: 80 };
-            firstPage.drawImage(direccionFirmaImage, coordenadasDireccion);
+            const coordenadasInstructor = coordenadasFirmasInstructor[nombreDireccion] || { x: 100, y: 120, width: 100, height: 80 };
+            firstPage.drawImage(direccionFirmaImage, coordenadasInstructor);
         }
 
-        // Verificar si la firma del instructor y la dirección son la misma persona y dibujarla nuevamente si es necesario
         if (instructor === direccion && instructorFirmaImage) {
             const coordenadasDireccion = coordenadasFirmasDireccion[instructor.replace(/ /g, '')] || { x: 650, y: 120, width: 100, height: 80 };
             firstPage.drawImage(instructorFirmaImage, coordenadasDireccion);
@@ -545,25 +545,27 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor' || certificacion === 'TSA') {
+            // Intercambiar las imágenes de las firmas
             if (instructorFirmaImage) {
-                const coordenadasInstructor = obtenerCoordenadas(instructor, coordenadasFirmasInstructorSegundaPaginaGrupo1);
-                secondPage.drawImage(instructorFirmaImage, coordenadasInstructor);
+                const coordenadasDireccion = obtenerCoordenadas(instructor, coordenadasFirmasDireccionSegundaPaginaGrupo1);
+                secondPage.drawImage(instructorFirmaImage, coordenadasDireccion);
             }
             if (direccionFirmaImage) {
-                const coordenadasDireccion = obtenerCoordenadas(direccion, coordenadasFirmasDireccionSegundaPaginaGrupo1);
-                secondPage.drawImage(direccionFirmaImage, coordenadasDireccion);
+                const coordenadasInstructor = obtenerCoordenadas(direccion, coordenadasFirmasInstructorSegundaPaginaGrupo1);
+                secondPage.drawImage(direccionFirmaImage, coordenadasInstructor);
             }
         } else {
+            // Intercambiar las imágenes de las firmas
             if (instructorFirmaImage) {
-                const coordenadasInstructor = obtenerCoordenadas(instructor, coordenadasFirmasInstructorSegundaPaginaGrupo2);
-                secondPage.drawImage(instructorFirmaImage, coordenadasInstructor);
+                const coordenadasDireccion = obtenerCoordenadas(instructor, coordenadasFirmasDireccionSegundaPaginaGrupo2);
+                secondPage.drawImage(instructorFirmaImage, coordenadasDireccion);
             }
             if (direccionFirmaImage) {
-                const coordenadasDireccion = obtenerCoordenadas(direccion, coordenadasFirmasDireccionSegundaPaginaGrupo2);
-                secondPage.drawImage(direccionFirmaImage, coordenadasDireccion);
+                const coordenadasInstructor = obtenerCoordenadas(direccion, coordenadasFirmasInstructorSegundaPaginaGrupo2);
+                secondPage.drawImage(direccionFirmaImage, coordenadasInstructor);
             }
         }
-
+        
         // Verificar si la firma del instructor y la dirección son la misma persona y dibujarla nuevamente si es necesario
         if (instructor === direccion && instructorFirmaImage) {
             const coordenadasDireccion = obtenerCoordenadas(instructor, certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor' || certificacion === 'TSA' ? coordenadasFirmasDireccionSegundaPaginaGrupo1 : coordenadasFirmasDireccionSegundaPaginaGrupo2);
@@ -986,7 +988,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 height: 140,
             });
         }
-
+        
         if (instructorFirmaImage) {
             firstPage.drawImage(instructorFirmaImage, {
                 x: 1180,
