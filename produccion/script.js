@@ -59,17 +59,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
-            alert('Todos los campos son Obligatorios');
-            return;
-        } else if (centroformacion) {
-            centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
-        }
+        // if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
+        //     alert('Todos los campos son Obligatorios');
+        //     return;
+        // } else if (centroformacion) {
+        //     centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
+        // }
         
-        if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
-            alert('Todos los campos son Obligatorios');
-            return;
-        }
+        // if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
+        //     alert('Todos los campos son Obligatorios');
+        //     return;
+        // }
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
         const expirationDate = addYearsToDate(ingreso, yearsToAdd);
@@ -484,53 +484,57 @@ document.addEventListener('DOMContentLoaded', async function () {
         const signatureYPosition = secondPageHeight - 150; // Ajusta según sea necesario
         const signatureSize = { width: 100, height: 80 };
         
+        //LADO IZQUIERDO
         // Coordenadas para APC3, evaluador, instructor, TSA
         const coordenadasFirmasInstructorSegundaPaginaGrupo1 = {
             'RodriguezJuanManuel': { x: 100, y: 90, width: 100, height: 80 },
             'CommegnaPablo': { x: 100, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 100, y: 100, width: 100, height: 80 },
             'CastilloPablo': { x: 100, y: 100, width: 100, height: 80 },
-            'IsisMarcos': { x: 100, y: 100, width: 100, height: 80 },
+            'IsisMarcos': { x: 90, y: 100, width: 100, height: 80 },
             'LehnerIan': { x: 100, y: 100, width: 100, height: 80 },
-            'Martinsantiago': { x: 100, y: 100, width: 100, height: 80 },
             'SanchezNicolas': { x: 100, y: 100, width: 100, height: 80 },
+            'MartinSantiago': { x: 100, y: 100, width: 100, height: 80 },
             // Añade más firmas aquí
         };
 
+        //LADO DERECHO
         const coordenadasFirmasDireccionSegundaPaginaGrupo1 = {
-            'RodriguezJuanManuel': { x: 650, y: 90, width: 100, height: 80 },
-            'CommegnaPablo': { x: 650, y: 100, width: 100, height: 80 },
+            'RodriguezJuanManuel': { x: 640, y: 90, width: 100, height: 80 },
+            'CommegnaPablo': { x: 620, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 650, y: 100, width: 100, height: 80 },
             'CastilloPablo': { x: 650, y: 100, width: 100, height: 80 },
-            'IsisMarcos': { x: 650, y: 100, width: 100, height: 80 },
+            'IsisMarcos': { x: 640, y: 100, width: 100, height: 80 },
             'LehnerIan': { x: 650, y: 100, width: 100, height: 80 },
             'SanchezNicolas': { x: 650, y: 100, width: 100, height: 80 },
-            'Martinsantiago': { x: 650, y: 100, width: 100, height: 80 },
+            'MartinSantiago': { x: 630, y: 100, width: 100, height: 80 },
             // Añade más firmas aquí
         };
 
+        //LADO IZQUIERDO
         // Coordenadas para APC1, APC2, RTC1, RTC2, evaluador, instructor
         const coordenadasFirmasInstructorSegundaPaginaGrupo2 = {
-            'RodriguezJuanManuel': { x: 100, y: 90, width: 80, height: 28 },
-            'CommegnaPablo': { x: 100, y: 90, width: 80, height: 28 },
-            'SuarezGuido': { x: 100, y: 90, width: 80, height: 28 },
-            'CastilloPablo': { x: 100, y: 90, width: 80, height: 28 },
-            'IsisMarcos': { x: 100, y: 90, width: 80, height: 28 },
-            'LehnerIan': { x: 100, y: 90, width: 80, height: 28 },
-            'SanchezNicolas': { x: 100, y: 90, width: 80, height: 28 },
-            'Martinsantiago': { x: 100, y: 90, width: 80, height: 28 },
+            'RodriguezJuanManuel': { x: 95, y: 85, width: 100, height: 48 },
+            'CommegnaPablo': { x: 90, y: 90, width: 90, height: 38 },
+            'SuarezGuido': { x: 100, y: 90, width: 90, height: 38 },
+            'CastilloPablo': { x: 100, y: 90, width: 90, height: 38 },
+            'IsisMarcos': { x: 90, y: 90, width: 90, height: 38 },
+            'LehnerIan': { x: 95, y: 85, width: 100, height: 48 },
+            'SanchezNicolas': { x: 100, y: 90, width: 90, height: 38 },
+            'MartinSantiago': { x: 100, y: 90, width: 90, height: 38 },
             // Añade más firmas aquí
         };
 
+        //LADO DERECHO
         const coordenadasFirmasDireccionSegundaPaginaGrupo2 = {
-            'RodriguezJuanManuel': { x: 650, y: 90, width: 80, height: 28 },
-            'CommegnaPablo': { x: 650, y: 90, width: 80, height: 28 },
-            'SuarezGuido': { x: 650, y: 90, width: 80, height: 28 },
-            'CastilloPablo': { x: 650, y: 90, width: 80, height: 28 },
-            'IsisMarcos': { x: 650, y: 90, width: 80, height: 28 },
-            'LehnerIan': { x: 650, y: 90, width: 80, height: 28 },
-            'SanchezNicolas': { x: 650, y: 90, width: 80, height: 28 },
-            'Martinsantiago': { x: 650, y: 90, width: 80, height: 28 },
+            'RodriguezJuanManuel': { x: 640, y: 80, width: 100, height: 48 },
+            'CommegnaPablo': { x: 625, y: 90, width: 90, height: 38 },
+            'SuarezGuido': { x: 635, y: 90, width: 90, height: 38 },
+            'CastilloPablo': { x: 640, y: 90, width: 90, height: 38 },
+            'IsisMarcos': { x: 620, y: 90, width: 90, height: 38 },
+            'LehnerIan': { x: 635, y: 85, width: 100, height: 48 },
+            'SanchezNicolas': { x: 640, y: 90, width: 90, height: 38 },
+            'MartinSantiago': { x: 635, y: 90, width: 90, height: 38 },
             // Añade más firmas aquí
         };
 
@@ -586,6 +590,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
+                    
                 } else if (direccion === 'Commegna Pablo') {
                     secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 10,
@@ -602,7 +607,23 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else {
+                } else if (direccion === 'Martin Santiago') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXLeft + 10,
+                        y: signatureYPosition -354,
+                        size: 9,
+                        font: helveticaBoldObliqueFont,
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXLeft - 10,
+                        y: signatureYPosition -366,
+                        size: 10,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else {
                     secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 15,
                         y: baseYPosition - 10,
@@ -625,7 +646,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (instructor) {
                 if (instructor === 'Rodriguez Juan Manuel') {
                     secondPage.drawText(instructor, {
-                        x: fixedPositionXRight, // Coordenadas específicas para este nombre
+                        x: fixedPositionXRight - 14, // Coordenadas específicas para este nombre
                         y: baseYPosition - 10,
                         size: 9,
                         font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
@@ -639,7 +660,39 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else {
+                } else if (direccion === 'Commegna Pablo') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXRight - 10, // Coordenadas específicas para este nombre
+                        y: baseYPosition - 10,
+                        size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXRight - 30,
+                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 10,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                } else if (direccion === 'Martin Santiago') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXRight - 10, // Coordenadas específicas para este nombre
+                        y: baseYPosition - 10,
+                        size: 9,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXRight - 30,
+                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 10,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else {
                     secondPage.drawText(instructor, {
                         x: fixedPositionXRight + 15,
                         y: baseYPosition - 10,
@@ -678,7 +731,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 } else if (direccion === 'Commegna Pablo') {
                     secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft + 10,
+                        x: fixedPositionXLeft +10,
                         y: signatureYPosition - 372,
                         size: 7,
                         font: helveticaBoldObliqueFont,
@@ -692,7 +745,23 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else {
+                } else if (direccion === 'Martin Santiago') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXLeft +10,
+                        y: signatureYPosition - 372,
+                        size: 7,
+                        font: helveticaBoldObliqueFont,
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXLeft - 6,
+                        y: signatureYPosition - 382,
+                        size: 8,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else {
                     secondPage.drawText(direccion, {
                         x: fixedPositionXLeft + 15,
                         y: baseYPosition - 28,
@@ -728,7 +797,71 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                } else {
+                } else if (direccion === 'Commegna Pablo') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXRight - 8, // Coordenadas específicas para este nombre
+                        y: baseYPosition - 28,
+                        size: 7,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXRight - 23,
+                        y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 8,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else if (direccion === 'Isis Marcos') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXRight , // Coordenadas específicas para este nombre
+                        y: baseYPosition - 28,
+                        size: 7,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXRight - 23,
+                        y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 8,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else if (direccion === 'Suarez Guido') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXRight, // Coordenadas específicas para este nombre
+                        y: baseYPosition - 28,
+                        size: 7,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXRight - 23,
+                        y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 8,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    });
+                }else if (direccion === 'Martin Santiago') {
+                    secondPage.drawText(direccion, {
+                        x: fixedPositionXRight - 3, // Coordenadas específicas para este nombre
+                        y: baseYPosition - 28,
+                        size: 7,
+                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                        color: rgb(0, 0, 0),
+                    });
+                
+                    secondPage.drawText(textoDireccion, {
+                        x: fixedPositionXRight - 23,
+                        y: baseYPosition - 38, // Ajusta la posición 'y' para colocar el texto debajo del nombre
+                        size: 8,
+                        font: helveticaBoldFont,
+                        color: rgb(0, 0, 0),
+                    }); 
+                }else {
                     secondPage.drawText(instructor, {
                         x: fixedPositionXRight + 10,
                         y: baseYPosition - 28,
