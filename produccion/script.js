@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'LehnerIan': { x: 650, y: 100, width: 100, height: 80 },
             'IsisMarcos': { x: 630, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 650, y: 110, width: 100, height: 80 },
-    
+            'CommegnaPablo': { x: 650, y: 110, width: 100, height: 80 }
             // Añade más firmas aquí
         };
     
@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'IsisMarcos': { x: 100, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 100, y: 110, width: 100, height: 80 },
             'CastilloPablo': { x: 95, y: 110, width: 100, height: 80 },
+            'CommegnaPablo': { x: 100, y: 110, width: 100, height: 80 }
             // Añade más firmas aquí
         };
         
@@ -418,6 +419,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             } else if (direccion === 'Martin Santiago') {
                 firstPage.drawText(direccion, {
                     x: fixedPositionXLeft + 16,
+                    y: baseYPosition,
+                    size: 9,
+                    font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
+                    color: rgb(0, 0, 0),
+                });
+            }else if (direccion === 'Suarez Guido') {
+                firstPage.drawText(direccion, {
+                    x: fixedPositionXLeft + 12,
                     y: baseYPosition,
                     size: 9,
                     font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
