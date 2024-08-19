@@ -169,31 +169,30 @@ document.addEventListener('DOMContentLoaded', async function () {
                         row.Certificacion = row.Certificacion.toUpperCase();
                     }
 
-                    if (row['Segundo Cargo'] === 'Sanchez Nicolas' && certificacionLower !== 'evaluador') {
+                    const segundoCargo = row['Segundo Cargo'].trim();
+                    const direccion = row['Direccion'].trim();
+
+                    if (segundoCargo === 'Sanchez Nicolas' && certificacionLower !== 'evaluador') {
                         alert(`"Sanchez Nicolas" solo puede estar en "Segundo Cargo" si la certificación es "evaluador". Se han generado todos los certificados hasta la fila ${contador + 2}`);
                         return;
                     }
     
-                    if (row['Segundo Cargo'] === 'Castillo Pablo' && certificacionLower !== 'instructor') {
+                    if (segundoCargo === 'Castillo Pablo' && certificacionLower !== 'instructor') {
                         alert(`"Castillo Pablo" solo puede estar en "Segundo Cargo" si la certificación es "instructor". Se han generado todos los certificados hasta la fila ${contador + 2}`);
                         return;
                     }
-                    if (row['Direccion'] === 'Castillo Pablo') {
+                    if (direccion === 'Castillo Pablo') {
                         alert(`"Castillo Pablo" no puede estar en la columna "Direccion". Se han generado todos los certificados hasta la fila ${contador + 2}`);
                         return;
                     }
     
-                    if (row['Segundo Cargo'] && !registros.hasOwnProperty(row['Segundo Cargo'])) {
+                    if (segundoCargo && !registros.hasOwnProperty(segundoCargo)) {
                         alert(`Error en la escritura del nombre en "Segundo Cargo": ${row['Segundo Cargo']} no está en los registros. Se han generado todos los certificados hasta la fila ${contador + 2}`);
-                        return;
-                    }
-        
-                    if (row['Direccion'] && !registros.hasOwnProperty(row['Direccion'])) {
-                        alert(`Error en la escritura del nombre en "Direccion": ${row['Direccion']} no está en los registros. Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                        console.log(row['Segundo Cargo']);
                         return;
                     }
 
-                    if (row['Direccion'] === row['Segundo Cargo']) {
+                    if (direccion === segundoCargo) {
                         alert(`ERROR: hay una persona ejerciendo los dos cargos en un mismo certificado. Se han generado todos los certificados hasta la fila ${contador + 2}`)
                         return;
                     }
@@ -1659,11 +1658,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
         const formattedIngreso = convertirFecha(ingreso);
-        let instructor = row['Segundo Cargo'];
+        let instructor = row['Segundo Cargo'].trim();
         if (certificacion === 'instructor') {
             instructor = 'Castillo Pablo';
         }
-        const direccion = row['Direccion'];
+        const direccion = row['Direccion'].trim();
         const centroformacion = `dictado en centro de formacion ${row['Centro de formacion']}`;
         const registroTitulo = row['Numero Registro'];
         const registroInstructor = registros[instructor] || 'No disponible';
