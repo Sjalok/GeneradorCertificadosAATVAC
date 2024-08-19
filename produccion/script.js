@@ -51,7 +51,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         const nombre = document.getElementById('nombre').value;
         const dni = document.getElementById('dni').value;
         const ingreso = document.getElementById('ingreso').value;
-        const formattedIngreso = formatDate(new Date(ingreso));
+        const fecha = new Date(ingreso);
+        fecha.setDate(fecha.getDate() + 1);
+        const formattedIngreso = formatDate(fecha);
         const instructor = document.getElementById('instructor').value;
         const direccion = document.getElementById('direccion').value;
         centroformacion = document.getElementById('centroformacion').value.trim();
@@ -59,17 +61,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        // if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
-        //     alert('Todos los campos son Obligatorios');
-        //     return;
-        // } else if (centroformacion) {
-        //     centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
-        // }
+        if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
+            alert('Todos los campos son Obligatorios');
+            return;
+        } else if (centroformacion) {
+            centroformacion = `Dictado en Centro de formacion ${centroformacion}`;
+        }
         
-        // if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
-        //     alert('Todos los campos son Obligatorios');
-        //     return;
-        // }
+        if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
+            alert('Todos los campos son Obligatorios');
+            return;
+        }
 
         if (direccion === instructor) {
             alert('La misma persona no puede ocupar los dos cargos.')
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
-        const expirationDate = addYearsToDate(ingreso, yearsToAdd);
+        const expirationDate = addYearsToDate(fecha, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
         const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
@@ -156,7 +158,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     }
                 }
 
-                console.log(contador + 2);
+                if (typeof row['Fecha Emision'] === 'number') {
+                    const jsDate = excelDateToJSDate(row['Fecha Emision']);
+                    row['Fecha Emision'] = formatDate(jsDate);
+                }
 
                 if (row.Certificacion) {
                     const certificacionLower = row.Certificacion.toLowerCase();
@@ -1657,7 +1662,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const nombre = row['Nombre'];
         const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
-        const formattedIngreso = convertirFecha(ingreso);
         let instructor = row['Segundo Cargo'].trim();
         if (certificacion === 'instructor') {
             instructor = 'Castillo Pablo';
@@ -1669,10 +1673,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroDireccion = registros[direccion] || 'No disponible';
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
-        const expirationDate = addYearsToDateExcel(formattedIngreso, yearsToAdd);
+        const expirationDate = addYearsToDateExcel(ingreso, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
+        const pdfBytes = await generateCustomCertificate(url, nombre, dni, ingreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
 
         if (pdfBytes) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -1685,9 +1689,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 function addYearsToDate(date, years) {
-    console.log(date);
     const newDate = new Date(date);
-    console.log(newDate);
     newDate.setFullYear(newDate.getFullYear() + years);
     return newDate;
 }
@@ -1712,13 +1714,11 @@ function formatDate(date) {
     return `${day}/${month}/${year}`;
 }
 
-function convertirFecha(fechaStr) {
-    const partes = fechaStr.split('/');
-    const anio = partes[0];
-    const dia = partes[1];
-    const mes = partes[2];
-
-    const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${anio}`;
-
-    return fechaFormateada;
+function excelDateToJSDate(excelDateNumber) {
+    const excelBaseDate = new Date(1900, 0, 1);
+    const jsDate = new Date(excelBaseDate.getTime() + (excelDateNumber - 1) * 24 * 60 * 60 * 1000);
+    if (excelDateNumber > 59) {
+        jsDate.setDate(jsDate.getDate() - 1);
+    }
+    return jsDate;
 }
