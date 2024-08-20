@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const registros = {
-        'Isis Marcos': '0264',
+        'Marcos Isis': '0264',
         'Rodriguez Juan Manuel': '0031',
         'Commegna Pablo': '0113',
         'Suarez Guido': '0015',
@@ -48,8 +48,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const certificacion = document.getElementById('cursos').value;
         const url = pdfMap[certificacion];
 
+        function formatearDNI(dni) {
+            return dni.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
         const nombre = document.getElementById('nombre').value;
         const dni = document.getElementById('dni').value;
+        const dniFormateado = formatearDNI(dni);
         const ingreso = document.getElementById('ingreso').value;
         const fecha = new Date(ingreso);
         fecha.setDate(fecha.getDate() + 1);
@@ -78,11 +83,13 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
+
+
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
         const expirationDate = addYearsToDate(fecha, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        const pdfBytes = await generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
+        const pdfBytes = await generateCustomCertificate(url, nombre, dniFormateado, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
 
         if (pdfBytes) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -209,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         reader.readAsArrayBuffer(file);
     }
 
-    async function generateCustomCertificate(url, nombre, dni, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion) {
+    async function generateCustomCertificate(url, nombre, dniFormateado, formattedIngreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion) {
         const { PDFDocument, rgb } = PDFLib;
 
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
@@ -246,7 +253,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const coordenadasFirmasDireccion = {
             'RodriguezJuanManuel': { x: 650, y: 100, width: 100, height: 80 },
             'LehnerIan': { x: 650, y: 100, width: 100, height: 80 },
-            'IsisMarcos': { x: 630, y: 100, width: 100, height: 80 },
+            'MarcosIsis': { x: 630, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 650, y: 110, width: 100, height: 80 },
             'CommegnaPablo': { x: 650, y: 110, width: 100, height: 80 }
             // Añade más firmas aquí
@@ -257,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'RodriguezJuanManuel': { x: 100, y: 100, width: 100, height: 80 },
             'SanchezNicolas': { x: 100, y: 110, width: 100, height: 80 },
             'LehnerIan': { x: 100, y: 100, width: 100, height: 80 },
-            'IsisMarcos': { x: 100, y: 100, width: 100, height: 80 },
+            'MarcosIsis': { x: 100, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 100, y: 110, width: 100, height: 80 },
             'CastilloPablo': { x: 95, y: 110, width: 100, height: 80 },
             'CommegnaPablo': { x: 100, y: 110, width: 100, height: 80 }
@@ -311,7 +318,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (certificacion === 'RTC1') {
-            firstPage.drawText(`DNI: ${dni}`, {
+            firstPage.drawText(`DNI: ${dniFormateado}`, {
                 x: 360,
                 y: 319,
                 size: 17,
@@ -319,7 +326,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 color: rgb(0, 0, 0),
             });
         } else {
-            firstPage.drawText(`DNI: ${dni}`, {
+            firstPage.drawText(`DNI: ${dniFormateado}`, {
                 x: 360,
                 y: 310,
                 size: 17,
@@ -477,7 +484,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         if (certificacion === 'TSA') {
-            if (instructor === 'Isis Marcos' || instructor === 'Lehner Ian') {
+            if (instructor === 'Marcos Isis' || instructor === 'Lehner Ian') {
                 firstPage.drawText(textoInstructor, {
                     x: fixedPositionXRight - 24,
                     y: baseYPosition - 12,
@@ -521,7 +528,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             })
         };
         } else {
-            if (instructor === 'Isis Marcos' || instructor === 'Lehner Ian') {
+            if (instructor === 'Marcos Isis' || instructor === 'Lehner Ian') {
                 firstPage.drawText(textoInstructor, {
                     x: fixedPositionXRight - 16,
                     y: baseYPosition - 12,
@@ -563,7 +570,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'CommegnaPablo': { x: 100, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 100, y: 100, width: 100, height: 80 },
             'CastilloPablo': { x: 100, y: 100, width: 100, height: 80 },
-            'IsisMarcos': { x: 90, y: 100, width: 100, height: 80 },
+            'MarcosIsis': { x: 90, y: 100, width: 100, height: 80 },
             'LehnerIan': { x: 100, y: 100, width: 100, height: 80 },
             'SanchezNicolas': { x: 100, y: 100, width: 100, height: 80 },
             'MartinSantiago': { x: 100, y: 100, width: 100, height: 80 },
@@ -576,7 +583,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             'CommegnaPablo': { x: 620, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 650, y: 100, width: 100, height: 80 },
             'CastilloPablo': { x: 625, y: 100, width: 100, height: 80 },
-            'IsisMarcos': { x: 640, y: 100, width: 100, height: 80 },
+            'MarcosIsis': { x: 640, y: 100, width: 100, height: 80 },
             'LehnerIan': { x: 650, y: 100, width: 100, height: 80 },
             'SanchezNicolas': { x: 650, y: 100, width: 100, height: 80 },
             'MartinSantiago': { x: 630, y: 100, width: 100, height: 80 },
@@ -590,20 +597,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             'CommegnaPablo': { x: 90, y: 90, width: 90, height: 38 },
             'SuarezGuido': { x: 100, y: 90, width: 90, height: 38 },
             'CastilloPablo': { x: 100, y: 90, width: 90, height: 38 },
-            'IsisMarcos': { x: 90, y: 90, width: 90, height: 38 },
+            'MarcosIsis': { x: 90, y: 90, width: 90, height: 38 },
             'LehnerIan': { x: 95, y: 85, width: 100, height: 48 },
             'SanchezNicolas': { x: 100, y: 90, width: 90, height: 38 },
             'MartinSantiago': { x: 100, y: 90, width: 90, height: 38 },
             // Añade más firmas aquí
         };
-
         //LADO DERECHO
         const coordenadasFirmasDireccionSegundaPaginaGrupo2 = {
             'RodriguezJuanManuel': { x: 640, y: 80, width: 100, height: 48 },
             'CommegnaPablo': { x: 625, y: 90, width: 90, height: 38 },
             'SuarezGuido': { x: 635, y: 90, width: 90, height: 38 },
             'CastilloPablo': { x: 625, y: 90, width: 90, height: 38 },
-            'IsisMarcos': { x: 620, y: 90, width: 90, height: 38 },
+            'MarcosIsis': { x: 620, y: 90, width: 90, height: 38 },
             'LehnerIan': { x: 635, y: 85, width: 100, height: 48 },
             'SanchezNicolas': { x: 640, y: 90, width: 90, height: 38 },
             'MartinSantiago': { x: 635, y: 90, width: 90, height: 38 },
@@ -1205,7 +1211,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                }else if (instructor === 'Isis Marcos') {
+                }else if (instructor === 'Marcos Isis') {
                     secondPage.drawText(instructor, {
                         x: fixedPositionXRight +15  , // Coordenadas específicas para este nombre
                         y: baseYPosition - 10,
@@ -1350,7 +1356,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaBoldFont,
                         color: rgb(0, 0, 0),
                     });
-                }else if (instructor === 'Isis Marcos') {
+                }else if (instructor === 'Marcos Isis') {
                     secondPage.drawText(instructor, {
                         x: fixedPositionXRight , // Coordenadas específicas para este nombre
                         y: baseYPosition - 28,
