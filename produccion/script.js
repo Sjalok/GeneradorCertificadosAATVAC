@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const fileInput = document.getElementById('archivoExcel');
         const file = fileInput.files[0];
+        const pdfBytes = [];
 
         if (!file) {
             alert('Por favor, carga un archivo Excel primero.');
@@ -150,6 +151,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             const worksheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
             let contador = 0;
+
+            const zip = new JSZip();
 
             for (const row of jsonData) {
                 const requiredFields = ["Certificacion", "Nombre","Apellido", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"];
@@ -209,9 +212,16 @@ document.addEventListener('DOMContentLoaded', async function () {
                         return;
                     }
                 }
-                await generateCertificateFromRow(row);
+                const pdfBytes = await generateCertificateFromRow(row);
+                const fileName = `Certificado_${row.Nombre}_${row.Apellido}.pdf`;
+                zip.file(fileName, pdfBytes, { binary: true });
                 contador ++;
             }
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(zipBlob);
+            link.download = 'Certificados.zip';
+            link.click();
         };
         reader.readAsArrayBuffer(file);
     }
@@ -1668,6 +1678,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const nombre = `${row['Nombre']} ${row['Apellido']}`;
         const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
+        console.log(ingreso);
         let instructor = row['Segundo Cargo'].trim();
         if (certificacion === 'instructor') {
             instructor = 'Castillo Pablo';
@@ -1684,32 +1695,27 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         const pdfBytes = await generateCustomCertificate(url, nombre, dni, ingreso, instructor, direccion, centroformacion, formattedExpirationDate, certificacion, registroTitulo, registroInstructor, registroDireccion);
 
-        if (pdfBytes) {
-            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = `Certificado-${nombre}.pdf`;
-            link.click();
-        }
+        return pdfBytes;
     }
 });
 
 function addYearsToDate(date, years) {
     const newDate = new Date(date);
+    console.log(newDate)
     newDate.setFullYear(newDate.getFullYear() + years);
     return newDate;
 }
 
-function addYearsToDateExcel(dateStr, years) {
-    const partes = dateStr.split('/');
+function addYearsToDateExcel(date, years) {
+    const partes = date.split('/');
     const dia = parseInt(partes[0], 10);
     const mes = parseInt(partes[1], 10) - 1;
     const anio = parseInt(partes[2], 10);
-    
+
     const newDate = new Date(anio, mes, dia);
 
     newDate.setFullYear(newDate.getFullYear() + years);
-    
+
     return newDate;
 }
 
