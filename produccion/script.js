@@ -48,10 +48,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         const certificacion = document.getElementById('cursos').value;
         const url = pdfMap[certificacion];
 
-        function formatearDNI(dni) {
-            return dni.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
         const nombre = document.getElementById('nombre').value;
         const dni = document.getElementById('dni').value;
         const dniFormateado = formatearDNI(dni);
@@ -163,6 +159,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                         alert(`Faltan campos en la fila: ${JSON.stringify(row)}.`);
                         return;
                     }
+                }
+
+                if (row.DNI) {
+                    row.DNI = formatearDNIExcel(row.DNI);
                 }
 
                 if (typeof row['Fecha Emision'] === 'number') {
@@ -1727,4 +1727,12 @@ function excelDateToJSDate(excelDateNumber) {
         jsDate.setDate(jsDate.getDate() - 1);
     }
     return jsDate;
+}
+
+function formatearDNIExcel(dni) {
+    return dni.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function formatearDNI(dni) {
+    return dni.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
