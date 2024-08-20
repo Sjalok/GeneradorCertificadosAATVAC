@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             let contador = 0;
 
             for (const row of jsonData) {
-                const requiredFields = ["Certificacion", "Nombre", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"]; // Añade las columnas que deseas verificar
+                const requiredFields = ["Certificacion", "Nombre","Apellido", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"];
 
                 for (const field of requiredFields) {
                     if (!row[field]) {
@@ -1659,7 +1659,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const certificacion = row['Certificacion'];
         const url = pdfMap[certificacion];
 
-        const nombre = row['Nombre'];
+        const nombre = `${row['Nombre']} ${row['Apellido']}`;
         const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
         let instructor = row['Segundo Cargo'].trim();
