@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             } else if (certificacion === 'APC2') {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
-                    y: 278,
+                    y: 274.5,
                     size: fontSizeCF,
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
