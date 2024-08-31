@@ -4,15 +4,22 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 8080;
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'produccion')));
+
+app.get('/certificados', (req, res) => {
+    res.sendFile(path.join(__dirname, 'produccion', 'certificados.html'));
+});
 
 app.get('/get-password', (req, res) => {
     res.json({ password: process.env.PASSWORD });
 });
 
-app.get('/formulario', (req, res) => {
-    const password = req.query.password;
+app.post('/formulario', (req, res) => {
+    const password = req.body.password;
     if (password === process.env.PASSWORD) {
         res.sendFile(path.join(__dirname, 'produccion', 'formulario.html'));
     } else {
@@ -21,7 +28,7 @@ app.get('/formulario', (req, res) => {
 });
 
 app.get('/centroFormacion', (req, res) => {
-    const password = req.query.password;
+    const password = req.body.password;
     if (password === process.env.PASSWORD) {
         res.sendFile(path.join(__dirname, 'produccion', 'centroFormacion.html'));
     } else {

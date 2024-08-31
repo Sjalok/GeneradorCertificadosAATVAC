@@ -1,23 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Página de Inicio</title>
-  <link rel="stylesheet" type="text/css" href="./CSS/index.css">
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/index2.css">
+    <title>AATTVAC</title>
 </head>
 <body>
-  <div class="slider">
-    <div class="top-logo">
-      <img src="./img/logo.png" alt="Logo">
+    <div class="slider">
+        <div class="top-logo">
+            <img src="./img/logo.png" alt="Logo">
+        </div>
     </div>
-    <h1>ASOCIACIÓN ARGENTINA DE TÉCNICOS EN TRABAJOS VERTICALES Y ACCESO POR CUERDAS</h1>
-    <div class="login-container">
-      <form id="formulario">
-        <input type="password" id="password" name="password" placeholder="Contraseña" required>
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-    </div>
-  </div>
-  <script src="./index.js"></script>
 </body>
 </html>
+
+<style>
+.slider {
+    background: url('../img/header.jpg') no-repeat center center fixed;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Cambiado de center a flex-start para alinear hacia arriba */
+    color: white;
+    text-align: center;
+    padding-top: 120px; /* Ajusta este valor para más o menos espacio superior */
+  }
+
+  .top-logo {
+    position: absolute;
+    top: 20px; /* Ajusta este valor para más o menos espacio superior */
+    left: center; /* Ajusta este valor para más o menos espacio desde la izquierda */
+  }
+  
+  .top-logo img {
+    width: 400px; /* Ajusta el tamaño del logo */
+    height: auto; /* Mantiene la proporción */
+  }
+</style>
