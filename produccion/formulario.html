@@ -60,6 +60,10 @@
             </select>
             <input type="text" id="centroformacion" placeholder="Centro de formacion" required>
             <input type="file" id="archivoExcel" accept=".xlsx, .xls">
+            <div id="progress-container" style="display: none;">
+                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value:0;"></div>
+                <div><p style="text-align: center;">Advertencia: A pesar de llegar al 100%, puede haber unos segundos mas hasta que se termine de llenar el archivo zip!</p></div>
+            </div>
             <button type="submit" id="generar">Generar Certificado</button>
             <button type="button" id="upload-button">Subir excel y generar certificados</button>
             <button type="button" id="descargarexcel">Descargar el Excel</button>

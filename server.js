@@ -23,7 +23,7 @@ app.post('/formulario', (req, res) => {
     if (password === process.env.PASSWORD) {
         res.sendFile(path.join(__dirname, 'produccion', 'formulario.html'));
     } else {
-        res.status(401).send('Acceso denegado');
+        res.status(401).send('Acceso denegado: Contraseña incorrecta.');
     }
 });
 
@@ -32,7 +32,7 @@ app.get('/centroFormacion', (req, res) => {
     if (password === process.env.PASSWORD) {
         res.sendFile(path.join(__dirname, 'produccion', 'centroFormacion.html'));
     } else {
-        res.status(401).send('Acceso denegado');
+        res.status(401).send('Acceso denegado: Contraseña incorrecta.');
     }
 });
 
@@ -42,6 +42,4 @@ app.get('/', (req, res) => {
 
 app.listen(port, async () => {
     console.log(`Programa listo para usar en http://localhost:${port}`);
-    const open = await import('open');
-    open.default(`http://localhost:${port}`);
 });

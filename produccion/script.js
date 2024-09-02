@@ -62,6 +62,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
+        if (instructor === 'Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:' || direccion === 'Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:') {
+            alert('No se ha seleccionado direccion o segundo cargo.');
+            console.log(instructor);
+            return;
+        }
+
         if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
             alert('Todos los campos son Obligatorios');
             return;
@@ -137,6 +143,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const fileInput = document.getElementById('archivoExcel');
         const file = fileInput.files[0];
         const pdfBytes = [];
+        const progressBar = document.querySelector('[role="progressbar"]');
+        const progressContainer = document.getElementById('progress-container');
 
         if (!file) {
             alert('Por favor, carga un archivo Excel primero.');
@@ -151,8 +159,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             const worksheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
             let contador = 0;
-
+            const totalRows = jsonData.length;
             const zip = new JSZip();
+
+            progressContainer.style.display = 'block';
 
             for (const row of jsonData) {
                 const requiredFields = ["Certificacion", "Nombre","Apellido", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"];
@@ -216,12 +226,25 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const fileName = `Certificado_${row.Nombre}_${row.Apellido}.pdf`;
                 zip.file(fileName, pdfBytes, { binary: true });
                 contador ++;
+
+                const progress = Math.round((contador / totalRows) * 100);
+                progressBar.style.setProperty('--value', progress);
+                progressBar.setAttribute('aria-valuenow', progress);
             }
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(zipBlob);
             link.download = 'Certificados.zip';
             link.click();
+
+            progressBar.style.setProperty('--value', 100);
+            progressBar.setAttribute('aria-valuenow', 100);
+    
+            
+            setTimeout(() => {
+                alert('¡Todos los certificados se han generado con éxito!');
+                progressContainer.style.display = 'none';
+            }, 500);
         };
         reader.readAsArrayBuffer(file);
     }

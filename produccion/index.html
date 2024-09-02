@@ -9,7 +9,7 @@
 <body>
     <div class="slider">
         <div class="top-logo">
-            <img src="./img/logo.png" alt="Logo">
+          <a href="https://www.aattvac.org.ar/"><img src="./img/logo.png" alt="Logo"></a>
         </div>
     </div>
 </body>
@@ -39,5 +39,10 @@
   .top-logo img {
     width: 400px; /* Ajusta el tamaño del logo */
     height: auto; /* Mantiene la proporción */
+    transition: opacity 0.3s ease;
   }
+
+  .top-logo a:hover img {
+  opacity: 1; /* Efecto de opacidad al pasar el cursor */
+}
 </style>
