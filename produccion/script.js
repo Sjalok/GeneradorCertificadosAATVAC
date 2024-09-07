@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthCF = helveticaFont.widthOfTextAtSize(centroformacion, fontSizeCF);
         const xCenteredCF = (width - textWidthCF) / 2;
 
-        fecha = `Registro de formacion profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        fecha = `Registro profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
 
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
