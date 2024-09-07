@@ -393,6 +393,14 @@ document.addEventListener('DOMContentLoaded', async function () {
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
                 });
+             } else if (certificacion === 'RTC2') {
+                    firstPage.drawText(centroformacion, {
+                        x: xCenteredCF,
+                        y: 259.5,
+                        size: fontSizeCF,
+                        font: helveticaFont,
+                        color: rgb(0, 0, 0),
+                    });
             } else if (certificacion === 'APC2') {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
