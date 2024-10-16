@@ -88,8 +88,10 @@
             document.addEventListener('DOMContentLoaded', function() {
             const cursosSelect = document.getElementById('cursos');
             const instructorSelect = document.getElementById('instructor');
+            const direccionSelect = document.getElementById('direccion');
 
             const opcionesOriginalesInstructor = instructorSelect.innerHTML;
+            const opcionesOriginalesDireccion = direccionSelect.innerHTML;
 
             cursosSelect.addEventListener('change', function() {
                 if (this.value === 'instructor' || this.value === 'evaluador') {
@@ -137,6 +139,49 @@
                     }
                 }
             });
+
+            cursosSelect.addEventListener('change', function() {
+        // Para APC1, APC2, APC3
+        if (this.value === 'APC1' || this.value === 'APC2' || this.value === 'APC3') {
+            // Limpiamos las opciones anteriores
+            instructorSelect.innerHTML = '';
+            direccionSelect.innerHTML = '';
+
+            // Creamos una opción para indicar que no aplica
+            const nuevaOpcionInstructor = document.createElement('option');
+            nuevaOpcionInstructor.value = 'Ninguno';
+            nuevaOpcionInstructor.text = 'No aplica firma de instructor o evaluador en caso de los cursos APC';
+            instructorSelect.add(nuevaOpcionInstructor);
+            
+            const nuevaOpcionDireccion = document.createElement('option');
+            nuevaOpcionDireccion.value = 'Ninguno';
+            nuevaOpcionDireccion.text = 'No aplica firma de dirección en caso de los cursos APC';
+            direccionSelect.add(nuevaOpcionDireccion);
+
+            // Deshabilitar ambos selects
+            instructorSelect.disabled = true;
+            direccionSelect.disabled = true;
+        } else {
+            // Si seleccionas otro curso diferente a APC, restauramos las opciones originales
+            instructorSelect.innerHTML = opcionesOriginalesInstructor;
+            direccionSelect.innerHTML = opcionesOriginalesDireccion;
+
+            // Habilitamos los selects
+            instructorSelect.disabled = false;
+            direccionSelect.disabled = false;
+
+            // Eliminamos cualquier opción con valor 'Ninguno' si existe
+            const opcionNingunoInstructor = instructorSelect.querySelector('option[value="Ninguno"]');
+            const opcionNingunoDireccion = direccionSelect.querySelector('option[value="Ninguno"]');
+            
+            if (opcionNingunoInstructor) {
+                opcionNingunoInstructor.remove();
+            }
+            if (opcionNingunoDireccion) {
+                opcionNingunoDireccion.remove();
+            }
+        }
+        });
         });
     </script>
 

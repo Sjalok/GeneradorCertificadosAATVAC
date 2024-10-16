@@ -62,13 +62,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         const registroInstructor = registros[instructor] || 'No disponible';
         const registroDireccion = registros[direccion] || 'No disponible';
 
-        if (instructor === 'Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:' || direccion === 'Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:') {
-            alert('No se ha seleccionado direccion o segundo cargo.');
-            console.log(instructor);
-            return;
+        if (certificacion != 'APC1' && certificacion != 'APC2' && certificacion != 'APC3') {
+            
+            if (instructor === 'Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:' || direccion === 'Seleccione Coordinacion, Evaluador o Comite de Imparcialidad:') {
+                alert('No se ha seleccionado direccion o segundo cargo.');
+                console.log(instructor);
+                return;
+            }
         }
 
         if (!centroformacion && certificacion !== 'evaluador' && certificacion !== 'instructor') {
+            console.log("asd");
             alert('Todos los campos son Obligatorios');
             return;
         } else if (centroformacion) {
@@ -76,16 +80,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         
         if (!nombre || !dni || !ingreso || !instructor || !direccion || !certificacion || !registroTitulo || !registroDireccion || !registroInstructor) {
-            alert('Todos los campos son Obligatorios');
-            return;
+            if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+                let ayudin = 0;
+            }
+            else {
+                alert('Todos los campos son Obligatorios');
+                return;
+            }
         }
 
         if (direccion === instructor) {
-            alert('La misma persona no puede ocupar los dos cargos.')
-            return;
+            if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+                let ayudin = 0;
+            } else {
+                alert('La misma persona no puede ocupar los dos cargos.')
+                return;
+            }   
         }
-
-
 
         const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
         const expirationDate = addYearsToDate(fecha, yearsToAdd);
@@ -282,6 +293,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
+        let instructorFirmaImage = null;
+        let direccionFirmaImage = null;
+        let textoInstructor = null;
+
         //LADO DERECHO
         const coordenadasFirmasDireccion = {
             'RodriguezJuanManuel': { x: 650, y: 100, width: 100, height: 80 },
@@ -289,7 +304,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             'MarcosIsis': { x: 630, y: 100, width: 100, height: 80 },
             'SuarezGuido': { x: 650, y: 110, width: 100, height: 80 },
             'CommegnaPablo': { x: 650, y: 110, width: 100, height: 80 }
-            // Añade más firmas aquí
         };
     
         //LADO IZQUIERDO
@@ -301,12 +315,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             'SuarezGuido': { x: 100, y: 110, width: 100, height: 80 },
             'CastilloPablo': { x: 95, y: 110, width: 100, height: 80 },
             'CommegnaPablo': { x: 100, y: 110, width: 100, height: 80 }
-            // Añade más firmas aquí
         };
         
-
-        const instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
-        const direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
+        if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+            let ayudin = 0;
+        } else {
+            instructorFirmaImage = await embedImage(pdfDoc, instructor, 'jpeg') || await embedImage(pdfDoc, instructor, 'jpg');
+            direccionFirmaImage = await embedImage(pdfDoc, direccion, 'jpeg') || await embedImage(pdfDoc, direccion, 'jpg');
+        }
 
         const fontSizeNombre = 40;
         const textWidthNombre = helveticaBoldFont.widthOfTextAtSize(nombre, fontSizeNombre);
@@ -316,7 +332,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthCF = helveticaFont.widthOfTextAtSize(centroformacion, fontSizeCF);
         const xCenteredCF = (width - textWidthCF) / 2;
 
-        fecha = `Registro profesional AATVAC Reg. Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        fecha = `Registro profesional AATTVAC Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
 
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
@@ -324,18 +340,30 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         textoDireccion = `Reg. N° ${registroDireccion} - Dirección`;
 
-        if (certificacion === 'TSA') {
-            textoInstructor = `Reg. N° ${registroInstructor} - Coordinacion`;
-        } else if (certificacion === 'evaluador') {
-            textoInstructor = `Reg. N° ${registroInstructor} - Comite de imparcialidad`;
+        if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+            let ayudin = 0;
         } else {
-            textoInstructor = `Reg. N° ${registroInstructor} - Evaluador`;
+            if (certificacion === 'TSA') {
+                textoInstructor = `Reg. N° ${registroInstructor} - Coordinacion`;
+            } else if (certificacion === 'evaluador') {
+                textoInstructor = `Reg. N° ${registroInstructor} - Comite de imparcialidad`;
+            } else {
+                textoInstructor = `Reg. N° ${registroInstructor} - Evaluador`;
+            }
         }
 
         if (certificacion === 'RTC1') {
             firstPage.drawText(nombre, {
                 x: xCenteredNombre,
                 y: 362,
+                size: fontSizeNombre,
+                font: helveticaBoldFont,
+                color: rgb(0, 0, 0),
+            });
+        } else if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+            firstPage.drawText(nombre, {
+                x: xCenteredNombre,
+                y: 360,
                 size: fontSizeNombre,
                 font: helveticaBoldFont,
                 color: rgb(0, 0, 0),
@@ -358,7 +386,16 @@ document.addEventListener('DOMContentLoaded', async function () {
                 font: helveticaFont,
                 color: rgb(0, 0, 0),
             });
-        } else {
+        } else if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+            firstPage.drawText(`DNI: ${dniFormateado}`, {
+                x: 360,
+                y: 319,
+                size: 17,
+                font: helveticaFont,
+                color: rgb(0, 0, 0),
+            });
+        }
+         else {
             firstPage.drawText(`DNI: ${dniFormateado}`, {
                 x: 360,
                 y: 310,
@@ -377,10 +414,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
 
         if (certificacion != 'evaluador' && certificacion != 'instructor') {
-            if (certificacion === 'APC1') {
+            if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
-                    y: 272,
+                    y: 283,
                     size: fontSizeCF,
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
@@ -401,22 +438,6 @@ document.addEventListener('DOMContentLoaded', async function () {
                         font: helveticaFont,
                         color: rgb(0, 0, 0),
                     });
-            } else if (certificacion === 'APC2') {
-                firstPage.drawText(centroformacion, {
-                    x: xCenteredCF,
-                    y: 274.5,
-                    size: fontSizeCF,
-                    font: helveticaFont,
-                    color: rgb(0, 0, 0),
-                });
-            } else if (certificacion === 'APC3') {
-                firstPage.drawText(centroformacion, {
-                    x: xCenteredCF,
-                    y: 273,
-                    size: fontSizeCF,
-                    font: helveticaFont,
-                    color: rgb(0, 0, 0),
-                });
             } else {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
@@ -428,7 +449,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
-        // Intercambiar las imágenes de las firmas
+        if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+            let ayudin = 0;
+        } else {
+            // Intercambiar las imágenes de las firmas
         if (instructorFirmaImage) {
             const nombreInstructor = instructor.replace(/ /g, '');
             const coordenadasDireccion = coordenadasFirmasDireccion[nombreInstructor] || { x: 650, y: 120, width: 100, height: 80 };
@@ -663,7 +687,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             return grupo[nombreSinEspacios] || { x: 100, y: 100, width: 100, height: 80 };
         }
 
-        if (certificacion === 'APC3' || certificacion === 'evaluador' || certificacion === 'instructor' || certificacion === 'TSA') {
+        if (certificacion === 'evaluador' || certificacion === 'instructor' || certificacion === 'TSA') {
             // Intercambiar las imágenes de las firmas
             if (instructorFirmaImage) {
                 const coordenadasDireccion = obtenerCoordenadas(instructor, coordenadasFirmasDireccionSegundaPaginaGrupo1);
@@ -692,149 +716,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         // }
         
 
-        if (certificacion === 'APC3') {
-            // Segunda Pagina, LADO IZQUIERDO
-            if (direccion) {
-                if (direccion === 'Rodriguez Juan Manuel') {
-                    secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft, // Coordenadas específicas para este nombre
-                        y: baseYPosition - 10,
-                        size: 9,
-                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
-                        color: rgb(0, 0, 0),
-                    });
-                
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 5, // Coordenadas específicas para este nombre
-                        y: baseYPosition - 22,
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                    //COMEGNA LADO IZQUIERDO NOMBRE
-                } else if (direccion === 'Commegna Pablo') {
-                    secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft + 10,
-                        y: signatureYPosition -354,
-                        size: 9,
-                        font: helveticaBoldObliqueFont,
-                        color: rgb(0, 0, 0),
-                    });
-                    //COMEGNA LADO IZQUIERDO  DIRECCION
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 10,
-                        y: signatureYPosition -366,
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                    //Santiago LADO IZQUIERDO NOMBRE 
-                } else if (direccion === 'Martin Santiago') {
-                    secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft + 10,
-                        y: signatureYPosition -354,
-                        size: 9,
-                        font: helveticaBoldObliqueFont,
-                        color: rgb(0, 0, 0),
-                    });
-                //Santiago LADO IZQUIERDO  DIRECCION
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 10,
-                        y: signatureYPosition -366,
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                }else {
-                    secondPage.drawText(direccion, {
-                        x: fixedPositionXLeft + 15,
-                        y: baseYPosition - 10,
-                        size: 9,
-                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
-                        color: rgb(0, 0, 0),
-                    });
-                
-                    secondPage.drawText(textoDireccion, {
-                        x: fixedPositionXLeft - 15,
-                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                }
-            }
-             
-            // Añadir texto alineado para la dirección
-            if (instructor) {
-                //LADO DERECHO NOMBRE
-                if (instructor === 'Rodriguez Juan Manuel') {
-                    secondPage.drawText(instructor, {
-                        x: fixedPositionXRight - 14, // Coordenadas específicas para este nombre
-                        y: baseYPosition - 10,
-                        size: 9,
-                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
-                        color: rgb(0, 0, 0),
-                    });
-                //LADO DERECHO TEXTO EVALUADOR
-                    secondPage.drawText(textoInstructor, {
-                        x: fixedPositionXRight - 20,
-                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                    //LADO DERECHO NOMBRE
-                } else if (instructor === 'Commegna Pablo') {
-                    secondPage.drawText(instructor, {
-                        x: fixedPositionXRight - 10, // Coordenadas específicas para este nombre
-                        y: baseYPosition - 10,
-                        size: 9,
-                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
-                        color: rgb(0, 0, 0),
-                    });
-                
-                    secondPage.drawText(textoInstructor, {
-                        x: fixedPositionXRight - 28,
-                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                } else if (instructor === 'Martin Santiago') {
-                    secondPage.drawText(instructor, {
-                        x: fixedPositionXRight - 10, // Coordenadas específicas para este nombre
-                        y: baseYPosition - 10,
-                        size: 9,
-                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
-                        color: rgb(0, 0, 0),
-                    });
-                
-                    secondPage.drawText(textoInstructor, {
-                        x: fixedPositionXRight - 33,
-                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                }else {
-                    secondPage.drawText(instructor, {
-                        x: fixedPositionXRight + 15,
-                        y: baseYPosition - 10,
-                        size: 9,
-                        font: helveticaBoldObliqueFont, // Usa la fuente en negrita y cursiva
-                        color: rgb(0, 0, 0),
-                    });
-                
-                    secondPage.drawText(textoInstructor, {
-                        x: fixedPositionXRight - 20,
-                        y: baseYPosition - 22, // Ajusta la posición 'y' para colocar el texto debajo del nombre
-                        size: 10,
-                        font: helveticaBoldFont,
-                        color: rgb(0, 0, 0),
-                    });
-                }
-            }
-        }else if( certificacion === 'TSA'){
+        if( certificacion === 'TSA'){
             // Segunda Pagina, LADO IZQUIERDO
             if (direccion) {
                 if (direccion === 'Rodriguez Juan Manuel') {
@@ -1479,9 +1361,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 }
             }
-        }
+        }}
         
-
         const pdfBytes = await pdfDoc.save();
         return pdfBytes;
     }
