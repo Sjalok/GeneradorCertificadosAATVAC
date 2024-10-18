@@ -168,90 +168,103 @@ document.addEventListener('DOMContentLoaded', async function () {
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
+        
+            // Convertir el archivo Excel a JSON, comenzando desde la fila 2 para evitar los encabezados
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            
+            // Revisar todas las filas (sin encabezados)
             let contador = 0;
             const totalRows = jsonData.length;
             const zip = new JSZip();
-
+        
             progressContainer.style.display = 'block';
-
+        
             for (const row of jsonData) {
-                const requiredFields = ["Certificacion", "Nombre","Apellido", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"];
-
-                for (const field of requiredFields) {
+                // Verifica si la fila tiene datos en las columnas importantes
+                if (!row || Object.keys(row).length === 0) {
+                    console.log('Fila vacía o inválida, saltando...');
+                    continue; // Salta esta fila y pasa a la siguiente
+                }
+        
+                console.log(`Procesando fila ${contador + 2}: `, row); // Para ver cuál fila está procesando
+        
+                // Campos requeridos según la certificación
+                const requiredFields = ["Certificacion", "Nombre", "Apellido", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"];
+                const requiredFieldsAPC = ["Certificacion", "Nombre", "Apellido", "DNI", "Numero Registro", "Fecha Emision", "Centro de formacion"];
+        
+                const isAPC = ["APC1", "APC2", "APC3"].includes(row.Certificacion);
+                const fieldsToCheck = isAPC ? requiredFieldsAPC : requiredFields;
+        
+                // Verifica si hay campos faltantes
+                for (const field of fieldsToCheck) {
                     if (!row[field]) {
-                        alert(`Faltan campos en la fila: ${JSON.stringify(row)}.`);
+                        alert(`Faltan campos en la fila ${contador + 2}: ${JSON.stringify(row)}.`);
                         return;
                     }
                 }
-
+        
+                // Formatear DNI y Fecha Emisión si es necesario
                 if (row.DNI) {
                     row.DNI = formatearDNIExcel(row.DNI);
                 }
-
+        
                 if (typeof row['Fecha Emision'] === 'number') {
                     const jsDate = excelDateToJSDate(row['Fecha Emision']);
                     row['Fecha Emision'] = formatDate(jsDate);
                 }
-
-                if (row.Certificacion) {
-                    const certificacionLower = row.Certificacion.toLowerCase();
-                    
-                    if (certificacionLower === "evaluador" || certificacionLower === "instructor") {
-                        row.Certificacion = certificacionLower;
-                    }
-            
-                    else if (["apc1", "tsa", "apc2", "apc3", "rtc1", "rtc2"].includes(certificacionLower)) {
-                        row.Certificacion = row.Certificacion.toUpperCase();
-                    }
-
-                    const segundoCargo = row['Segundo Cargo'].trim();
-                    const direccion = row['Direccion'].trim();
-
-                    if (segundoCargo === 'Sanchez Nicolas' && certificacionLower !== 'evaluador') {
-                        alert(`"Sanchez Nicolas" solo puede estar en "Segundo Cargo" si la certificación es "evaluador". Se han generado todos los certificados hasta la fila ${contador + 2}`);
-                        return;
-                    }
-    
-                    if (segundoCargo === 'Castillo Pablo' && certificacionLower !== 'instructor') {
-                        alert(`"Castillo Pablo" solo puede estar en "Segundo Cargo" si la certificación es "instructor". Se han generado todos los certificados hasta la fila ${contador + 2}`);
-                        return;
-                    }
-                    if (direccion === 'Castillo Pablo') {
-                        alert(`"Castillo Pablo" no puede estar en la columna "Direccion". Se han generado todos los certificados hasta la fila ${contador + 2}`);
-                        return;
-                    }
-    
-                    if (segundoCargo && !registros.hasOwnProperty(segundoCargo)) {
-                        alert(`Error en la escritura del nombre en "Segundo Cargo": ${row['Segundo Cargo']} no está en los registros. Se han generado todos los certificados hasta la fila ${contador + 2}`);
-                        console.log(row['Segundo Cargo']);
-                        return;
-                    }
-
-                    if (direccion === segundoCargo) {
-                        alert(`ERROR: hay una persona ejerciendo los dos cargos en un mismo certificado. Se han generado todos los certificados hasta la fila ${contador + 2}`)
-                        return;
-                    }
+        
+                // Validaciones de "Segundo Cargo" y "Direccion"
+                const segundoCargo = row['Segundo Cargo'] ? row['Segundo Cargo'].trim() : '';
+                const direccion = row['Direccion'] ? row['Direccion'].trim() : 'asd';
+        
+                if (segundoCargo === 'Sanchez Nicolas' && row.Certificacion.toLowerCase() !== 'evaluador') {
+                    alert(`"Sanchez Nicolas" solo puede estar en "Segundo Cargo" si la certificación es "evaluador". Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                    return;
                 }
+        
+                if (segundoCargo === 'Castillo Pablo' && row.Certificacion.toLowerCase() !== 'instructor') {
+                    alert(`"Castillo Pablo" solo puede estar en "Segundo Cargo" si la certificación es "instructor". Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                    return;
+                }
+        
+                if (direccion === 'Castillo Pablo') {
+                    alert(`"Castillo Pablo" no puede estar en la columna "Direccion". Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                    return;
+                }
+        
+                if (segundoCargo && !registros.hasOwnProperty(segundoCargo)) {
+                    alert(`Error en la escritura del nombre en "Segundo Cargo": ${row['Segundo Cargo']} no está en los registros. Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                    console.log(row['Segundo Cargo']);
+                    return;
+                }
+        
+                if (direccion === segundoCargo) {
+                    alert(`ERROR: hay una persona ejerciendo los dos cargos en un mismo certificado. Se han generado todos los certificados hasta la fila ${contador + 2}`);
+                    return;
+                }
+        
+                // Generar PDF para la fila actual
                 const pdfBytes = await generateCertificateFromRow(row);
                 const fileName = `Certificado_${row.Nombre}_${row.Apellido}.pdf`;
                 zip.file(fileName, pdfBytes, { binary: true });
-                contador ++;
-
+                contador++;
+        
                 const progress = Math.round((contador / totalRows) * 100);
                 progressBar.style.setProperty('--value', progress);
                 progressBar.setAttribute('aria-valuenow', progress);
             }
+        
+            // Generar y descargar el archivo ZIP
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(zipBlob);
             link.download = 'Certificados.zip';
             link.click();
-
+        
+            // Finalizar progreso
             progressBar.style.setProperty('--value', 100);
             progressBar.setAttribute('aria-valuenow', 100);
-    
-            
+        
             setTimeout(() => {
                 alert('¡Todos los certificados se han generado con éxito!');
                 progressContainer.style.display = 'none';
@@ -1587,15 +1600,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         const certificacion = row['Certificacion'];
         const url = pdfMap[certificacion];
 
+        let instructor = '';
+        let direccion = '';
+
         const nombre = `${row['Nombre']} ${row['Apellido']}`;
         const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
-        console.log(ingreso);
-        let instructor = row['Segundo Cargo'].trim();
+        // let instructor = row['Segundo Cargo'].trim();
+        if (certificacion !== 'APC1' && certificacion !== 'APC2' && certificacion !== 'APC3') {
+            instructor = row['Segundo Cargo'] ? row['Segundo Cargo'].trim() : '';
+            direccion = row['Direccion'] ? row['Direccion'].trim() : 'asd';
+        }
         if (certificacion === 'instructor') {
             instructor = 'Castillo Pablo';
         }
-        const direccion = row['Direccion'].trim();
+        // const direccion = row['Direccion'].trim();
         const centroformacion = `dictado en centro de formacion ${row['Centro de formacion']}`;
         const registroTitulo = row['Numero Registro'];
         const registroInstructor = registros[instructor] || 'No disponible';
