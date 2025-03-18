@@ -185,9 +185,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     console.log('Fila vacía o inválida, saltando...');
                     continue; // Salta esta fila y pasa a la siguiente
                 }
-        
                 console.log(`Procesando fila ${contador + 2}: `, row); // Para ver cuál fila está procesando
-        
+
                 // Campos requeridos según la certificación
                 const requiredFields = ["Certificacion", "Nombre", "Apellido", "DNI", "Numero Registro", "Fecha Emision", "Direccion", "Segundo Cargo", "Centro de formacion"];
                 const requiredFieldsAPC = ["Certificacion", "Nombre", "Apellido", "DNI", "Numero Registro", "Fecha Emision", "Centro de formacion"];
