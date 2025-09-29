@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             'RTC1': 'certificados/CertificadoRTC1.pdf',
             'RTC2': 'certificados/CertificadoRTC2.pdf',
             'evaluador': 'certificados/CertificadoEvaluador.pdf',
-            'instructor': 'certificados/CertificadoInstructor.pdf'
+            'instructor': 'certificados/CertificadoInstructor.pdf',
+            'BIRC': 'certificados/CertificadoBIRC.pdf'
         };
 
         const certificacion = document.getElementById('cursos').value;
@@ -67,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         
         if (!nombre || !dni || !ingreso || !certificacion || !registroTitulo) {
-            if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3') {
+            if (certificacion === 'APC1' || certificacion === 'APC2' || certificacion === 'APC3' || certificacion === 'BIRC') {
                 let ayudin = 0;
             }
             else {
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }
 
-        const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
+        const yearsToAdd = (certificacion === 'TSA' || certificacion === 'BIRC') ? 1 : 2;
         const expirationDate = addYearsToDate(fecha, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
@@ -169,14 +170,18 @@ document.addEventListener('DOMContentLoaded', async function () {
         
                 const isAPC = ["APC1", "APC2", "APC3"].includes(row.Certificacion);
                 const fieldsToCheck = isAPC ? requiredFieldsAPC : requiredFields;
-        
-                // Verifica si hay campos faltantes
-                for (const field of fieldsToCheck) {
-                    if (!row[field]) {
-                        alert(`Faltan campos en la fila ${contador + 2}: ${JSON.stringify(row)}.`);
-                        return;
+                
+                if (row.Certificacion === 'BIRC') {
+                    let ayudin = 0;
+                } else {
+                    for (const field of fieldsToCheck) {
+                        if (!row[field]) {
+                            alert(`Faltan campos en la fila ${contador + 2}: ${JSON.stringify(row)}.`);
+                            return;
+                        }
                     }
                 }
+                
         
                 // Formatear DNI y Fecha Emisión si es necesario
                 if (row.DNI) {
@@ -218,7 +223,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         reader.readAsArrayBuffer(file);
     }
 
-    async function generateCustomCertificate(url, nombre, dniFormateado, formattedIngreso, centroformacion, formattedExpirationDate, certificacion, registroTitulo) {
+    async function generateCustomCertificate(url, nombre, dniFormateado, formattedIngreso, centroformacion, formattedExpirationDate, certificacion, registroTitulo = null) {
         const { PDFDocument, rgb } = PDFLib;
 
         const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer());
@@ -237,17 +242,35 @@ document.addEventListener('DOMContentLoaded', async function () {
         const textWidthNombre = helveticaBoldFont.widthOfTextAtSize(nombre, fontSizeNombre);
         const xCenteredNombre = (width - textWidthNombre) / 2;
 
+        const fontSizeBIRC = 48;
+        const textWidthBIRC = helveticaBoldFont.widthOfTextAtSize('CERTIFICADO B.I.R.C.', fontSizeBIRC);
+        const xCenteredBIRC = (width - textWidthBIRC) / 2;
+
         const fontSizeCF = 13.5;
         const textWidthCF = helveticaFont.widthOfTextAtSize(centroformacion, fontSizeCF);
         const xCenteredCF = (width - textWidthCF) / 2;
 
-        fecha = `Registro profesional AATTVAC Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
-
+        if (certificacion === 'BIRC') {
+            fecha = `Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        } else {
+            fecha = `Registro profesional AATTVAC Nº: ${registroTitulo} - Fecha emision: ${formattedIngreso} - Expira: ${formattedExpirationDate}`;
+        }
+        
         const fontSizeFecha = 14;
         const textWidthFecha = helveticaBoldFont.widthOfTextAtSize(fecha, fontSizeFecha);
         const xCenteredFecha = (width - textWidthFecha) / 2;
 
-        if (certificacion === 'RTC1') {
+        if (certificacion === 'BIRC') {
+            firstPage.drawText('CERTIFICADO B.I.R.C.', {
+                x: xCenteredBIRC,
+                y: 450,
+                size: fontSizeBIRC,
+                font: helveticaBoldFont,
+                color: rgb(0, 0, 0),
+            });
+        }
+
+        if (certificacion === 'RTC1' || certificacion === 'BIRC') {
             firstPage.drawText(nombre, {
                 x: xCenteredNombre,
                 y: 362,
@@ -273,7 +296,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
         }
 
-        if (certificacion === 'RTC1') {
+        if (certificacion === 'RTC1' || certificacion === 'BIRC') {
             firstPage.drawText(`DNI: ${dniFormateado}`, {
                 x: 360,
                 y: 319,
@@ -317,7 +340,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     font: helveticaFont,
                     color: rgb(0, 0, 0),
                 });
-            } else if (certificacion === 'RTC1') {
+            } else if (certificacion === 'RTC1' || certificacion === 'BIRC') {
                 firstPage.drawText(centroformacion, {
                     x: xCenteredCF,
                     y: 280,
@@ -429,7 +452,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             'RTC1': 'certificados/CertificadoRTC1.pdf',
             'RTC2': 'certificados/CertificadoRTC2.pdf',
             'evaluador': 'certificados/CertificadoEvaluador.pdf',
-            'instructor': 'certificados/CertificadoInstructor.pdf'
+            'instructor': 'certificados/CertificadoInstructor.pdf',
+            'BIRC': 'certificados/CertificadoBIRC.pdf'
         };
 
         const certificacion = row['Certificacion'];
@@ -439,13 +463,24 @@ document.addEventListener('DOMContentLoaded', async function () {
         const dni = row['DNI'];
         const ingreso = row['Fecha Emision'];
         const centroformacion = `dictado en centro de formacion ${row['Centro de formacion']}`;
-        const registroTitulo = row['Numero Registro'];
+        let registroTitulo;
+        if (certificacion === 'BIRC') {
+            let ayudin = 0;
+        } else {
+            registroTitulo = row['Numero Registro'];
+        }
 
-        const yearsToAdd = (certificacion === 'TSA') ? 1 : 2;
+        const yearsToAdd = (certificacion === 'TSA' || certificacion === 'BIRC') ? 1 : 2;
         const expirationDate = addYearsToDateExcel(ingreso, yearsToAdd);
         const formattedExpirationDate = formatDate(expirationDate);
 
-        const pdfBytes = await generateCustomCertificate(url, nombre, dni, ingreso, centroformacion, formattedExpirationDate, certificacion, registroTitulo);
+        let pdfBytes;
+
+        if (certificacion === 'BIRC') {
+            pdfBytes = await generateCustomCertificate(url, nombre, dni, ingreso, centroformacion, formattedExpirationDate, certificacion);
+        } else {
+            pdfBytes = await generateCustomCertificate(url, nombre, dni, ingreso, centroformacion, formattedExpirationDate, certificacion, registroTitulo);
+        }
 
         return pdfBytes;
     }
